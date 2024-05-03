@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <div className='bg-gradient-to-br from-teal-50 to-green-200'>
       <Nav  />
-      <MainBanner />
+      
     </div>
   );
 };
