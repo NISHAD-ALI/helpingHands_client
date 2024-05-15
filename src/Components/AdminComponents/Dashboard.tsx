@@ -1,68 +1,48 @@
-import React, { useState } from "react";
+import React from "react";
 
 const Dashboard: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <div
-        className={`fixed z-20 inset-y-0 left-0 w-64 bg-gray-800 transition duration-300 ease-in-out transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
+      <div className="fixed inset-y-0 left-0 w-64 bg-white">
         {/* Sidebar Header */}
         <div className="flex items-center justify-between p-4">
-          <h1 className="text-lg font-semibold text-white">Admin Panel</h1>
-          <button
-            className="text-white focus:outline-none focus:text-white"
-            onClick={toggleSidebar}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              {isOpen ? (
-                <path d="M6 18L18 6M6 6l12 12"></path>
-              ) : (
-                <path d="M4 6h16M4 12h16m-7 6h7"></path>
-              )}
-            </svg>
-          </button>
+          <h1 className="text-2xl font-bold text-black">helpingHands</h1>
         </div>
         {/* Sidebar Content */}
-        <nav className="text-white">
-          <ul className="space-y-2">
-            <li className="p-4 hover:bg-gray-700 cursor-pointer">Option 1</li>
-            <li className="p-4 hover:bg-gray-700 cursor-pointer">Option 2</li>
-            <li className="p-4 hover:bg-gray-700 cursor-pointer">Option 3</li>
-            
-          </ul>
-        </nav>
+        <nav className="text-black">
+  <ul className="mt-6 pl-4">
+    <li className="p-4 font-medium text-gray-500 hover:text-blue-800 hover:translate-x-1 cursor-pointer transition-transform">
+      Dashboard
+    </li>
+    <li className="p-4 font-medium text-gray-500 hover:text-blue-800 hover:translate-x-1 cursor-pointer transition-transform">
+      Communities
+    </li>
+    <li className="p-4 font-medium text-gray-500 hover:text-blue-800 hover:translate-x-1 cursor-pointer transition-transform">
+      Users
+    </li>
+    <li className="p-4 font-medium text-gray-500 hover:text-blue-800 hover:translate-x-1 cursor-pointer transition-transform">
+      Donations
+    </li>
+  </ul>
+</nav>
+
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col flex-1 overflow-hidden">
+      <div className="flex flex-col flex-1">
         {/* Navbar */}
-        <div className="bg-gray-900 text-white p-4">
-          <h2 className="text-lg font-semibold">Admin Dashboard</h2>
+        <div className="bg-white text-black p-4">
+          <h2 className="text-lg font-semibold">Overview</h2>
         </div>
-
         {/* Content Area */}
         <div className="flex-1 overflow-y-auto p-4">
-         fvfevfv
           <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
             <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg">
               {/* Your content here */}
+              <div className="w-full bg-blue-500">
+                <div className="w-1/5 bg-red-500 h-full"></div>
+              </div>
             </div>
           </div>
         </div>

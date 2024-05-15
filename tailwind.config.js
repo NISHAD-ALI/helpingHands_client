@@ -9,6 +9,10 @@ export default {
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
       },
+      colors: {
+        custom: '#050214',
+        pinky:' #C10C99'
+      },
     },
   },
   plugins: [],

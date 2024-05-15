@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Login from '../Pages/Admin/Login'
-import Dashboard from '../Components/AdminComponents/Dashboard'
+import Dashboard from '../Pages/Admin/Dashboard'
 
 
 const AdminRoutes = () => {
