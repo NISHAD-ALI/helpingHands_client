@@ -11,7 +11,8 @@ export default {
       },
       colors: {
         custom: '#050214',
-        pinky:' #C10C99'
+        pinky:' #C10C99',
+        bluely:'#4D47C3'
       },
     },
   },

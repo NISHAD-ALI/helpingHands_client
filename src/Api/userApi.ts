@@ -54,18 +54,61 @@ export const logout = async () => {
     }
 }
 
-export const resendOtp = async() =>{
+export const resendOtp = async () => {
     try {
         let token = localStorage.getItem('userTokenOtp')
-        const response = await axiosInstance.post('/resendOtp',{},{
+        const response = await axiosInstance.post('/resendOtp', {}, {
             headers: {
-                Authorization : `Bearer ${token}`
+                Authorization: `Bearer ${token}`
             }
         })
-        if(response.data.success){
-            localStorage.setItem('userTokenOtp',response.data.newToken)
+        if (response.data.success) {
+            localStorage.setItem('userTokenOtp', response.data.newToken)
         }
         return response
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        throw error.response.data.message;
+    }
+}
+
+export const forgotPassword = async (email: string) => {
+    try {
+        let response = await axiosInstance.post('/forgotPassword', { email })
+        localStorage.setItem('userForgotPassword', response.data.token)
+        return response
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        throw error.response.data.message;
+    }
+}
+
+export const verifyOtpForgotPassword = async (otp: string) =>{
+    try {
+        let token = localStorage.getItem('userForgotPassword')
+        let response = await axiosInstance.post('/forgotPassOtpVerify', { otp }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        throw error.response.data.message;
+    }
+}
+export const changePassword = async (password: string) =>{
+    try {
+        let token = localStorage.getItem('userForgotPassword')
+        const response = await axiosInstance.post('/changePassword', { password }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        if (response.data.success) {
+            localStorage.removeItem('userForgotPassword');
+        }
+        return response;
     } catch (error : any) {
         console.log(error.response.data.message);
         throw error.response.data.message;

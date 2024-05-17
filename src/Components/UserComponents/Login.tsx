@@ -111,7 +111,12 @@ const Login: React.FC = () => {
                             </form>
                             <span className="text-red-500 text-sm">{error}</span>
                             {/* <span className="absolute start-0 top-full -translate-y-1 text-xs text-red-500">jewhfwfh</span> */}
-                            <p className="mt-6 text-sm text-center text-gray-500 ">Don't have an account yet? <h4 className="text-gray-700 cursor-pointer" onClick={() => navigate('/signup')}>Sign up</h4>.</p>
+                            <p className="mt-6 text-sm text-center text-gray-500 ">
+                                Don't have an account yet? <span className="text-gray-700 cursor-pointer" onClick={() => navigate('/signup')}>Sign up</span>
+                            </p>
+                            <p className="mt-1 text-sm text-center text-gray-500 ">
+                                Forgot Password? <span className="text-gray-700 cursor-pointer" onClick={() => navigate('/forgetPassword')}>Click Here</span>
+                            </p>
                         </div>
                     </div>
                 </div>
