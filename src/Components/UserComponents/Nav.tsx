@@ -1,23 +1,40 @@
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogout } from '../../Redux/Slices/Auth';
-import { useState } from 'react';
-import { logout } from '../../Api/userApi';
+import { useState, useEffect } from 'react';
+import { logout, getProfile } from '../../Api/userApi';
+
 const Nav = () => {
   const [open, setOpen] = useState(false);
+  const [userName, setUserName] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state: any) => state.auth.userData !== null); 
-  const userName = useSelector((state: any) => state.auth.userData ? state.auth.userData.name : ''); 
+  const isLoggedIn = useSelector((state: any) => state.auth.userData !== null);
 
-  console.log( userName);
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await getProfile();
+        setUserName(response?.data?.data?.name || null);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
 
-  const handleLogout = async() => {
-    await logout()
-    dispatch(userLogout());
-    navigate('/login');
+    if (isLoggedIn) {
+      fetchUserProfile();
+    }
+  }, [isLoggedIn]);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      dispatch(userLogout());
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
   };
-
   return (
     <div className="w-full text-gray-700 bg-transparent dark-mode:text-gray-200 dark-mode:bg-gray-800">
       <div className="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
@@ -36,7 +53,7 @@ const Nav = () => {
           {isLoggedIn ? (
             <>
               <button className="px-4 py-2 mt-2 text-sm font-semibold text-gray-900 rounded-lg dark-mode:bg-gray-700 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline transition-colors duration-300" onClick={handleLogout}>Logout</button>
-              <span className="px-4 py-2 mt-2 text-sm font-semibold text-gray-900">{userName}</span>
+              <button className="px-4 py-2 mt-2 text-sm font-semibold bg-green-500 rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline transition-colors duration-300" onClick={() => navigate('/profile')}>{userName}</button>
             </>
           ) : (
             <>

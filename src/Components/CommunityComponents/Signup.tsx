@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signupCommunity } from '../../Api/communityApi';
 
 const SignupPage: React.FC = () => {
     const [formData, setFormData] = useState({
-        email: '',
-        communityName: '',
-        contactNumber: '',
-        password: '',
-        confirmPassword: ''
+        email: 'nishadalichenadan@gmail.com',
+        communityName: 'Green corps',
+        contactNumber: 8157055699,
+        password: 'Nishucp1!',
+        confirmPassword: 'Nishucp1!'
     });
     const [error, setError] = useState<string>('');
+    const [success, setSuccess] = useState<string>('');
     const navigate = useNavigate();
-    const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -22,27 +26,45 @@ const SignupPage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setError('');
+        setSuccess('');
+
+        const { email, communityName, contactNumber, password, confirmPassword } = formData;
+
+        if (!email || !communityName || !contactNumber || !password || !confirmPassword) {
+            setError("All fields are required.");
+            return;
+        }
+
+        if (!emailPattern.test(email)) {
+            setError("Invalid email format.");
+            return;
+        }
+
+        if (!passwordPattern.test(password)) {
+            setError("Password must be at least 8 characters long and include one uppercase letter, one lowercase letter, and one number.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError("Passwords do not match.");
+            return;
+        }
+
+        if (!/^\d+$/.test(contactNumber)) {
+            setError("Contact number must contain only digits.");
+            return;
+        }
 
         try {
-            if (!passwordPattern.test(formData.password)) {
-                setError("Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number.");
-                return;
-            }
-
-            if (formData.password !== formData.confirmPassword) {
-                setError("Passwords do not match.");
-                return;
-            }
-
-            const responseData = await registerCommunity(formData);
-            if (responseData.success) {
-                // Redirect to success page or login page
-                navigate('/login');
+            const responseData = await signupCommunity(communityName, email, password, contactNumber);
+            if (responseData.data.success) {
+               navigate('/community/otp')
             } else {
-                setError(responseData.message);
+                setError(responseData.data.message);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             setError("An error occurred. Please try again.");
         }
     };
@@ -50,7 +72,6 @@ const SignupPage: React.FC = () => {
     return (
         <div className="flex flex-col md:flex-row h-screen">
             {/* Left Side */}
-          
             <div className="flex justify-center items-center md:w-1/2 bg-white dark:bg-gray-900 flex-grow">
                 <div className="text-center">
                     <h1 className="text-3xl font-bold md:text-4xl">Let's create a community</h1>
@@ -104,6 +125,7 @@ const SignupPage: React.FC = () => {
                             className="rounded-lg bg-gray-100 cursor-text dark:bg-gray-800 w-full py-3 px-4 mb-4"
                         />
                         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+                        {success && <p className="text-green-500 text-center mb-4">{success}</p>}
                         <button type="submit" className="text-lg font-semibold bg-bluely w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black">Register</button>
                     </form>
                 </div>

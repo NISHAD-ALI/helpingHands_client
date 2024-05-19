@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { verifyOtp, resendOtp } from '../../Api/userApi';
 import { useDispatch } from 'react-redux';
-import { setUserData } from '../../Redux/Slices/Auth';
+import { setCommunityData, setUserData } from '../../Redux/Slices/Auth';
 import { useNavigate } from 'react-router-dom';
+import Ioperator from '../../Interface/Ioperator';
+import { verifyOtpCommunity } from '../../Api/communityApi';
 
-const OtpPage: React.FC = () => {
+
+const OtpPage: React.FC<Ioperator> = ({ operator }) => {
     const [otp, setOtp] = useState({
         digitOne: "",
         digitTwo: "",
@@ -12,7 +15,7 @@ const OtpPage: React.FC = () => {
         digitFour: "",
         digitFive: ""
     });
- 
+
     const [error, setError] = useState<string>('');
     const [timer, setTimer] = useState(60);
     const [isTimerRunning, setIsTimerRunning] = useState(true);
@@ -27,27 +30,39 @@ const OtpPage: React.FC = () => {
             setIsTimerRunning(false);
         }
     }, [isTimerRunning, timer]);
-    
+
     const handleResendOtp = async () => {
         await resendOtp();
         setTimer(60);
         setIsTimerRunning(true);
-        setError(''); 
+        setError('');
     };
-
     const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        const compOtp = Object.values(otp).join("");
+        if (compOtp.length !== 5) {
+            setError("Please enter a complete 5-digit OTP.");
+            return;
+        }
         try {
-            event.preventDefault();
-            let compOtp = Object.values(otp).join("");
-            let responseData = await verifyOtp(compOtp);
-            if (responseData.data) {
-                dispatch(setUserData(responseData.data.token));
-                navigate('/');
-            } else {
-                setError(responseData.data.message);
+            if (operator === 'user') {
+                const responseData = await verifyOtp(compOtp);
+                if (responseData.data) {
+                    dispatch(setUserData(responseData.data.token));
+                    navigate('/');
+                } else {
+                    setError(responseData.data.message);
+                }
+            } else if (operator === 'community') {
+                const responseData = await verifyOtpCommunity(compOtp)
+                if(responseData.data){
+                    dispatch(setCommunityData(responseData.data.token));
+                    navigate('/')
+                }
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            setError("An error occurred. Please try again.");
         }
     };
 
@@ -67,13 +82,13 @@ const OtpPage: React.FC = () => {
             <div className="w-full max-w-md px-8 py-10 bg-white rounded-lg shadow-md dark:bg-gray-950 dark:text-gray-200">
                 <h1 className="text-2xl font-semibold text-center mb-6">Enter OTP</h1>
                 <p className="text-gray-600 text-center mb-4">Please check your Inbox for OTP</p>
-                <p className="text-center m-2">Resend OTP in {timer} seconds</p> 
+                <p className="text-center m-2">Resend OTP in {timer} seconds</p>
                 {error && <p className="text-red-500 text-center mb-4">{error}</p>}
                 <div className="grid grid-cols-5 gap-x-4 my-2">
                     {Object.keys(otp).map((key, index) => (
                         <input
                             key={index}
-                            type="text" 
+                            type="text"
                             name={key}
                             value={otp[key as keyof typeof otp]}
                             onChange={handleChange}

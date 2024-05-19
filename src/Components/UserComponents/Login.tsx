@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../../Api/userApi';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../Redux/Slices/Auth';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Login: React.FC = () => {
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const [email, setEmail] = useState<string>('n@gmail.com');
+    const [password, setPassword] = useState<string>('Nishucp1!');
     const [error, setError] = useState<string>('');
 
     const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -18,9 +19,11 @@ const Login: React.FC = () => {
         try {
             if (!emailPattern.test(email)) {
                 setError("Enter a valid email!");
+                toast.error("Enter a valid email!");
                 return;
             } else if (password.trim().length < 5) {
                 setError("Password must contain at least 5 characters!");
+                toast.error("Password must contain at least 5 characters!");
                 return;
             }
 
@@ -28,19 +31,20 @@ const Login: React.FC = () => {
             console.log("111")
             if (response && response.data && response.data.success) {
                 dispatch(setUserData(response.data.token));
-
                 navigate('/');
+                toast.success("Login successful!");
             } else {
                 console.log("112")
                 setError(response.data.message);
+                toast.error(response.data.message);
             }
 
         } catch (err: any) {
             console.log("Error:", err);
             setError(err);
+            toast.error(err);
         }
     };
-
 
     return (
         <div className="bg-white dark:bg-gray-900">
@@ -109,7 +113,7 @@ const Login: React.FC = () => {
                                     </button>
                                 </div>
                             </form>
-                            <span className="text-red-500 text-sm">{error}</span>
+                            {/* <span className="text-red-500 text-sm">{error}</span> */}
                             {/* <span className="absolute start-0 top-full -translate-y-1 text-xs text-red-500">jewhfwfh</span> */}
                             <p className="mt-6 text-sm text-center text-gray-500 ">
                                 Don't have an account yet? <span className="text-gray-700 cursor-pointer" onClick={() => navigate('/signup')}>Sign up</span>
@@ -121,6 +125,7 @@ const Login: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { width: '350px' } }} />
         </div>
     );
 };

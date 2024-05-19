@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { loginCommunity } from '../../Api/communityApi';
+import { setCommunityData } from '../../Redux/Slices/Auth';
+import { useDispatch } from 'react-redux';
 
 const Login: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -8,7 +11,7 @@ const Login: React.FC = () => {
     });
     const [error, setError] = useState<string>('');
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
             ...formData,
@@ -18,14 +21,15 @@ const Login: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+        const {email,password} = formData
         try {
-            // Simulating login logic
-            if (formData.email === 'user@example.com' && formData.password === 'password123') {
-                navigate('/dashboard');
-            } else {
-                setError("Invalid email or password.");
-            }
+          const responseData = await loginCommunity(email,password)
+          if (responseData && responseData.data && responseData.data.success) {
+            dispatch(setCommunityData(responseData.data.token));
+              navigate('/community/');
+        } else {
+            setError(responseData.data.message);
+        }
         } catch (error) {
             console.log(error);
             setError("An error occurred. Please try again.");

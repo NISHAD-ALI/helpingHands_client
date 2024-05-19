@@ -1,15 +1,16 @@
 import axiosInstance from "../Config/AxiosInstance";
+import toast from "react-hot-toast";
 
-export const signup = async (name: string, email: string, password: string, mobile: number) => {
+export const signup = async (name: string, email: string, password: string, phone: number) => {
     try {
-        const formData = await axiosInstance.post('/signup', { name, email, password, mobile })
+        const formData = await axiosInstance.post('/signup', { name, email, password, phone })
         console.log(formData + "nhj")
         const token = formData.data.token
         localStorage.setItem('userTokenOtp', token)
         return formData
     } catch (error: any) {
         console.log(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error.response.data.message)
     }
 }
 
@@ -83,7 +84,7 @@ export const forgotPassword = async (email: string) => {
     }
 }
 
-export const verifyOtpForgotPassword = async (otp: string) =>{
+export const verifyOtpForgotPassword = async (otp: string) => {
     try {
         let token = localStorage.getItem('userForgotPassword')
         let response = await axiosInstance.post('/forgotPassOtpVerify', { otp }, {
@@ -97,7 +98,7 @@ export const verifyOtpForgotPassword = async (otp: string) =>{
         throw error.response.data.message;
     }
 }
-export const changePassword = async (password: string) =>{
+export const changePassword = async (password: string) => {
     try {
         let token = localStorage.getItem('userForgotPassword')
         const response = await axiosInstance.post('/changePassword', { password }, {
@@ -108,6 +109,29 @@ export const changePassword = async (password: string) =>{
         if (response.data.success) {
             localStorage.removeItem('userForgotPassword');
         }
+        return response;
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        throw error.response.data.message;
+    }
+}
+
+export const getProfile = async () => {
+    try {
+        let response = await axiosInstance.get('/profile')
+        return response
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        throw error.response.data.message;
+    }
+}
+
+export const editProfile = async(data :FormData) => {
+    try {
+        const headers = {
+            'Content-Type': 'multipart/form-data'
+        }
+        const response = await axiosInstance.patch('/editProfile', data, { headers });
         return response;
     } catch (error : any) {
         console.log(error.response.data.message);
