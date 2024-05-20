@@ -1,36 +1,36 @@
 import React, { useState } from 'react';
 import { changePassword } from '../../Api/userApi';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const ChangePasswordPage: React.FC = () => {
     const [newPassword, setNewPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
-    const [error, setError] = useState<string>('');
+
     const navigate = useNavigate();
     const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        try {
-            event.preventDefault();
+        event.preventDefault();
 
+        try {
             if (!passwordPattern.test(newPassword)) {
-                setError("Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number.");
-                return;
+                throw new Error("Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number.");
             }
 
             if (newPassword !== confirmPassword) {
-                setError("Passwords do not match.");
-                return;
+                throw new Error("Passwords do not match.");
             }
 
-            let responseData = await changePassword(newPassword);
+            const responseData = await changePassword(newPassword);
             if (responseData.data.success) {
-                navigate('/login')
+                toast.success("Password changed successfully!");
+                navigate('/login');
             } else {
-                setError(responseData.data.message);
+                throw new Error(responseData.data.message);
             }
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            toast.error(error.message);
         }
     };
 
@@ -62,7 +62,6 @@ const ChangePasswordPage: React.FC = () => {
                         onChange={handleConfirmPasswordChange}
                         className="rounded-lg bg-gray-100 cursor-text dark:bg-gray-800 w-full py-2 px-4 mb-4"
                     />
-                    {error && <p className="text-red-500 text-center mb-4">{error}</p>}
                     <button type='submit' className="text-lg font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black">Submit</button>
                 </form>
             </div>

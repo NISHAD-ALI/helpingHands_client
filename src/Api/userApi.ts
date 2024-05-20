@@ -30,7 +30,7 @@ export const verifyOtp = async (otp: string) => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error.response.data.message)
     }
 }
 
@@ -41,7 +41,7 @@ export const login = async (email: string, password: string) => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error.response.data.message)
     }
 }
 
@@ -69,7 +69,7 @@ export const resendOtp = async () => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error.response.data.message)
     }
 }
 
@@ -80,7 +80,7 @@ export const forgotPassword = async (email: string) => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error.response.data.message)
     }
 }
 
@@ -95,7 +95,7 @@ export const verifyOtpForgotPassword = async (otp: string) => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error.response.data.message)
     }
 }
 export const changePassword = async (password: string) => {
@@ -112,7 +112,7 @@ export const changePassword = async (password: string) => {
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error.response.data.message)
     }
 }
 
@@ -122,7 +122,7 @@ export const getProfile = async () => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error.response.data.message)
     }
 }
 
@@ -135,6 +135,17 @@ export const editProfile = async(data :FormData) => {
         return response;
     } catch (error : any) {
         console.log(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error.response.data.message)
     }
 }
+
+export const googleAuth = async(name:string,email:string,password:string) => {
+    try {
+        const response = await axiosInstance.post('/googleAuth',{name,email,password})
+        return response
+    } catch (error :any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+}
+

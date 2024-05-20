@@ -73,8 +73,8 @@ const EditProfile: React.FC = () => {
             }
             let response = await editProfile(formData);
             if (response?.data.success) {
-                navigate('/profile');
                 toast.success("Profile updated successfully!");
+                navigate('/profile');
             }
         } catch (error :any) {
             console.error(error);

@@ -5,7 +5,7 @@ import { setCommunityData, setUserData } from '../../Redux/Slices/Auth';
 import { useNavigate } from 'react-router-dom';
 import Ioperator from '../../Interface/Ioperator';
 import { verifyOtpCommunity } from '../../Api/communityApi';
-
+import toast from 'react-hot-toast';
 
 const OtpPage: React.FC<Ioperator> = ({ operator }) => {
     const [otp, setOtp] = useState({
@@ -16,7 +16,6 @@ const OtpPage: React.FC<Ioperator> = ({ operator }) => {
         digitFive: ""
     });
 
-    const [error, setError] = useState<string>('');
     const [timer, setTimer] = useState(60);
     const [isTimerRunning, setIsTimerRunning] = useState(true);
     const dispatch = useDispatch();
@@ -32,37 +31,45 @@ const OtpPage: React.FC<Ioperator> = ({ operator }) => {
     }, [isTimerRunning, timer]);
 
     const handleResendOtp = async () => {
-        await resendOtp();
-        setTimer(60);
-        setIsTimerRunning(true);
-        setError('');
+        try {
+            await resendOtp();
+            setTimer(60);
+            setIsTimerRunning(true);
+            toast.success("OTP Resent Successfully!");
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to resend OTP. Please try again.");
+        }
     };
-    const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
-        event.preventDefault();
+
+    const handleSubmit = async () => {
         const compOtp = Object.values(otp).join("");
         if (compOtp.length !== 5) {
-            setError("Please enter a complete 5-digit OTP.");
+            toast.error("Please enter a complete 5-digit OTP.");
             return;
         }
         try {
+            let responseData;
             if (operator === 'user') {
-                const responseData = await verifyOtp(compOtp);
-                if (responseData.data) {
-                    dispatch(setUserData(responseData.data.token));
-                    navigate('/');
-                } else {
-                    setError(responseData.data.message);
-                }
+                responseData = await verifyOtp(compOtp);
             } else if (operator === 'community') {
-                const responseData = await verifyOtpCommunity(compOtp)
-                if(responseData.data){
+                responseData = await verifyOtpCommunity(compOtp);
+            }
+
+            if (responseData && responseData.data) {
+                if (operator === 'user') {
+                    dispatch(setUserData(responseData.data.token));
+                } else if (operator === 'community') {
                     dispatch(setCommunityData(responseData.data.token));
-                    navigate('/')
                 }
+                navigate('/');
+                toast.success("OTP Verified Successfully!");
+            } else {
+                toast.error("Failed to verify OTP. Please try again.");
             }
         } catch (error) {
             console.error(error);
-            setError("An error occurred. Please try again.");
+            toast.error("An error occurred. Please try again.");
         }
     };
 
@@ -75,6 +82,7 @@ const OtpPage: React.FC<Ioperator> = ({ operator }) => {
             }));
         }
     };
+
 
     return (
         <div className="bg-gray-100 flex flex-col items-center justify-center h-screen w-full dark:bg-gray-900">

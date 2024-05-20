@@ -1,30 +1,31 @@
 import React, { useState } from 'react';
 import { forgotPassword } from '../../Api/userApi';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const ForgotPasswordPage: React.FC = () => {
     const [email, setEmail] = useState<string>('');
-    const [error, setError] = useState<string>('');
     const navigate = useNavigate();
     const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        
         try {
-
-            event.preventDefault();
             if (!emailPattern.test(email)) {
-                setError("Enter a valid email!");
-                return
-              }
-            let responseData = await forgotPassword(email);
+                toast.error("Enter a valid email!");
+                return;
+            }
+
+            const responseData = await forgotPassword(email);
             if (responseData.data.success) {
-                console.log("kk")
-                navigate('/forgetPassOtp')
+                navigate('/forgetPassOtp');
             } else {
-                setError(responseData.data.message);
+                toast.error(responseData.data.message);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            toast.error("An error occurred. Please try again later.");
         }
     };
 
@@ -45,7 +46,6 @@ const ForgotPasswordPage: React.FC = () => {
                         onChange={handleChange}
                         className="rounded-lg bg-gray-100 cursor-text dark:bg-gray-800 w-full py-2 px-4 mb-4"
                     />
-                    {error && <p className="text-red-500 text-center mb-4">{error}</p>}
                     <button type='submit' className="text-lg font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black">Submit</button>
                 </form>
             </div>

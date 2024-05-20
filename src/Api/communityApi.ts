@@ -1,4 +1,5 @@
 import axiosInstance from "../Config/AxiosInstance";
+import toast from "react-hot-toast";
 
 export const signupCommunity = async (name: string, email: string, password: string, mobile: number) => {
     try {
@@ -9,7 +10,7 @@ export const signupCommunity = async (name: string, email: string, password: str
         return formData
     } catch (error: any) {
         console.log(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error.response.data.message)
     }
 }
 
@@ -29,7 +30,7 @@ export const verifyOtpCommunity = async (otp: string) => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error.response.data.message)
     }
 }
 
@@ -40,7 +41,7 @@ export const loginCommunity = async (email: string, password: string) => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error.response.data.message)
     }
 }
 
@@ -68,6 +69,6 @@ export const resendOtpCommunity = async () => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error.response.data.message)
     }
 }

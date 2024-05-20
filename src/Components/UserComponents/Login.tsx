@@ -4,6 +4,7 @@ import { login } from '../../Api/userApi';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../Redux/Slices/Auth';
 import toast, { Toaster } from 'react-hot-toast';
+import GoogleAuthentication from '../Common/GoogleAuthentication';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('n@gmail.com');
@@ -28,13 +29,11 @@ const Login: React.FC = () => {
             }
 
             const response = await login(email, password);
-            console.log("111")
             if (response && response.data && response.data.success) {
                 dispatch(setUserData(response.data.token));
                 navigate('/');
                 toast.success("Login successful!");
             } else {
-                console.log("112")
                 setError(response.data.message);
                 toast.error(response.data.message);
             }
@@ -61,8 +60,7 @@ const Login: React.FC = () => {
                 <div className="hidden lg:block lg:w-1/2" style={{ backgroundImage: "url(./public/shane-rounce-DNkoNXQti3c-unsplash.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
                     <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
                         <div>
-                            <h2 className="text-4xl font-bold bg-gradient-to-r from-slate-100 to-emerald-100 text-transparent bg-clip-text">"Connecting Communities, Empowering Lives."
-                            </h2>
+                            <h2 className="text-4xl font-bold bg-gradient-to-r from-slate-100 to-emerald-100 text-transparent bg-clip-text">"Connecting Communities, Empowering Lives."</h2>
                         </div>
                     </div>
                 </div>
@@ -81,9 +79,7 @@ const Login: React.FC = () => {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
-                                    <span className="absolute start-0 top-2 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-2 peer-focus:text-xs">
-                                        Email
-                                    </span>
+                                    <span className="absolute start-0 top-2 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-2 peer-focus:text-xs">Email</span>
                                     <span className="absolute start-0 top-full -translate-y-1 text-xs text-red-500">{error && !emailPattern.test(email) && error}</span>
                                 </label>
 
@@ -97,9 +93,7 @@ const Login: React.FC = () => {
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                         />
-                                        <span className="absolute start-0 top-2 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-2 peer-focus:text-xs">
-                                            Password
-                                        </span>
+                                        <span className="absolute start-0 top-2 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-2 peer-focus:text-xs">Password</span>
                                         <span className="absolute start-0 top-full -translate-y-1 text-xs text-red-500">{error && password.trim().length < 5 && error}</span>
                                     </label>
                                 </div>
@@ -113,14 +107,11 @@ const Login: React.FC = () => {
                                     </button>
                                 </div>
                             </form>
-                            {/* <span className="text-red-500 text-sm">{error}</span> */}
-                            {/* <span className="absolute start-0 top-full -translate-y-1 text-xs text-red-500">jewhfwfh</span> */}
-                            <p className="mt-6 text-sm text-center text-gray-500 ">
-                                Don't have an account yet? <span className="text-gray-700 cursor-pointer" onClick={() => navigate('/signup')}>Sign up</span>
-                            </p>
-                            <p className="mt-1 text-sm text-center text-gray-500 ">
-                                Forgot Password? <span className="text-gray-700 cursor-pointer" onClick={() => navigate('/forgetPassword')}>Click Here</span>
-                            </p>
+                            <div className="mt-6 flex items-center justify-center">
+                                <GoogleAuthentication Login={true} />
+                            </div>
+                            <p className="mt-6 text-sm text-center text-gray-500">Forgot Password? <span className="text-gray-700 cursor-pointer" onClick={() => navigate('/forgetPassword')}>Click Here</span></p>
+                            <p className="mt-2 text-sm text-center text-gray-500">Don't have an account yet? <span className="text-gray-700 cursor-pointer" onClick={() => navigate('/signup')}>Sign up</span></p>
                         </div>
                     </div>
                 </div>

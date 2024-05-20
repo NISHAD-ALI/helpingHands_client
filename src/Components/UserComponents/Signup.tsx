@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { signup } from '../../Api/userApi';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+import GoogleAuthentication from '../Common/GoogleAuthentication';
 
 const Signup = () => {
   const [username, setUsername] = useState<string>('nishad');
@@ -145,6 +146,7 @@ const Signup = () => {
                   Login
                 </button>
               </div>
+              <GoogleAuthentication Login={false} />
             </div>
           </div>
         </div>
