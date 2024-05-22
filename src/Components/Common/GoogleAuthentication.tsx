@@ -5,17 +5,12 @@ import { googleAuth, login } from '../../Api/userApi';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../Redux/Slices/Auth';
 import { useNavigate } from 'react-router-dom';
+import googleToken from '../../Interface/googleAuthToken';
 
 interface gLogin {
   Login: boolean;
 }
 
-interface DecodedToken {
-  name: string;
-  email: string;
-  password: string;
-  isGoogle: boolean;
-}
 
 const GoogleAuthentication: React.FC<gLogin> = ({ Login }) => {
   const navigate = useNavigate();
@@ -23,7 +18,7 @@ const GoogleAuthentication: React.FC<gLogin> = ({ Login }) => {
 
   const googleSignUp = async (response: CredentialResponse) => {
     try {
-      const result = jwtDecode<DecodedToken>(response.credential as string);
+      const result = jwtDecode<googleToken>(response.credential as string);
 
       const data = {
         name: result.name,

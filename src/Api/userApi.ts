@@ -37,7 +37,7 @@ export const verifyOtp = async (otp: string) => {
 export const login = async (email: string, password: string) => {
     try {
         let response = await axiosInstance.post('/login', { email, password })
-        console.log(response + "ytfyu")
+        console.log(response + "<-response")
         return response
     } catch (error: any) {
         console.log(error.response.data.message);

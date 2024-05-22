@@ -20,7 +20,7 @@ const Hero: React.FC = () => {
         </div>
         <div>
           <h3 className="text-2xl font-bold">140+</h3>
-          <p className="text-gray-600">Thousands of Volunteers</p>
+          <p className="text-gray-600">Volunteers</p>
         </div>
         <div>
           <h3 className="text-2xl font-bold">500+</h3>

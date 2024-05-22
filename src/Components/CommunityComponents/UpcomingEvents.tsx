@@ -7,9 +7,9 @@ const UpcomingEvents: React.FC = () => {
       <div className="container mx-auto text-center">
         <h2 className="text-2xl font-bold mb-8">Your Upcoming Events</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {["Jessore", "Jessore", "Jessore"].map((location, index) => (
+          {["Delhi", "Calicut", "Cochin"].map((location, index) => (
             <div key={index} className="relative">
-              <img src="https://via.placeholder.com/300x200" alt={location} className="w-full rounded-lg" />
+              <img src="/public/50 Community Service Ideas.jpg" alt={location} className="w-full rounded-lg" />
               <div className="absolute bottom-0 bg-black bg-opacity-50 text-white p-4 w-full rounded-b-lg">
                 <h3 className="text-lg font-bold">{location}</h3>
                 <p>01.01.2024</p>

@@ -15,16 +15,18 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             if (!emailPattern.test(email)) {
-                setError("Enter a valid email!");
-                toast.error("Enter a valid email!");
+                const message = "Enter a valid email!";
+                setError(message);
+                toast.error(message);
                 return;
             } else if (password.trim().length < 5) {
-                setError("Password must contain at least 5 characters!");
-                toast.error("Password must contain at least 5 characters!");
+                const message = "Password must contain at least 5 characters!";
+                setError(message);
+                toast.error(message);
                 return;
             }
 
@@ -34,14 +36,16 @@ const Login: React.FC = () => {
                 navigate('/');
                 toast.success("Login successful!");
             } else {
-                setError(response.data.message);
-                toast.error(response.data.message);
+                const message = response.data.message;
+                setError(message);
+                toast.error(message);
             }
 
         } catch (err: any) {
-            console.log("Error:", err);
-            setError(err);
-            toast.error(err);
+            const message = err.message || "An error occurred. Please try again.";
+            console.error("Error:", err);
+            setError(message);
+            // toast.error(message);
         }
     };
 
@@ -49,13 +53,12 @@ const Login: React.FC = () => {
         <div className="bg-white dark:bg-gray-900">
             <div className="flex justify-center h-screen">
                 <div className="flex items-center justify-between">
-                    <h1 className="absolute top-10 left-10 font-bold  text-white z-10">helpingHands</h1>
+                    <h1 className="absolute top-10 left-10 font-bold text-white z-10">helpingHands</h1>
                     <div>
                         <span className="absolute top-10 right-20 text-gray-700 text-sm cursor-pointer" onClick={() => navigate('/community/login')}>Community Admin? Signin</span>
                         <span className="absolute top-5 right-20 text-gray-700 text-sm cursor-pointer" onClick={() => navigate('/volunteer/login')}>Volunteer? SignIn</span>
                     </div>
                 </div>
-
 
                 <div className="hidden lg:block lg:w-1/2" style={{ backgroundImage: "url(./public/shane-rounce-DNkoNXQti3c-unsplash.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
                     <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
@@ -64,7 +67,6 @@ const Login: React.FC = () => {
                         </div>
                     </div>
                 </div>
-
 
                 <div className="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
                     <div className="flex-1">
@@ -114,7 +116,8 @@ const Login: React.FC = () => {
                             <p className="mt-2 text-sm text-center text-gray-500">Don't have an account yet? <span className="text-gray-700 cursor-pointer" onClick={() => navigate('/signup')}>Sign up</span></p>
                         </div>
                     </div>
-                </div>
+
+                    </div>
             </div>
             <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { width: '350px' } }} />
         </div>
@@ -122,3 +125,4 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+

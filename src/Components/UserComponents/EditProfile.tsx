@@ -4,14 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
-
-interface Userdata {
-    name: string;
-    email: string;
-    address: string;
-    phone: number;
-    profileImage: string;
-}
+import Userdata from '../../Interface/user';
 
 interface LocationState {
     state: {
@@ -67,7 +60,7 @@ const EditProfile: React.FC = () => {
             formData.append('name', values.name);
             formData.append('email', values.email);
             formData.append('address', values.address);
-            formData.append('phone', values.phone.toString());
+            formData.append('phone', values.phone);
             if (profileImage) {
                 formData.append('profileImage', profileImage);
             }
@@ -89,7 +82,7 @@ const EditProfile: React.FC = () => {
                     name: data?.name || '',
                     email: data?.email || '',
                     address: data?.address || '',
-                    phone: data?.phone.toString() || '',
+                    phone: data?.phone || '',
                 }}
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}

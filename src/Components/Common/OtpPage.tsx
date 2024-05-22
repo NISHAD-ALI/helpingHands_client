@@ -5,7 +5,7 @@ import { setCommunityData, setUserData } from '../../Redux/Slices/Auth';
 import { useNavigate } from 'react-router-dom';
 import Ioperator from '../../Interface/Ioperator';
 import { verifyOtpCommunity } from '../../Api/communityApi';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 const OtpPage: React.FC<Ioperator> = ({ operator }) => {
     const [otp, setOtp] = useState({
@@ -91,7 +91,6 @@ const OtpPage: React.FC<Ioperator> = ({ operator }) => {
                 <h1 className="text-2xl font-semibold text-center mb-6">Enter OTP</h1>
                 <p className="text-gray-600 text-center mb-4">Please check your Inbox for OTP</p>
                 <p className="text-center m-2">Resend OTP in {timer} seconds</p>
-                {error && <p className="text-red-500 text-center mb-4">{error}</p>}
                 <div className="grid grid-cols-5 gap-x-4 my-2">
                     {Object.keys(otp).map((key, index) => (
                         <input
@@ -111,6 +110,7 @@ const OtpPage: React.FC<Ioperator> = ({ operator }) => {
                     <button type='button' onClick={handleSubmit} className="mt-3 text-lg font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black">Verify</button>
                 )}
             </div>
+            <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { width: '350px' } }} />
         </div>
     );
 }
