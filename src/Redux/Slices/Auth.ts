@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface AuthState {
     userData: any;
     communityData: any;
+    volunteerData : any
 }
 
 const initialState: AuthState = {
     userData: localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData') as string) : null,
     communityData: localStorage.getItem('communityData') ? JSON.parse(localStorage.getItem('communityData') as string) : null,
+    volunteerData: localStorage.getItem('volunteerData') ? JSON.parse(localStorage.getItem('volunteerData') as string) : null,
 }
 
 const Auth = createSlice({
@@ -30,8 +32,16 @@ const Auth = createSlice({
             state.communityData = null;
             localStorage.removeItem('communityData');
         },
+        setVolunteerData: (state, action: PayloadAction<any>) => {
+            state.volunteerData = action.payload;
+            localStorage.setItem('volunteerData', JSON.stringify(action.payload));
+        },
+        volunteerLogout: (state) => {
+            state.volunteerData = null;
+            localStorage.removeItem('volunteerData');
+        },
     },
 });
 
-export const { setUserData, userLogout, setCommunityData, communityLogout } = Auth.actions;
+export const { setUserData, userLogout, setCommunityData, communityLogout,setVolunteerData,volunteerLogout } = Auth.actions;
 export default Auth.reducer;

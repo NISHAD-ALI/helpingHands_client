@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { verifyOtp, resendOtp } from '../../Api/userApi';
 import { useDispatch } from 'react-redux';
-import { setCommunityData, setUserData } from '../../Redux/Slices/Auth';
+import { setCommunityData, setUserData, setVolunteerData } from '../../Redux/Slices/Auth';
 import { useNavigate } from 'react-router-dom';
 import Ioperator from '../../Interface/Ioperator';
 import { verifyOtpCommunity } from '../../Api/communityApi';
 import toast, { Toaster } from 'react-hot-toast';
+import { verifyOtpVolunteer } from '../../Api/volunteerApi';
 
 const OtpPage: React.FC<Ioperator> = ({ operator }) => {
     const [otp, setOtp] = useState({
@@ -54,15 +55,22 @@ const OtpPage: React.FC<Ioperator> = ({ operator }) => {
                 responseData = await verifyOtp(compOtp);
             } else if (operator === 'community') {
                 responseData = await verifyOtpCommunity(compOtp);
+            }else{
+                responseData = await verifyOtpVolunteer(compOtp);
             }
 
             if (responseData && responseData.data) {
                 if (operator === 'user') {
                     dispatch(setUserData(responseData.data.token));
+                    navigate('/');
                 } else if (operator === 'community') {
                     dispatch(setCommunityData(responseData.data.token));
+                    navigate('/community/home');
+                }else{
+                    dispatch(setVolunteerData(responseData.data.token));
+                    navigate('/volunteer/home');
                 }
-                navigate('/');
+                
                 toast.success("OTP Verified Successfully!");
             } else {
                 toast.error("Failed to verify OTP. Please try again.");

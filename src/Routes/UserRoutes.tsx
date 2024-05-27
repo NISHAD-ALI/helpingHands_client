@@ -24,7 +24,7 @@ const UserRoutes = () => {
           <Route path='/signup' element={<Signup />} />
           <Route path='/verifyOtp' element={<Otp />} />
         </Route>
-        
+
         <Route path='/forgetPassword' element={<ForgetPassword />} />
         <Route path='/forgetPassOtp' element={<ForgetPassOtp />} />
         <Route path='/changePassword' element={<ChangePassword />} />

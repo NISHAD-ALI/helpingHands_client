@@ -1,6 +1,32 @@
 import axiosInstance from "../Config/AxiosInstance";
 import toast from "react-hot-toast";
 
+// interceptors
+axiosInstance.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem('userTokenOtp');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+  
+  axiosInstance.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      console.log(error.response.data.message+"interceptor");
+      toast.error(error.response.data.message);
+      return Promise.reject(error);
+    }
+  );
+
+
 export const signup = async (name: string, email: string, password: string, phone: number) => {
     try {
         const formData = await axiosInstance.post('/signup', { name, email, password, phone })
@@ -10,7 +36,6 @@ export const signup = async (name: string, email: string, password: string, phon
         return formData
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }
 
@@ -30,7 +55,6 @@ export const verifyOtp = async (otp: string) => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }
 
@@ -41,7 +65,6 @@ export const login = async (email: string, password: string) => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }
 
@@ -69,7 +92,6 @@ export const resendOtp = async () => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }
 
@@ -80,7 +102,6 @@ export const forgotPassword = async (email: string) => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }
 
@@ -95,7 +116,6 @@ export const verifyOtpForgotPassword = async (otp: string) => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }
 export const changePassword = async (password: string) => {
@@ -112,7 +132,6 @@ export const changePassword = async (password: string) => {
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }
 
@@ -122,7 +141,6 @@ export const getProfile = async () => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }
 
@@ -135,7 +153,6 @@ export const editProfile = async(data :FormData) => {
         return response;
     } catch (error : any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }
 
@@ -145,7 +162,6 @@ export const googleAuth = async(name:string,email:string,password:string) => {
         return response
     } catch (error :any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }
 
