@@ -4,6 +4,7 @@ import LoginPage from '../Pages/Volunteer/LoginPage'
 import SignupPage from '../Pages/Volunteer/SignupPage'
 import HomePage from '../Pages/Volunteer/HomePage'
 import Otp from '../Pages/Volunteer/Otp'
+import EventsPage from '../Pages/Volunteer/EventsPage'
 
 
 const VolunteerRoutes:React.FC = () => {
@@ -14,6 +15,7 @@ const VolunteerRoutes:React.FC = () => {
        <Route path='/' element = {<HomePage />} />
        <Route path='/home' element = {<HomePage />} />
        <Route path='/verifyOtp' element = {<Otp />} />
+       <Route path='/events' element = {<EventsPage />} />
     </Routes>
   )
 }
