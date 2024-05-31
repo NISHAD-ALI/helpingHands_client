@@ -8,6 +8,7 @@ const SignupPage = lazy(() => import('../Pages/Community/SignupPage'));
 const LoginPage = lazy(() => import('../Pages/Community/LoginPage'));
 const Otp = lazy(() => import('../Pages/Community/Otp'));
 const HomePage = lazy(() => import('../Pages/Community/HomePage'));
+const CreateEvents = lazy(() => import('../Pages/Community/CreateEventsPage'));
 
 const CommunityRoutes: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const CommunityRoutes: React.FC = () => {
       <Route path='' element={<IsLogged/>}>
         <Route path='/' element={<HomePage />} />
         <Route path='/home' element={<HomePage />} />
+        <Route path='/createEvents' element={<CreateEvents />} />
         </Route>
         <Route path='/otp' element={<Otp />} />
       </Routes>

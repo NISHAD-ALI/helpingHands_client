@@ -72,3 +72,22 @@ export const resendOtpCommunity = async () => {
         toast.error(error.response.data.message)
     }
 }
+
+export const createEvents = async (data :FormData) => {
+    try {
+        console.log(data);
+        data.forEach((value, key) => {
+            console.log(`${key}: ${value}`);
+        });
+        const headers = {
+            'Content-Type': 'multipart/form-data'
+        }
+        const response = await axiosInstance.post('/community/createEvents', data, { headers });
+        return response;
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+}
+
+

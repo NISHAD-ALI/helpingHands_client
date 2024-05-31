@@ -5,7 +5,7 @@ import Features from '../../Components/UserComponents/Features';
 import Fundraiser from '../../Components/UserComponents/Fundraiser';
 import LatestFeeds from '../../Components/UserComponents/LatestFeeds';
 import Footer from '../../Components/UserComponents/Footer';
-const Home = () => {
+const Home:React.FC = () => {
   return (
     <div className='bg-gradient-to-br from-teal-50 to-green-200 font-inter'>
       <Nav  />

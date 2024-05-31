@@ -1,13 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logoutCommunity } from '../../Api/communityApi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { communityLogout } from '../../Redux/Slices/Auth';
 
 const NavBar: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const data = useSelector((state: any) => state.auth.communityData);
+  console.log(data)
   const handleLogout = async () => {
     try {
       console.log("here");
@@ -28,6 +29,7 @@ const NavBar: React.FC = () => {
           <a className="hover:underline cursor-pointer">Volunteers</a>
           <a className="hover:underline cursor-pointer">Events</a>
           <a className="hover:underline cursor-pointer" onClick={handleLogout}>Logout</a>
+
         </nav>
         {/* <div className="bg-green-600 px-4 py-2 rounded-lg">
           <span>Nishad</span>
