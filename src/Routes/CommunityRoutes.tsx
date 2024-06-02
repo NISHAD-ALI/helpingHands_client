@@ -3,6 +3,8 @@ import { Route, Routes } from 'react-router-dom';
 import Loader from '../Components/UserComponents/Loader';
 import IsLogged from '../Components/CommunityComponents/IsLogged';
 import IsLoggedOut from '../Components/CommunityComponents/IsLoggedOut';
+import EventListPage from '../Pages/Community/EventListPage';
+import EventPage from '../Pages/Community/EventPage';
 
 const SignupPage = lazy(() => import('../Pages/Community/SignupPage'));
 const LoginPage = lazy(() => import('../Pages/Community/LoginPage'));
@@ -22,6 +24,8 @@ const CommunityRoutes: React.FC = () => {
         <Route path='/' element={<HomePage />} />
         <Route path='/home' element={<HomePage />} />
         <Route path='/createEvents' element={<CreateEvents />} />
+        <Route path='/eventList' element={<EventListPage />} />
+        <Route path='/event/:id' element={<EventPage />} />
         </Route>
         <Route path='/otp' element={<Otp />} />
       </Routes>

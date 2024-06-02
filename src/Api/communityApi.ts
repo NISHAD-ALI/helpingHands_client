@@ -1,3 +1,4 @@
+import { AnyIfEmpty } from "react-redux";
 import axiosInstance from "../Config/AxiosInstance";
 import toast from "react-hot-toast";
 
@@ -90,4 +91,31 @@ export const createEvents = async (data :FormData) => {
     }
 }
 
+export const getEvents = async() =>{
+    try {
+        let response = await axiosInstance.get('/community/getEvents')
+        return response
+    } catch (error : any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+}
+export const getEventsById = async (id: string) => {
+    try {
+        let response = await axiosInstance.get(`/community/getEventsById/${id}`);
+        return response;
+    } catch (error :any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message);
+    }
+};
+export const deleteEvent = async (id: string) => {
+    try {
+        let response = await axiosInstance.get(`/community/deleteEvent/${id}`);
+        return response;
+    } catch (error :any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message);
+    }
+};
 

@@ -3,12 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import toast, { Toaster } from 'react-hot-toast';
 import { createEvents } from '../../Api/communityApi';
+import { useNavigate } from 'react-router-dom';
 
 const CreateEvents: React.FC = () => {
+    const navigate = useNavigate()
     const [shifts, setShifts] = useState<{ date: string, timeSlot: string }[]>([]);
     const [errors, setErrors] = useState<string[]>([]);
     const [name, setName] = useState<string>('');
-    const [volunteers, setVolunteers] = useState<string>('');
+    const [volunteerCount, setVolunteerCount] = useState<string>('');
     const [details, setDetails] = useState<string>('');
     const [images, setImages] = useState<(File | null)[]>([null, null, null]);
     const [video, setVideo] = useState<File | null>(null);
@@ -88,17 +90,22 @@ const CreateEvents: React.FC = () => {
             formData.append('video', video);
         }
         formData.append('name', name);
-        formData.append('volunteers', volunteers);
+        formData.append('volunteerCount', volunteerCount);
         formData.append('details', details);
         formData.append('shifts', JSON.stringify(shifts));
         
-
-        const response = await createEvents(formData)
-        if(response){
-            console.log('success');
-            
+        try {
+            const response = await createEvents(formData)
+            if(response){
+                toast.success('Event Created Successfully')
+                navigate('/community/home')
+            } else {
+                toast.error(response.message);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("An error occurred. Please try again.");
         }
-
     };
 
     return (
@@ -140,7 +147,7 @@ const CreateEvents: React.FC = () => {
                             <input type="text" onChange={(e) => setName(e.target.value)} id="name" className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" />
 
                             <label className="block mb-2 text-sm font-medium text-gray-700">No. of Volunteers Participating:</label>
-                            <input type="number" onChange={(e) => setVolunteers(e.target.value)} className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" />
+                            <input type="number" onChange={(e) => setVolunteerCount(e.target.value)} className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" />
 
                             <label className="block mb-2 text-sm font-medium text-gray-700">Details:</label>
                             <textarea onChange={(e) => setDetails(e.target.value)} className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"></textarea>

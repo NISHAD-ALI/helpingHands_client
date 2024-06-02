@@ -1,7 +1,7 @@
-// src/components/UpcomingEvents.tsx
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 const UpcomingEvents: React.FC = () => {
+  const navigate = useNavigate()
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto text-center">
@@ -17,7 +17,7 @@ const UpcomingEvents: React.FC = () => {
             </div>
           ))}
         </div>
-        <button className="mt-8 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700">View Complete Schedule</button>
+        <button className="mt-8 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700" onClick={()=>navigate('/community/eventList')}>View Complete Schedule</button>
       </div>
     </section>
   );
