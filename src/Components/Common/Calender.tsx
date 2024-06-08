@@ -13,7 +13,12 @@ import {
 } from 'date-fns';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
-const Calendar: React.FC = () => {
+interface CalendarProps {
+  events: any[];
+  onDateClick: (date: Date) => void;
+}
+
+const Calendar: React.FC<CalendarProps> = ({ events, onDateClick }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -53,16 +58,19 @@ const Calendar: React.FC = () => {
     const monthEnd = endOfWeek(endOfMonth(currentMonth));
     const startDate = monthStart;
     const endDate = monthEnd;
-
+  
     const rows = [];
     let days = [];
     let day = startDate;
     let formattedDate = '';
-
+  
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, 'd');
         const cloneDay = day;
+        const hasEvent = events && events.length > 0 && events.some(event =>
+          event.shifts.some(shift => new Date(shift.date).toDateString() === day.toDateString())
+        );
         days.push(
           <div
             className={`p-2 text-center cursor-pointer ${
@@ -71,9 +79,12 @@ const Calendar: React.FC = () => {
                 : isSameDay(day, selectedDate)
                 ? 'bg-blue-500 text-white rounded-full'
                 : 'text-gray-800'
-            }`}
+            } ${hasEvent ? 'border-2 border-red-500 rounded-full' : ''}`}
             key={day.toString()}
-            onClick={() => onDateClick(cloneDay)}
+            onClick={() => {
+              setSelectedDate(day);
+              onDateClick(cloneDay);
+            }}
           >
             <span>{formattedDate}</span>
           </div>
@@ -89,10 +100,8 @@ const Calendar: React.FC = () => {
     }
     return <div>{rows}</div>;
   };
-
-  const onDateClick = (day: Date) => {
-    setSelectedDate(day);
-  };
+  
+  
 
   const nextMonth = () => {
     setCurrentMonth(addMonths(currentMonth, 1));

@@ -1,10 +1,14 @@
 import axiosInstance from "../Config/AxiosInstance";
 import toast from "react-hot-toast";
+import userEndpoints from "../Endpoints/userEndpoints";
+import { useNavigate } from "react-router-dom";
 
-// interceptors
-axiosInstance.interceptors.request.use(
+export const useCustomAxiosInterceptors = () => {
+  const navigate = useNavigate();
+
+  axiosInstance.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem('userTokenOtp');
+      const token = localStorage.getItem('userToken');
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -14,22 +18,24 @@ axiosInstance.interceptors.request.use(
       return Promise.reject(error);
     }
   );
-  
+
   axiosInstance.interceptors.response.use(
     (response) => {
       return response;
     },
     (error) => {
-      console.log(error.response.data.message+"interceptor");
+      console.log(error.response.data.message + "interceptor");
       toast.error(error.response.data.message);
+      navigate('/error'); 
       return Promise.reject(error);
     }
   );
+};
 
 
 export const signup = async (name: string, email: string, password: string, phone: number) => {
     try {
-        const formData = await axiosInstance.post('/signup', { name, email, password, phone })
+        const formData = await axiosInstance.post(userEndpoints.signup, { name, email, password, phone })
         console.log(formData + "nhj")
         const token = formData.data.token
         localStorage.setItem('userTokenOtp', token)
@@ -42,7 +48,7 @@ export const signup = async (name: string, email: string, password: string, phon
 export const verifyOtp = async (otp: string) => {
     try {
         let token = localStorage.getItem('userTokenOtp')
-        let response = await axiosInstance.post('/verifyOtp', { otp }, {
+        let response = await axiosInstance.post(userEndpoints.verifyOtp, { otp }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -60,7 +66,7 @@ export const verifyOtp = async (otp: string) => {
 
 export const login = async (email: string, password: string) => {
     try {
-        let response = await axiosInstance.post('/login', { email, password })
+        let response = await axiosInstance.post(userEndpoints.login, { email, password })
         console.log(response + "<-response")
         return response
     } catch (error: any) {
@@ -70,7 +76,7 @@ export const login = async (email: string, password: string) => {
 
 export const logout = async () => {
     try {
-        const response = await axiosInstance.get('/logout')
+        const response = await axiosInstance.get(userEndpoints.logout)
         return response
     } catch (error) {
         console.log(error)
@@ -81,7 +87,7 @@ export const logout = async () => {
 export const resendOtp = async () => {
     try {
         let token = localStorage.getItem('userTokenOtp')
-        const response = await axiosInstance.post('/resendOtp', {}, {
+        const response = await axiosInstance.post(userEndpoints.resendOtp, {}, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -97,7 +103,7 @@ export const resendOtp = async () => {
 
 export const forgotPassword = async (email: string) => {
     try {
-        let response = await axiosInstance.post('/forgotPassword', { email })
+        let response = await axiosInstance.post(userEndpoints.forgotPassword, { email })
         localStorage.setItem('userForgotPassword', response.data.token)
         return response
     } catch (error: any) {
@@ -108,7 +114,7 @@ export const forgotPassword = async (email: string) => {
 export const verifyOtpForgotPassword = async (otp: string) => {
     try {
         let token = localStorage.getItem('userForgotPassword')
-        let response = await axiosInstance.post('/forgotPassOtpVerify', { otp }, {
+        let response = await axiosInstance.post(userEndpoints.verifyForgotPassword, { otp }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -121,7 +127,7 @@ export const verifyOtpForgotPassword = async (otp: string) => {
 export const changePassword = async (password: string) => {
     try {
         let token = localStorage.getItem('userForgotPassword')
-        const response = await axiosInstance.post('/changePassword', { password }, {
+        const response = await axiosInstance.post(userEndpoints.changePassword, { password }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -137,7 +143,7 @@ export const changePassword = async (password: string) => {
 
 export const getProfile = async () => {
     try {
-        let response = await axiosInstance.get('/profile')
+        let response = await axiosInstance.get(userEndpoints.profile)
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
@@ -149,7 +155,7 @@ export const editProfile = async(data :FormData) => {
         const headers = {
             'Content-Type': 'multipart/form-data'
         }
-        const response = await axiosInstance.patch('/editProfile', data, { headers });
+        const response = await axiosInstance.patch(userEndpoints.editProfile, data, { headers });
         return response;
     } catch (error : any) {
         console.log(error.response.data.message);
@@ -158,7 +164,7 @@ export const editProfile = async(data :FormData) => {
 
 export const googleAuth = async(name:string,email:string,password:string) => {
     try {
-        const response = await axiosInstance.post('/googleAuth',{name,email,password})
+        const response = await axiosInstance.post(userEndpoints.googleAuth,{name,email,password})
         return response
     } catch (error :any) {
         console.log(error.response.data.message);

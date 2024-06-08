@@ -3,27 +3,27 @@ import toast from "react-hot-toast";
 
 axiosInstance.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem('volunteerOtpToken');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
+        const token = localStorage.getItem('volunteerOtpToken');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
     },
     (error) => {
-      return Promise.reject(error);
+        return Promise.reject(error);
     }
-  );
-  
-  axiosInstance.interceptors.response.use(
+);
+
+axiosInstance.interceptors.response.use(
     (response) => {
-      return response;
+        return response;
     },
     (error) => {
-      console.log(error.response.data.message+"interceptor");
-      toast.error(error.response.data.message);
-      return Promise.reject(error);
+        console.log(error.response.data.message + "interceptor");
+        toast.error(error.response.data.message);
+        return Promise.reject(error);
     }
-  );
+);
 
 
 export const signupVolunteer = async (name: string, email: string, password: string, phone: number) => {
@@ -117,17 +117,9 @@ export const verifyOtpForgotPasswordVolunteer = async (otp: string) => {
         console.log(error.response.data.message);
     }
 }
-export const changePasswordVolunteer = async (password: string) => {
+export const changePasswordVolunteer = async (password: string, id: string) => {
     try {
-        let token = localStorage.getItem('userForgotPassword')
-        const response = await axiosInstance.post('/volunteer/changePassword', { password }, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        if (response.data.success) {
-            localStorage.removeItem('userForgotPassword');
-        }
+        const response = await axiosInstance.post('/volunteer/changePassword', { password, id })
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
@@ -143,15 +135,64 @@ export const getProfileVolunteer = async () => {
     }
 }
 
-export const editProfileVolunteer = async(data :FormData) => {
+export const editProfileVolunteer = async (data: FormData) => {
     try {
+        console.log(data + "111111")
         const headers = {
             'Content-Type': 'multipart/form-data'
         }
         const response = await axiosInstance.patch('/volunteer/editProfile', data, { headers });
         return response;
-    } catch (error : any) {
+    } catch (error: any) {
         console.log(error.response.data.message);
     }
 }
+export const getCommunityDetails = async (id: string) => {
+    try {
+        console.log("hel");
 
+        const response = await axiosInstance.get(`/volunteer/community/${id}`);
+        return response;
+    } catch (error) {
+        console.error('Error fetching community details:', error);
+        throw error;
+    }
+};
+export const enrollToComm = async (communityId: string, volunteerId: string) => {
+    try {
+        const response = await axiosInstance.post('/volunteer/enroll', { communityId, volunteerId });
+        console.log(response + "in API")
+        return response;
+    } catch (error) {
+        console.error('Error fetching community details:', error);
+        throw error;
+    }
+};
+export const getVolunteerById = async (id: string) => {
+    try {
+        console.log("hel");
+        console.log(id)
+        const response = await axiosInstance.get('/volunteer/getVolunteer', { params: { id } });
+        return response;
+    } catch (error) {
+        console.error('Error fetching volunteer details:', error);
+        throw error;
+    }
+};
+export const getEvents = async () => {
+    try {
+        let response = await axiosInstance.get('/volunteer/getEvents')
+        return response
+    } catch (error: any) {
+        console.log(error.response.data.message);
+    }
+}
+export const enrollToEvents = async (eventId: string ) => {
+    try {
+        const response = await axiosInstance.post('/volunteer/enrollToEvent', { eventId });
+        console.log(response)
+        return response;
+    } catch (error) {
+        console.error('Error adding to event:', error);
+    }
+};

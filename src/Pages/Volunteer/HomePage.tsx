@@ -29,12 +29,14 @@ const HomePage = () => {
       <h1 className="text-center text-4xl font-bold md:text-5xl lg:text-6xl mt-8">Discover Communities</h1>
       <div className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {communities.map((community, index) => (
-          <CommunityCard
-            key={index}
-            description={community?.description}
-            imageSrc="/public/joel-muniz-A4Ax1ApccfA-unsplash.jpg"
-            location={community?.name}
-          />
+                    <CommunityCard
+                    key={index}
+                    id={community._id}
+                    description={community?.description}
+                    imageSrc={community?.profileImage}
+                    location={community?.name}
+                  />
+        
         ))}
       </div>
       <Footer />

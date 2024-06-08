@@ -23,17 +23,15 @@ const NavBar: React.FC = () => {
   return (
     <header className="bg-gray-800 text-white py-4">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-2xl font-bold">helpingHands</h1>
+        <h1 className="text-2xl font-bold" onClick={()=>navigate('/community/home')}>helpingHands</h1>
         <nav className="space-x-4">
           <a className="hover:underline cursor-pointer">Home</a>
-          <a className="hover:underline cursor-pointer">Volunteers</a>
+          <a className="hover:underline cursor-pointer" onClick={()=>navigate('/community/manageVolunteers')}>Volunteers</a>
           <a className="hover:underline cursor-pointer">Events</a>
           <a className="hover:underline cursor-pointer" onClick={handleLogout}>Logout</a>
 
         </nav>
-        {/* <div className="bg-green-600 px-4 py-2 rounded-lg">
-          <span>Nishad</span>
-        </div> */}
+        {data ?<button className="bg-green-500 text-black px-4 py-2 rounded-lg" onClick={()=>navigate('/community/profile')}>Profile</button>:''}
       </div>
     </header>
   );

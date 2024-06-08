@@ -5,6 +5,10 @@ import IsLogged from '../Components/CommunityComponents/IsLogged';
 import IsLoggedOut from '../Components/CommunityComponents/IsLoggedOut';
 import EventListPage from '../Pages/Community/EventListPage';
 import EventPage from '../Pages/Community/EventPage';
+import EditEvent from '../Pages/Community/EditEvent';
+import ProfilePage from '../Pages/Community/ProfilePage';
+import HireVolunteers from '../Pages/Community/HireVolunteers';
+import VolunteerManagement from '../Pages/Community/VolunteerManagement';
 
 const SignupPage = lazy(() => import('../Pages/Community/SignupPage'));
 const LoginPage = lazy(() => import('../Pages/Community/LoginPage'));
@@ -26,8 +30,13 @@ const CommunityRoutes: React.FC = () => {
         <Route path='/createEvents' element={<CreateEvents />} />
         <Route path='/eventList' element={<EventListPage />} />
         <Route path='/event/:id' element={<EventPage />} />
+        <Route path='/editEvent/:id' element={<EditEvent />} />
+        <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/hireNow' element={<HireVolunteers />} />
+        <Route path='/manageVolunteers' element={<VolunteerManagement />} />
         </Route>
         <Route path='/otp' element={<Otp />} />
+        
       </Routes>
     </Suspense>
   );

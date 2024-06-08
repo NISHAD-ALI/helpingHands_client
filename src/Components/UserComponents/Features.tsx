@@ -29,7 +29,7 @@ const Features: React.FC = () => {
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold">Our Features you can get</h2>
         <p className="text-lg">We offer a variety of interesting features that can can help you change the perpective of social service</p>
-        <button className="bg-green-500 text-white px-6 py-3 rounded mt-4" onClick={()=>navigate('/community/')}>Get Started</button>
+        <button className="bg-green-500 text-white px-6 py-3 rounded mt-4" onClick={()=>navigate('/community/login')}>Get Started</button>
       </div>
       <div className="flex justify-center space-x-4">
         {features.map((feature, index) => (

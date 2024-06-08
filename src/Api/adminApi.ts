@@ -30,3 +30,28 @@ export const getCommunities = async() =>{
         console.log(error.response.data.message);
     }
 }
+export const getUsers = async() =>{
+    try {
+        let response = await axiosInstance.get('/admin/getUsers')
+        return response
+    } catch (error : any) {
+        console.log(error.response.data.message);
+    }
+}
+export const blockUser = async (id: string) => {
+    try {
+        let res = await axiosInstance.post(`/admin/blockUser/${id}`);
+        return res;
+    } catch (error : any) {
+        console.log(error.response.data.message);
+    }
+}
+export const logoutAdmin = async () => {
+    try {
+        const response = await axiosInstance.get('/admin/logout')
+        return response
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+}

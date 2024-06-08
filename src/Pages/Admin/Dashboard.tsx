@@ -1,8 +1,13 @@
 import React from 'react'
-import DashboardComp from '../../Components/AdminComponents/Dashboard'
+import Sidebar from '../../Components/AdminComponents/Sidebar'
 const Dashboard :React.FC = () => {
   return (
-    <DashboardComp />
+    <div className="flex h-screen">
+      <Sidebar />
+      <div className="flex-grow bg-gray-100 p-4">
+        fgfgf
+      </div>
+    </div>
   )
 }
 

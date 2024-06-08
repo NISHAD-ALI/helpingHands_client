@@ -14,13 +14,14 @@ const ProjectDetails: React.FC = () => {
 
   useEffect(() => {
       const fetchEvent = async () => {
-          console.log(id)
+          console.log(id);
           const response = await getEventsById(id);
           console.log(response?.data?.event);
           setEvent(response?.data?.event);
       };
       fetchEvent();
   }, [id]);
+
   const handleSlideChange = (index: number) => {
     setCurrentSlide(index);
   };
@@ -40,27 +41,35 @@ const ProjectDetails: React.FC = () => {
         url={event?.video}
         width="100%"
         height="100%"
-        playing={currentSlide === 3 && isPlaying} // Only play the video if it's the current slide
+        playing={currentSlide === 3 && isPlaying}
         onEnded={handleVideoEnd}
       />
     </div>
   ];
 
   return (
-    <>
-      <Carousel slide={currentSlide} onSlideChange={handleSlideChange} indicators={false}>
-        {slides}
-      </Carousel>
-      <div className="p-4 bg-white shadow-md rounded-lg">
+    <div className="flex flex-col md:flex-row md:space-x-4">
+      <div className="md:w-3/5 w-full">
+        <Carousel slide={currentSlide} onSlideChange={handleSlideChange} indicators={false} pauseOnHover>
+          {slides}
+        </Carousel>
+      </div>
+      <div className="md:w-1/3 w-full bg-gray-100 p-4 rounded-md">
         <h2 className="text-xl font-bold mb-4">Project: {event?.name}</h2>
         <ParticipantsCol />
-        <p className="text-gray-600 mt-4">
-          Gaza Strip, Palestine:
-        </p>
+        <div className="text-gray-600 mt-4">
+          {event?.shifts?.map((shift, index) => (
+            <div key={index} className="mb-2">
+              <p><strong>Date:</strong> {new Date(shift.date).toLocaleDateString()}</p>
+              <p><strong>Time:</strong> {shift.timeSlot}</p>
+            </div>
+          ))}
+        </div>
         <p className="text-gray-600">
-          MAX:120 {event?.details}</p>
+          {event?.details}
+        </p>
       </div>
-    </>
+    </div>
   );
 };
 

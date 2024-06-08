@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { logoutVolunteer } from '../../Api/volunteerApi';
+import { getProfileVolunteer, logoutVolunteer } from '../../Api/volunteerApi';
 import { volunteerLogout } from '../../Redux/Slices/Auth';
 const NavBar: React.FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [userName, setUserName] = useState<string | null>(null);
+  const data = useSelector((state: any) => state.auth.volunteerData !== null);
   const handleLogout = async () => {
     try {
       console.log('in')
@@ -18,11 +20,24 @@ const NavBar: React.FC = () => {
       console.error('Error logging out:', error);
     }
   };
-  const data = useSelector((state: any) => state.auth.volunteerData);
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await getProfileVolunteer();
+        setUserName(response?.data?.data?.name || null);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    if (data) {
+      fetchUserProfile();
+    }
+  }, [data]);
   return (
     <header className=" text-black p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="text-4xl font-bold font-inter">helpingHands</div>
+        <div className="text-4xl font-bold font-inter" onClick={()=>navigate('/volunteer/home')}>helpingHands</div>
         <nav className="hidden md:flex space-x-4">
           <a className="hover:text-gray-400 font-medium">Home</a>
           <a className="hover:text-gray-400 font-medium">Events</a>
@@ -32,7 +47,7 @@ const NavBar: React.FC = () => {
             : <a onClick={() => navigate('/volunteer/login')} className="hover:text-gray-400 font-medium">Login</a>}
 
         </nav>
-        {/* <button className="bg-green-500 text-black px-4 py-2 rounded-full">Nishad</button> */}
+        {data ?<button className="bg-green-500 text-black px-4 py-2 rounded-lg" onClick={()=>navigate('/volunteer/profile')}>{userName}</button>:''}
         <div className="md:hidden">
           <button>
             <svg

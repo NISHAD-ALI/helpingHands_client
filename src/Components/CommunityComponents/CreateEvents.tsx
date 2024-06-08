@@ -100,7 +100,7 @@ const CreateEvents: React.FC = () => {
                 toast.success('Event Created Successfully')
                 navigate('/community/home')
             } else {
-                toast.error(response.message);
+                toast.error(response?.message);
             }
         } catch (error) {
             console.error(error);

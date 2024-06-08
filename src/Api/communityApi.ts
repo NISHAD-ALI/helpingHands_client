@@ -1,4 +1,4 @@
-import { AnyIfEmpty } from "react-redux";
+
 import axiosInstance from "../Config/AxiosInstance";
 import toast from "react-hot-toast";
 
@@ -74,7 +74,7 @@ export const resendOtpCommunity = async () => {
     }
 }
 
-export const createEvents = async (data :FormData) => {
+export const createEvents = async (data: FormData) => {
     try {
         console.log(data);
         data.forEach((value, key) => {
@@ -91,11 +91,11 @@ export const createEvents = async (data :FormData) => {
     }
 }
 
-export const getEvents = async() =>{
+export const getEvents = async () => {
     try {
         let response = await axiosInstance.get('/community/getEvents')
         return response
-    } catch (error : any) {
+    } catch (error: any) {
         console.log(error.response.data.message);
         toast.error(error.response.data.message)
     }
@@ -104,7 +104,7 @@ export const getEventsById = async (id: string) => {
     try {
         let response = await axiosInstance.get(`/community/getEventsById/${id}`);
         return response;
-    } catch (error :any) {
+    } catch (error: any) {
         console.log(error.response.data.message);
         toast.error(error.response.data.message);
     }
@@ -113,9 +113,60 @@ export const deleteEvent = async (id: string) => {
     try {
         let response = await axiosInstance.get(`/community/deleteEvent/${id}`);
         return response;
-    } catch (error :any) {
+    } catch (error: any) {
         console.log(error.response.data.message);
         toast.error(error.response.data.message);
     }
 };
+export const editEvent = async (id: string, formData: FormData) => {
+    try {
+        console.log("-----api----")
+        console.log(formData)
+        console.log("-----api----")
+        const response = await axiosInstance.patch('/community/editEvent', { id, formData });
+        return response;
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message);
+    }
+};
+export const getProfile = async () => {
+    try {
+        let response = await axiosInstance.get('/community/profile')
+        console.log(response+"res")
+        return response
+    } catch (error: any) {
+        console.log(error.response.data.message);
+    }
+}
 
+export const editProfile = async(data :FormData) => {
+    try {
+        console.log(data+"111111")
+        const headers = {
+            'Content-Type': 'multipart/form-data'
+        }
+        const response = await axiosInstance.patch('/community/editProfile', data, { headers });
+        return response;
+    } catch (error : any) {
+        console.log(error.response.data.message);
+    }
+}
+
+export const updateVolunteerStatus = async(id:string , is_accepted:boolean)=> {
+    try {
+        const response = await axiosInstance.patch('/community/updateStatus', {id,is_accepted});
+        return response;
+    } catch (error : any) {
+        console.log(error.response.data.message);
+    }
+}
+export const getVolunteers = async () => {
+    try {
+        let response = await axiosInstance.get('/community/getVolunteers')
+        return response
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+}

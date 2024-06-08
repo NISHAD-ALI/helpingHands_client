@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import Loader from '../Components/UserComponents/Loader'
 import IsLoggedIn from '../Components/UserComponents/IsLoggedIn'
 import IsLoggedOut from '../Components/UserComponents/IsLoggedOut'
+import ErrorPage from '../Pages/Common/ErrorPage'
 const Home = lazy(() => import('../Pages/User/Home'))
 const Login = lazy(() => import('../Pages/User/Login'))
 const Signup = lazy(() => import('../Pages/User/Signup'))
@@ -18,7 +19,7 @@ const UserRoutes = () => {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path='/' element={<Home />} />
-
+        <Route path='/error' element={<ErrorPage/>}/>
         <Route path='' element={<IsLoggedOut />}>
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
