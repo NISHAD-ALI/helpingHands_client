@@ -192,7 +192,7 @@ export const enrollToEvents = async (eventId: string ) => {
         const response = await axiosInstance.post('/volunteer/enrollToEvent', { eventId });
         console.log(response)
         return response;
-    } catch (error) {
-        console.error('Error adding to event:', error);
+    } catch (error :any) {
+        console.log(error.message);
     }
 };

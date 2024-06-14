@@ -3,7 +3,7 @@ import Calendar from '../../Components/Common/Calender';
 import NavBar from '../../Components/CommunityComponents/NavBar';
 import EventCard from '../../Components/VolunteerComponents/EventCard';
 import Footer from '../../Components/Common/Footer';
-import { getEvents } from '../../Api/communityApi';
+import { getEvents, getEventsFilteredByCategory, getEventsFilteredByDateRange, getEventsFilteredByDay } from '../../Api/communityApi';
 import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -19,7 +19,8 @@ const EventListPage: React.FC = () => {
     useEffect(() => {
         const fetchEvents = async () => {
             const response = await getEvents();
-            setEvents(response?.data?.events?.events);
+            setEvents(response?.data?.events);
+            console.log(response?.data?.events)
             setFilteredEvents(response?.data?.events?.events);
         };
         fetchEvents();
@@ -29,29 +30,37 @@ const EventListPage: React.FC = () => {
         navigate(`/community/event/${id}`);
     };
 
-    const handleDateClick = (date: Date) => {
-        const selectedDateEvents = events.filter(event =>
-            event.shifts.some(shift => new Date(shift.date).toDateString() === date.toDateString())
-        );
-        setFilteredEvents(selectedDateEvents);
+    const handleDateClick = async(date: Date) => {
+        try {
+            console.log(date)
+            const response = await getEventsFilteredByDay(date)
+            console.log(response)
+        } catch (error) {
+            console.log(error)
+        }
     };
 
-    const handleFilterEvents = () => {
+    const handleCategoryFilter = async(name:string) => {
+        try {
+            console.log(name)
+            const selectedCategory = await getEventsFilteredByCategory(name)
+            setFilteredEvents(selectedCategory?.data?.result);
+            console.log(selectedCategory)
+        } catch (error) {
+            console.log(error)
+        }
+       
+    };
+
+    const handleFilterEvents = async () => {
         if (startDate && endDate) {
-            const start = new Date(startDate);
-            const end = new Date(endDate);
-            const filtered = events.filter(event =>
-                event?.shifts.some(shift => {
-                    const shiftDate = new Date(shift.date);
-                    return shiftDate >= start && shiftDate <= end;
-                })
-            );
-            setFilteredEvents(filtered);
+            const response = await getEventsFilteredByDateRange(startDate, endDate);
+            setFilteredEvents(response?.result);
         }
     };
 
     const categories = [
-        { name: 'Healthcare', image: '/public/bermix-studio-NztECzFtPyw-unsplash.jpg' },
+        { name: 'Health care', image: '/public/bermix-studio-NztECzFtPyw-unsplash.jpg' },
         { name: 'Education', image: '/public/patrick-tomasso-Oaqk7qqNh_c-unsplash.jpg' },
         { name: 'Shelters and Support', image: '/public/andrik-langfield-ujx_KIIujRg-unsplash.jpg' },
         { name: 'Food', image: '/public/maja-petric-vGQ49l9I4EE-unsplash.jpg' },
@@ -60,7 +69,6 @@ const EventListPage: React.FC = () => {
     ];
 
     const settings = {
-
         infinite: true,
         speed: 500,
         slidesToShow: 4,
@@ -97,9 +105,9 @@ const EventListPage: React.FC = () => {
                     <h1 className="text-3xl font-bold">Welcome, Admin <span role="img" aria-label="wave">👋</span></h1>
                     <Slider {...settings} className="w-full pt-10">
                         {categories.map((category, index) => (
-                            <div key={index} className="relative w-44 h-44 pl-2 overflow-hidden rounded-lg group">
-                                <img src={category.image} alt={category.name} className="w-full h-full object-cover rounded-lg transform transition-transform duration-300 group-hover:scale-110" />
-                                <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center rounded-lg">
+                            <div key={index} className="relative w-44 h-44 pl-2 overflow-hidden rounded-lg group" >
+                                <img src={category.image} alt={category.name} className="w-full h-full object-cover rounded-lg transform transition-transform duration-300 group-hover:scale-110"  />
+                                <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center rounded-lg" onClick={() => handleCategoryFilter(category.name)}>
                                     <p className="text-white font-bold text-center">{category.name}</p>
                                 </div>
                             </div>
@@ -133,16 +141,20 @@ const EventListPage: React.FC = () => {
                         </div>
                         <div className="flex-1 mt-3 md:mt-0 md:ml-4">
                             <h2 className="text-2xl font-bold mt-1 mb-2">Your upcoming events</h2>
-                            {filteredEvents.length !== 0 ? (
+                            {filteredEvents?.length !== 0 ? (
                                 <>
-                                    {filteredEvents.map((event, index) => (
+                                    {filteredEvents?.map((event, index) => (
                                         <EventCard
                                             key={index}
-                                            date={event?.shifts[0].date}
+                                            date={new Date(event?.shifts[0].date).toLocaleDateString('en-IN', {
+                                                day: '2-digit',
+                                                month: '2-digit',
+                                                year: 'numeric',
+                                              })}
                                             title={event?.name}
                                             description={event?.details}
                                             location="Calicut, Kerala"
-                                            volunteers={event?.volunteers.length}
+                                            volunteers={event?.volunteers?.length}
                                             image={event?.images[0]}
                                             onClick={() => handleEventClick(event._id)}
                                         />

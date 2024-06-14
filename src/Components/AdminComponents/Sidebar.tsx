@@ -30,7 +30,7 @@ const Sidebar: React.FC = () => {
             </a>
           </li>
           <li className="mb-4">
-            <a href="#" className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded cursor-pointer">
+          <a onClick={()=>navigate('/admin/communityManagement')} className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded cursor-pointer">
               <FaUsers />
               <span>Communities</span>
             </a>
@@ -42,7 +42,7 @@ const Sidebar: React.FC = () => {
             </a>
           </li>
           <li className="mb-4">
-            <a href="#" className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded cursor-pointer">
+            <a onClick={()=>navigate('/admin/donationManagement')} className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded cursor-pointer">
               <FaChartBar />
               <span>Donations</span>
             </a>

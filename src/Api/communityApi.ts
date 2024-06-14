@@ -94,6 +94,7 @@ export const createEvents = async (data: FormData) => {
 export const getEvents = async () => {
     try {
         let response = await axiosInstance.get('/community/getEvents')
+        console.log(response+"in here")
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
@@ -170,3 +171,43 @@ export const getVolunteers = async () => {
         toast.error(error.response.data.message)
     }
 }
+export const getEventsFilteredByDateRange = async (startDate = '', endDate = '') => {
+    try {
+        const response = await axiosInstance.get('/community/getEventsFilteredByDateRange', {
+            params: { startDate, endDate }
+        });
+        console.log(response)
+        return response.data;
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+};
+export const getEventsFilteredByCategory = async (name:string) => {
+    try {
+        console.log(name);
+        
+        const response = await axiosInstance.get('/community/getEventsFilteredByCategory', {
+            params: {name }
+        });
+        console.log(response)
+        return response;
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+};
+export const getEventsFilteredByDay = async (date:Date) => {
+    try {
+        console.log("jj")
+        console.log(date+"gwdywge")
+        const response = await axiosInstance.get('/community/getEventsFilteredByDay', {
+            params: { date }
+        });
+        console.log(response)
+        return response.data;
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+};

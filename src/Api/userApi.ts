@@ -170,4 +170,11 @@ export const googleAuth = async(name:string,email:string,password:string) => {
         console.log(error.response.data.message);
     }
 }
-
+export const payment = async (amount: number,donationId:string) => {
+    try {
+      const response = await axiosInstance.post('/payment', { amount ,donationId});
+      return response.data;
+    } catch (error: any) {
+      console.error('Payment error:', error.response.data.message);
+    }
+  };

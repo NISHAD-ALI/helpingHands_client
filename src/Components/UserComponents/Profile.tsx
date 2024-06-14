@@ -45,7 +45,7 @@ const Profile: React.FC = () => {
         <div className="flex-grow p-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-white rounded-lg shadow-lg p-4">
-              <h3 className="text-2xl font-semibold">$ 0+</h3>
+              <h3 className="text-2xl font-semibold">$ {data?.donationsFund}+</h3>
               <p>Donated for Charity</p>
             </div>
             <div className="bg-white rounded-lg shadow-lg p-4">

@@ -1,16 +1,16 @@
 import React from 'react';
 import Sidebar from '../../Components/AdminComponents/Sidebar';
-import Users from '../../Components/AdminComponents/Users';
+import Communities from '../../Components/AdminComponents/Communites';
 
-const UserManagement: React.FC = () => {
+const CommunityManagement: React.FC = () => {
   return (
     <div className="flex h-screen">
       <Sidebar />
       <div className="flex-grow bg-gray-100 p-4">
-        <Users />
+        <Communities />
       </div>
     </div>
   );
 };
 
-export default UserManagement;
+export default CommunityManagement;

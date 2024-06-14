@@ -4,6 +4,9 @@ import Loader from '../Components/UserComponents/Loader'
 import IsLoggedIn from '../Components/UserComponents/IsLoggedIn'
 import IsLoggedOut from '../Components/UserComponents/IsLoggedOut'
 import ErrorPage from '../Pages/Common/ErrorPage'
+import Fundraiser from '../Pages/User/Fundraiser'
+import PaymentSuccess from '../Pages/User/PaymentSuccess'
+import PaymentFailure from '../Pages/User/PaymentFailure'
 const Home = lazy(() => import('../Pages/User/Home'))
 const Login = lazy(() => import('../Pages/User/Login'))
 const Signup = lazy(() => import('../Pages/User/Signup'))
@@ -33,7 +36,10 @@ const UserRoutes = () => {
         <Route path='' element={<IsLoggedIn />}>
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='/editProfile' element={<EditProfilePage />} />
+          <Route path='/donate' element={<Fundraiser />} />
         </Route>
+          <Route path='/donate/success' element={<PaymentSuccess />} />
+          <Route path='/donate/failure' element={<PaymentFailure />} />
 
       </Routes>
     </Suspense>

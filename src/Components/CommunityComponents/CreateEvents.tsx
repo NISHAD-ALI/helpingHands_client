@@ -16,6 +16,8 @@ const CreateEvents: React.FC = () => {
     const [video, setVideo] = useState<File | null>(null);
     const [videoPreview, setVideoPreview] = useState<string | null>(null);
     const [imagePreviews, setImagePreviews] = useState<string[]>([null, null, null]);
+    const [category, setCategory] = useState<string>('');
+    const [onlineEvent, setOnlineEvent] = useState<boolean>(false);
 
     const addShift = () => {
         setShifts([...shifts, { date: '', timeSlot: '9am - 1pm' }]);
@@ -93,10 +95,12 @@ const CreateEvents: React.FC = () => {
         formData.append('volunteerCount', volunteerCount);
         formData.append('details', details);
         formData.append('shifts', JSON.stringify(shifts));
-        
+        formData.append('category', category); // Add selected category to form data
+        formData.append('is_online', onlineEvent.toString()); // Add online event status to form data
+
         try {
             const response = await createEvents(formData)
-            if(response){
+            if (response) {
                 toast.success('Event Created Successfully')
                 navigate('/community/home')
             } else {
@@ -151,11 +155,40 @@ const CreateEvents: React.FC = () => {
 
                             <label className="block mb-2 text-sm font-medium text-gray-700">Details:</label>
                             <textarea onChange={(e) => setDetails(e.target.value)} className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"></textarea>
+
+                            {/* Dropdown for selecting category */}
+                            <label className="block mb-2 text-sm font-medium text-gray-700">Category:</label>
+                            <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent">
+                                <option value="">Select a category</option>
+                                <option value="Health care">Health care</option>
+                                <option value="Education">Education</option>
+                                <option value="Shelters and support">Shelters and support</option>
+                                <option value="Food">Food</option>
+                                <option value="Child welfare">Child welfare</option>
+                            </select>
+
+                            {/* Toggle button for online/offline event */}
+                            <div className="flex items-center space-x-4">
+
+                                <button
+                                    type="button"
+                                    className={`relative inline-flex items-center h-6 rounded-full w-12 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ${onlineEvent ? 'bg-green-600' : 'bg-gray-200'
+                                        }`}
+                                    onClick={() => setOnlineEvent(!onlineEvent)}
+                                >
+                                    <span
+                                        className={`inline-block w-5 h-5 transform bg-white rounded-full transition-transform ${onlineEvent ? 'translate-x-6' : 'translate-x-0'
+                                            }`}
+                                    />
+                                </button>
+                                <span className="text-sm font-medium text-gray-700">Online Event</span>
+                            </div>
                         </div>
                     </div>
 
                     <h2 className="text-2xl font-semibold mb-4">Date & Time:</h2>
                     <div className="grid grid-cols-1 gap-4 mb-8">
+                        {/* Shifts section */}
                         {shifts.map((shift, index) => (
                             <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4 items-center">
                                 <input

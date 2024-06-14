@@ -19,7 +19,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, user }) => {
         >
           &times;
         </button>
-        <h3 className="text-xl text-white font-semibold mb-4">User Details</h3>
+        <h3 className="text-xl text-white font-semibold text-center mb-4">User Details</h3>
         <div className="mb-4 text-center text-white">
           <img src={user.profileImage} alt={user.name} className="w-20 h-20 rounded-full mx-auto mb-4" />
           <p><strong>Name:</strong> {user.name}</p>

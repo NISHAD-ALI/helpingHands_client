@@ -55,3 +55,24 @@ export const logoutAdmin = async () => {
         throw error
     }
 }
+export const createDonation = async (data: FormData) => {
+    try {
+        console.log(data);
+        const headers = {
+            'Content-Type': 'multipart/form-data'
+        }
+        const response = await axiosInstance.post('/admin/createDonation', data, { headers });
+        return response;
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+}
+export const getDonations = async() =>{
+    try {
+        let response = await axiosInstance.get('/admin/getDonations')
+        return response
+    } catch (error : any) {
+        console.log(error.response.data.message);
+    }
+}
