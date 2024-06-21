@@ -34,7 +34,7 @@ const Fundraiser: React.FC = () => {
               key={index}
               category={fundraiser.type}
               image={fundraiser.image}
-              progress={fundraiser?.progress}
+              progress={Math.round((fundraiser?.amountCollected / fundraiser?.targetAmount) * 100)}
               name={fundraiser.name}
               details={fundraiser.details}
               _id={fundraiser._id}

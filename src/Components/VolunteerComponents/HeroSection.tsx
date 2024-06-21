@@ -15,7 +15,7 @@ const HeroSection: React.FC<volunteerHeroSection> = ({ imageSrc, title, title1, 
             {title}<br />
             <span className="text-green-500">{title1}</span>
           </h2>
-          <p className="text-black mb-4 text-sm font-medium">{description}</p>
+          <p className="text-black mb-4">{description}</p>
           <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700" onClick={()=>navigate('/volunteer/events')}>
             {buttonText}
           </button>

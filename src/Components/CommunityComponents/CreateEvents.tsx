@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import toast, { Toaster } from 'react-hot-toast';
 import { createEvents } from '../../Api/communityApi';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import debounce from 'lodash.debounce';
+import PleaseWait from '../Common/PleaseWait';
 
 const CreateEvents: React.FC = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [shifts, setShifts] = useState<{ date: string, timeSlot: string }[]>([]);
     const [errors, setErrors] = useState<string[]>([]);
     const [name, setName] = useState<string>('');
@@ -18,6 +21,30 @@ const CreateEvents: React.FC = () => {
     const [imagePreviews, setImagePreviews] = useState<string[]>([null, null, null]);
     const [category, setCategory] = useState<string>('');
     const [onlineEvent, setOnlineEvent] = useState<boolean>(false);
+    const [city, setCity] = useState<string>('');
+    const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (city) {
+            fetchCitySuggestionsDebounced(city);
+        } else {
+            setCitySuggestions([]);
+        }
+    }, [city]);
+
+    const fetchCitySuggestions = async (query: string) => {
+        try {
+            const response = await axios.get(`https://api.api-ninjas.com/v1/city?name=${query}`, {
+                headers: { 'X-Api-Key': 'LduWU6TiMaLMwXi3+EAkWQ==8pfk3OMq7B4LOR68' }
+            });
+            setCitySuggestions(response.data.map((city: { name: string }) => city.name));
+        } catch (error) {
+            console.error('Error fetching city suggestions:', error);
+        }
+    };
+
+    const fetchCitySuggestionsDebounced = debounce(fetchCitySuggestions, 300);
 
     const addShift = () => {
         setShifts([...shifts, { date: '', timeSlot: '9am - 1pm' }]);
@@ -79,6 +106,7 @@ const CreateEvents: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
 
         const formData = new FormData();
 
@@ -95,22 +123,29 @@ const CreateEvents: React.FC = () => {
         formData.append('volunteerCount', volunteerCount);
         formData.append('details', details);
         formData.append('shifts', JSON.stringify(shifts));
-        formData.append('category', category); // Add selected category to form data
-        formData.append('is_online', onlineEvent.toString()); // Add online event status to form data
+        formData.append('category', category);
+        formData.append('is_online', onlineEvent.toString());
+        formData.append('city', city);
 
         try {
-            const response = await createEvents(formData)
+            const response = await createEvents(formData);
             if (response) {
-                toast.success('Event Created Successfully')
-                navigate('/community/home')
+                toast.success('Event Created Successfully');
+                navigate('/community/home');
             } else {
                 toast.error(response?.message);
             }
         } catch (error) {
             console.error(error);
             toast.error("An error occurred. Please try again.");
+        } finally {
+            setIsLoading(false); 
         }
     };
+
+    if (isLoading) {
+        return <PleaseWait />; 
+    }
 
     return (
         <section className="py-16">
@@ -159,17 +194,43 @@ const CreateEvents: React.FC = () => {
                             {/* Dropdown for selecting category */}
                             <label className="block mb-2 text-sm font-medium text-gray-700">Category:</label>
                             <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent">
-                                <option value="">Select a category</option>
+                            <option value="">Select a category</option>
                                 <option value="Health care">Health care</option>
                                 <option value="Education">Education</option>
                                 <option value="Shelters and support">Shelters and support</option>
                                 <option value="Food">Food</option>
                                 <option value="Child welfare">Child welfare</option>
+                                <option value="Youth Recreation">Youth Recreation</option>
                             </select>
 
-                            {/* Toggle button for online/offline event */}
-                            <div className="flex items-center space-x-4">
+                            {/* City input with suggestions */}
+                            <label className="block mb-2 text-sm font-medium text-gray-700">City:</label>
+                            <input
+                                type="text"
+                                value={city}
+                                onChange={(e) => setCity(e.target.value)}
+                                className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                                placeholder="Start typing a city name..."
+                            />
+                            {citySuggestions.length > 0 && (
+                                <ul className="border border-gray-300 rounded-lg max-h-40 overflow-y-auto">
+                                    {citySuggestions.map((suggestion, index) => (
+                                        <li
+                                            key={index}
+                                            className="px-3 py-2 cursor-pointer hover:bg-gray-200"
+                                            onClick={() => {
+                                                setCity(suggestion);
+                                                setCitySuggestions([]);
+                                            }}
+                                        >
+                                            {suggestion}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
 
+                            {/* Toggle button for online/offline event */}
+                            <div className="flex items-center space-x-4 mt-4">
                                 <button
                                     type="button"
                                     className={`relative inline-flex items-center h-6 rounded-full w-12 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ${onlineEvent ? 'bg-green-600' : 'bg-gray-200'

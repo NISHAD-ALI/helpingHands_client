@@ -8,15 +8,15 @@ interface FundraiserCardProps {
   progress?: number;
   name: string;
   details: string;
-  _id:string
+  _id: string;
 }
 
-const FundraiserCard: React.FC<FundraiserCardProps> = ({ category, image, progress, name, details,_id }) => {
+const FundraiserCard: React.FC<FundraiserCardProps> = ({ category, image, progress, name, details, _id }) => {
   const handleDonateNow = async () => {
     try {
       const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string);
       const amount = 1000; 
-      const { sessionId } = await payment(amount,_id);
+      const { sessionId } = await payment(amount, _id);
 
       const result = await stripe?.redirectToCheckout({ sessionId });
 
@@ -34,7 +34,7 @@ const FundraiserCard: React.FC<FundraiserCardProps> = ({ category, image, progre
         <img
           src={image}
           alt={category}
-          className="w-full h-48 object-cover transform transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-60 object-cover transform transition-transform duration-300 group-hover:scale-105" // Increased height to h-60
         />
         <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center p-4">
           <h2 className="text-xl font-semibold text-white mb-2">{name}</h2>
@@ -44,7 +44,7 @@ const FundraiserCard: React.FC<FundraiserCardProps> = ({ category, image, progre
             className="bg-green-500 text-white px-4 py-2 rounded mt-2"
             onClick={handleDonateNow}
           >
-            Donate Now
+            Donate $10
           </button>
         </div>
       </div>
@@ -53,15 +53,15 @@ const FundraiserCard: React.FC<FundraiserCardProps> = ({ category, image, progre
           <div className="relative pt-1">
             <div className="flex mb-2 items-center justify-between">
               <div className="text-right">
-                <span className="text-xs font-semibold inline-block text-blue-600">
-                  {progress}%
+                <span className="text-xs font-semibold inline-block text-black">
+                  {progress}% completed
                 </span>
               </div>
             </div>
             <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
               <div
                 style={{ width: `${progress}%` }}
-                className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"
+                className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-600"
               ></div>
             </div>
           </div>

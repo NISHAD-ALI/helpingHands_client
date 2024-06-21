@@ -9,7 +9,7 @@ const ProfilePage:React.FC = () => {
     <div className="flex-grow">
       <Profile/>
     </div>
-     {/* <Footer /> */}
+     <Footer />
   </div>
 
   )

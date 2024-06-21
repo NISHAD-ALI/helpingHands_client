@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 interface Community {
     id: string;
     name: string;
-    description: string;
+    about: string;
     profileImage: string;
     activeVolunteers: number;
     hoursSpent: number;
@@ -59,7 +59,7 @@ const CommunityPage: React.FC = () => {
                         </div>
                         <div>
                             <h2 className="text-2xl font-bold mb-4">About our community:</h2>
-                            <p className="text-gray-700">{community?.description}</p>
+                            <p className="text-gray-700">{community?.about}</p>
                             <div className="mt-4">
                                 <p className="text-lg font-semibold">Phone Number : {community?.phone}</p>
                                 <p className="text-lg font-semibold">No.of events conducted: {community?.events.length}</p>

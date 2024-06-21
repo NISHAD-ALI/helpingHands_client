@@ -5,24 +5,28 @@ import ProjectDetails from '../../Components/CommunityComponents/ProjectDetails'
 import Footer from '../../Components/Common/Footer';
 import { useNavigate, useParams } from 'react-router-dom';
 import { deleteEvent, getEventsById } from '../../Api/communityApi';
+import toast, { Toaster } from 'react-hot-toast';
 
 const EventPage: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [eventDate, setEventDate] = useState<Date | null>(null);
+    const [data,setData] = useState([])
 
     useEffect(() => {
         const fetchEvent = async () => {
-            const response = await getEventsById(id);
+            const response = await getEventsById(id as string);
+            setData(response?.data?.event)
             if (response?.data?.event?.shifts?.length > 0) {
-                setEventDate(new Date(response.data.event.shifts[0].date));
+                setEventDate(new Date(response?.data.event.shifts[0].date));
+                
             }
         };
         fetchEvent();
     }, [id]);
 
     const handleDelete = async () => {
-        const response = await deleteEvent(id);
+        const response = await deleteEvent(id as string);
         if (response) {
             navigate('/community/home');
         }
@@ -31,7 +35,9 @@ const EventPage: React.FC = () => {
     const handleEdit = () => {
         navigate(`/community/editEvent/${id}`);
     };
-
+    const handleStart = () => {
+        navigate(`/community/stream/${id}`);
+    };
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col">
             <NavBar />
@@ -42,9 +48,16 @@ const EventPage: React.FC = () => {
                 <div className="flex justify-between mt-4">
                     <button className="bg-red-500 text-white px-6 py-3 rounded-lg" onClick={handleDelete}>Cancel Event</button>
                     <button className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700" onClick={handleEdit}>Edit Event</button>
+                    {
+                      data?.is_online ?
+                   ( <button className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700" onClick={handleStart}>Start Event</button>)
+                   :('')
+                    }
                 </div>
             </main>
             <Footer />
+            <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { width: '350px' } }} />
+
         </div>
     );
 };

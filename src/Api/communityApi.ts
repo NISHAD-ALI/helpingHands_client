@@ -211,3 +211,14 @@ export const getEventsFilteredByDay = async (date:Date) => {
         toast.error(error.response.data.message)
     }
 };
+export const searchEvents = async(query:string) =>{
+    try {
+        const response = await axiosInstance.get('/community/searchEvents', {
+            params: { query }
+        });
+        return response.data
+    } catch (error :any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+}

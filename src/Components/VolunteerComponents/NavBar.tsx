@@ -35,19 +35,19 @@ const NavBar: React.FC = () => {
     }
   }, [data]);
   return (
-    <header className=" text-black p-4">
+    <header className=" text-black p-4 bg-green-200">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-4xl font-bold font-inter" onClick={()=>navigate('/volunteer/home')}>helpingHands</div>
         <nav className="hidden md:flex space-x-4">
           <a className="hover:text-gray-400 font-medium">Home</a>
-          <a className="hover:text-gray-400 font-medium">Events</a>
+          <a className="hover:text-gray-400 font-medium" onClick={() => navigate('/volunteer/myEvents')}>Events</a>
           <a className="hover:text-gray-400 font-medium">Communities</a>
           {data ?
             <a onClick={handleLogout} className="hover:text-gray-400 font-medium cursor-pointer">Logout</a>
             : <a onClick={() => navigate('/volunteer/login')} className="hover:text-gray-400 font-medium">Login</a>}
 
         </nav>
-        {data ?<button className="bg-green-500 text-black px-4 py-2 rounded-lg" onClick={()=>navigate('/volunteer/profile')}>{userName}</button>:''}
+        {data ?<button className="bg-green-500 text-white px-4 py-2 rounded-lg" onClick={()=>navigate('/volunteer/profile')}>{userName}</button>:''}
         <div className="md:hidden">
           <button>
             <svg

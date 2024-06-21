@@ -58,10 +58,10 @@ const Calendar: React.FC<CalendarProps> = ({ events, onDateClick }) => {
     const monthEnd = endOfWeek(endOfMonth(currentMonth));
     const startDate = monthStart;
     const endDate = monthEnd;
-  
+
     const rows = [];
     let day = startDate;
-  
+
     while (day <= endDate) {
       let days = [];
       for (let i = 0; i < 7; i++) {
@@ -80,13 +80,12 @@ const Calendar: React.FC<CalendarProps> = ({ events, onDateClick }) => {
             className={`p-2 text-center cursor-pointer ${
               !isSameMonth(day, currentMonth)
                 ? 'text-gray-400'
-                : day.toDateString() === selectedDate.toDateString()
+                : isSameDay(day, selectedDate)
                 ? 'bg-blue-500 text-white rounded-full'
                 : 'text-gray-800'
             } ${hasEvent ? 'border-2 border-red-500 rounded-full' : ''}`}
             key={day.toString()}
             onClick={() => {
-              console.log(cloneDay)
               setSelectedDate(cloneDay);
               onDateClick(cloneDay);
             }}
@@ -104,11 +103,6 @@ const Calendar: React.FC<CalendarProps> = ({ events, onDateClick }) => {
     }
     return <div>{rows}</div>;
   };
-  
-  
-  
-  
-  
 
   const nextMonth = () => {
     setCurrentMonth(addMonths(currentMonth, 1));

@@ -196,3 +196,19 @@ export const enrollToEvents = async (eventId: string ) => {
         console.log(error.message);
     }
 };
+export const getNotEnrolledEvents = async () => {
+    try {
+        let response = await axiosInstance.get('/volunteer/getNotEnrolledEvents')
+        return response
+    } catch (error: any) {
+        console.log(error.response.data.message);
+    }
+}
+export const getEnrolledEvents = async () => {
+    try {
+        let response = await axiosInstance.get('/volunteer/getEnrolledEvents')
+        return response
+    } catch (error: any) {
+        console.log(error.response.data.message);
+    }
+}

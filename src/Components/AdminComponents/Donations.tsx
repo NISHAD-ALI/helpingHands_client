@@ -19,7 +19,7 @@ const Donations: React.FC = () => {
     };
     fetchDonations();
   }, []);
-
+ 
   return (
     <div className="p-4 md:p-8">
       <h2 className="text-2xl font-semibold mb-6">Donations</h2>
@@ -32,13 +32,14 @@ const Donations: React.FC = () => {
               <th className="px-4 py-2 border-b">Name of Fundraiser</th>
               <th className="px-4 py-2 border-b">Progress</th>
               <th className="px-4 py-2 border-b">Amount Raised</th>
-              <th className="px-4 py-2 border-b">Action</th>
+              <th className="px-4 py-2 border-b">Target Amount</th>
               <th className="px-4 py-2 border-b"></th>
             </tr>
           </thead>
           <tbody>
             {donations.length > 0 ? (
               donations.map((donation, index) => (
+                
                 <tr key={donation._id} className="text-center">
                   <td className="px-4 py-2 border-b">
                     {index + 1 < 10 ? `0${index + 1}` : index + 1}
@@ -54,15 +55,16 @@ const Donations: React.FC = () => {
                   <td className="px-4 py-2 border-b">
                     <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                       <div
-                        className="bg-blue-600 h-2.5 rounded-full"
-                        style={{ width: `${donation?.progress}%` }}
+                        className="bg-gray-800 h-2.5 rounded-full"
+                        style={{ width: `${(donation?.amountCollected / donation?.targetAmount) * 100 || 0}%` }}
                       ></div>
                     </div>
                   </td>
                   <td className="px-4 py-2 border-b">{donation?.amountCollected || 0}</td>
-                  <td className="px-4 py-2 border-b">
-                    <button className="bg-green-500 text-white px-4 py-2 rounded">Action</button>
-                  </td>
+                  <td className="px-4 py-2 border-b">{donation?.targetAmount || 0}</td>
+                  {/* <td className="px-4 py-2 border-b">
+                    <button className="bg-red-700 text-white px-4 py-2 rounded-lg">Close</button>
+                  </td> */}
                   <td className="px-4 py-2 border-b"></td>
                 </tr>
               ))
