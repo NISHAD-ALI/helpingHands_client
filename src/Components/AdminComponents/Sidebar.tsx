@@ -48,6 +48,12 @@ const Sidebar: React.FC = () => {
             </a>
           </li>
           <li className="mb-4">
+            <a onClick={()=>navigate('/admin/reportPostManagement')} className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded cursor-pointer">
+              <FaChartBar />
+              <span>Reported Posts</span>
+            </a>
+          </li>
+          <li className="mb-4">
             <a onClick={handleLogout} className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded cursor-pointer">
               <FaSignOutAlt  />
               <span>Logout</span>

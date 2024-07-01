@@ -165,6 +165,7 @@ export const updateVolunteerStatus = async(id:string , is_accepted:boolean)=> {
 export const getVolunteers = async () => {
     try {
         let response = await axiosInstance.get('/community/getVolunteers')
+        console.log(response)
         return response
     } catch (error: any) {
         console.log(error.response.data.message);

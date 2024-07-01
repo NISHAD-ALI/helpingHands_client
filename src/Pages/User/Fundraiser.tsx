@@ -4,6 +4,7 @@ import FundraiserCard from '../../Components/UserComponents/FundraiserCard';
 import Footer from '../../Components/UserComponents/Footer';
 import donations from '../../Interface/donations';
 import { getDonations } from '../../Api/adminApi';
+import ScrollToTop from '../../Components/Common/ScrollToTop';
 
 const Fundraiser: React.FC = () => {
   const [fundraiser, setFundraiser] = useState<donations[]>([]);
@@ -43,6 +44,7 @@ const Fundraiser: React.FC = () => {
         </div>
       </main>
       <Footer />
+      <ScrollToTop />
     </div>
   );
 };

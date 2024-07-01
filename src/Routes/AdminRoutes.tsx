@@ -7,6 +7,7 @@ import IsLoggedIn from '../Components/AdminComponents/IsLoggedIn'
 import CommunityManagement from '../Pages/Admin/CommunityManagement'
 import AddDonationPage from '../Pages/Admin/AddDonationPage'
 import DonationManagement from '../Pages/Admin/DonationManagement'
+import ReportPostManagement from '../Pages/Admin/ReportPostManagement'
 
 
 const AdminRoutes = () => {
@@ -19,6 +20,7 @@ const AdminRoutes = () => {
         <Route path='/communityManagement' element = {<CommunityManagement/>} />
         <Route path='/addDonation' element = {<AddDonationPage/>} />
         <Route path='/donationManagement' element = {<DonationManagement/>} />
+        <Route path='/reportPostManagement' element = {<ReportPostManagement/>} />
       </Route>
     </Routes>
   )

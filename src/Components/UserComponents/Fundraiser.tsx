@@ -2,7 +2,7 @@ import React from 'react';
 
 const Fundraiser: React.FC = () => {
   return (
-    <section className="py-16 bg-gradient-to-br from-teal-50 to-green-200">
+    <section className="py-16 bg-gradient-to-br from-teal-50 to-green-200 font-inter">
       <h2 className="text-3xl font-bold text-center mb-8">Fundraiser</h2>
       <div className="max-w-4xl mx-auto bg-white shadow-md rounded flex flex-col md:flex-row">
         <div className="md:w-1/2">

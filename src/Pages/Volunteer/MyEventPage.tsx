@@ -85,6 +85,7 @@ const MyEventsPage: React.FC = () => {
                                         image={event.images[0]}
                                         onClick={() => handleEventClick(event._id)}
                                         isOnline={event.is_online}
+                                        isEnrolled={true}
                                     />
                                 ))}
                             </>

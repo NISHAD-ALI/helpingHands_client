@@ -17,6 +17,7 @@ const EventListPage: React.FC = () => {
     const [startDate, setStartDate] = useState<string>('');
     const [endDate, setEndDate] = useState<string>('');
     const [searchQuery, setSearchQuery] = useState<string>('');
+    const [selectedCategory,setSelectedCategory] = useState('All')
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -53,6 +54,7 @@ const EventListPage: React.FC = () => {
             const upcomingEvents = filteredByCategory.filter(event =>
                 event.shifts.some(shift => new Date(shift.date) >= new Date())
             );
+            setSelectedCategory(name)
             setFilteredEvents(upcomingEvents);
         } catch (error) {
             console.error('Failed to filter events by category:', error);
@@ -173,7 +175,7 @@ const EventListPage: React.FC = () => {
                         </div>
                     </div>
                     <div className="flex-1 mt-3 md:mt-0 md:ml-4">
-                        <h2 className="text-2xl font-bold mt-1 mb-2">Your upcoming events</h2>
+                        <h2 className="text-2xl font-bold mt-1 mb-2">{selectedCategory} Events</h2>
                         <div className="flex space-x-2 mb-4">
                             <input
                                 type="text"

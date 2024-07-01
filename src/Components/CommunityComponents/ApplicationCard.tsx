@@ -3,7 +3,7 @@ import React from 'react';
 interface ApplicationCardProps {
   name: string;
   image: string;
-  onAccept: () => void; // Define onAccept prop as a function
+  onAccept: () => void; 
 }
 
 const ApplicationCard: React.FC<ApplicationCardProps> = ({ name, image, onAccept }) => {

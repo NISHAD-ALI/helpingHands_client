@@ -76,3 +76,24 @@ export const getDonations = async() =>{
         console.log(error.response.data.message);
     }
 }
+export const getAllReports = async() =>{
+    try {
+        let response = await axiosInstance.get('/admin/getAllReports')
+        return response
+    } catch (error : any) {
+        console.log(error.response.data.message);
+    }
+}
+export const terminatePost = async (postId: string, userId: string, reasons: string[]) => {
+    try {
+        let obj = {
+            postId,
+            userId,
+            reasons
+        };
+        let res = await axiosInstance.post('/admin/terminatePost', obj);
+        return res;
+    } catch (error: any) {
+        console.log(error.response.data.message);
+    }
+}
