@@ -11,6 +11,7 @@ import CommunityPage from '../Pages/Volunteer/CommunityPage'
 import EventPage from '../Pages/Volunteer/EventsPage'
 import JoinStream from '../Pages/Volunteer/JoinStream'
 import MyEventsPage from '../Pages/Volunteer/MyEventPage'
+import VolunteerMessages from '../Components/VolunteerComponents/VolunteerMessages'
 
 
 const VolunteerRoutes:React.FC = () => {
@@ -28,6 +29,7 @@ const VolunteerRoutes:React.FC = () => {
        <Route path="/event/:id" element={<EventPage />} />
        <Route path="/joinStream/:id" element={<JoinStream />} />
        <Route path="/myEvents" element={<MyEventsPage />} />
+       <Route path="/messages/:id" element={<VolunteerMessages />} />
     </Routes>
   )
 }

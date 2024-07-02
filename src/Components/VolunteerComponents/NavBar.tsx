@@ -4,11 +4,14 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { getProfileVolunteer, logoutVolunteer } from '../../Api/volunteerApi';
 import { volunteerLogout } from '../../Redux/Slices/Auth';
+import { jwtDecode } from "jwt-decode";
 const NavBar: React.FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [userName, setUserName] = useState<string | null>(null);
   const data = useSelector((state: any) => state.auth.volunteerData !== null);
+  const decoded: any = jwtDecode(JSON.parse(localStorage.getItem('volunteerData') as string))
+  console.log("volunteer",decoded)
   const handleLogout = async () => {
     try {
       console.log('in')
@@ -41,7 +44,7 @@ const NavBar: React.FC = () => {
         <nav className="hidden md:flex space-x-4">
           <a className="hover:text-gray-400 font-medium">Home</a>
           <a className="hover:text-gray-400 font-medium" onClick={() => navigate('/volunteer/myEvents')}>Events</a>
-          <a className="hover:text-gray-400 font-medium">Communities</a>
+          <a className="hover:text-gray-400 font-medium" onClick={() => navigate(`/volunteer/messages/${decoded.id}`)}>Communities</a>
           {data ?
             <a onClick={handleLogout} className="hover:text-gray-400 font-medium cursor-pointer">Logout</a>
             : <a onClick={() => navigate('/volunteer/login')} className="hover:text-gray-400 font-medium">Login</a>}
