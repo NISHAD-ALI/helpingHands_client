@@ -1,6 +1,7 @@
 
 import axiosInstance from "../Config/AxiosInstance";
 import toast from "react-hot-toast";
+import { MessageData } from "../Interface/messageData";
 
 export const signupCommunity = async (name: string, email: string, password: string, mobile: number) => {
     try {
@@ -217,6 +218,25 @@ export const searchEvents = async(query:string) =>{
         const response = await axiosInstance.get('/community/searchEvents', {
             params: { query }
         });
+        return response.data
+    } catch (error :any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+}
+export const getMessages = async(conversations:string) =>{
+    try {
+        const response = await axiosInstance.get(`/community/messages/${conversations}`, {
+        });
+        return response.data
+    } catch (error :any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+}
+export const sendMessageTo = async(message:MessageData) =>{
+    try {
+        const response = await axiosInstance.post('community/saveMessages', {message});
         return response.data
     } catch (error :any) {
         console.log(error.response.data.message);

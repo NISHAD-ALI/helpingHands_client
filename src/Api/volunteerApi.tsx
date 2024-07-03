@@ -1,5 +1,6 @@
 import axiosInstance from "../Config/AxiosInstance";
 import toast from "react-hot-toast";
+import { MessageData } from "../Interface/messageData";
 
 axiosInstance.interceptors.request.use(
     (config) => {
@@ -210,5 +211,34 @@ export const getEnrolledEvents = async () => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
+    }
+}
+export const getMessages = async(conversations:string) =>{
+    try {
+        const response = await axiosInstance.get(`/volunteer/messages/${conversations}`, {
+        });
+        return response.data
+    } catch (error :any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+}
+export const sendMessageTo = async(message:MessageData) =>{
+    try {
+        console.log(message)
+        const response = await axiosInstance.post('volunteer/saveMessages', {message});
+        return response
+    } catch (error :any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+}
+export const fetchDefaultConversations = async(volunteerId:string) =>{
+    try {
+        const response = await axiosInstance.get(`/volunteer/conversations/${volunteerId}`);
+        return response
+    } catch (error :any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
     }
 }
