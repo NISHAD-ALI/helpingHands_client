@@ -1,5 +1,5 @@
 import React from 'react';
-import User from '../../Interface/user'; // Make sure this import path is correct
+import User from '../../Interface/user';
 
 interface ModalProps {
   isOpen: boolean;

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import io from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { fetchDefaultConversations, getMessages, getVolunteerById, sendMessageTo } from '../../Api/volunteerApi';
 import { MessageData } from '../../Interface/messageData';
+import NotificationComponent from '../Common/NotificationComponent';
 
 const socket = io('http://localhost:3001');
 
@@ -13,9 +14,9 @@ const VolunteerMessages: React.FC = () => {
   const [messages, setMessages] = useState<MessageData[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [volunteer, setVolunteer] = useState<any>(null);
+  const [notifications, setNotifications] = useState<{ message: string, id: number }[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const { id: volunteerId } = useParams<{ id: string }>();
-  const [lastMessage,SetLastMessage] = useState<any>([]);
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -50,15 +51,12 @@ const VolunteerMessages: React.FC = () => {
         try {
           const response = await getMessages(selectedConversation._id);
           setMessages(response);
-          console.log(response[response.length-1])
-          SetLastMessage(response[response.length-1])
         } catch (error) {
           console.error('Error fetching messages:', error);
         }
       };
 
       fetchMessages();
-      console.log("sel", selectedConversation);
       socket.emit('joinGroup', selectedConversation._id);
 
       socket.on('receiveMessage', (message: MessageData) => {
@@ -68,11 +66,24 @@ const VolunteerMessages: React.FC = () => {
         }
       });
 
+      socket.on('receiveNotification', (notification) => {
+        console.log('Received notification:', notification);
+        setNotifications((prevNotifications) => [
+          ...prevNotifications,
+          { message: notification.message, id: Date.now() },
+        ]);
+      });
+
       return () => {
         socket.off('receiveMessage');
+        socket.off('receiveNotification');
       };
     }
-  }, [selectedConversation, messages]);
+  }, [selectedConversation,messages]);
+
+  const removeNotification = useCallback((id: number) => {
+    setNotifications((prevNotifications) => prevNotifications.filter(n => n.id !== id));
+  }, []);
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,7 +146,7 @@ const VolunteerMessages: React.FC = () => {
                 />
                 <div>
                   <p className="mb-1">{conversation.communityId.name}</p>
-                  <small className="text-gray-500">{`${lastMessage?.sender?.name ? lastMessage?.sender?.name : 'ADMIN'}: ${lastMessage?.content}`}</small>
+                  <small className="text-gray-500">{conversation.lastMessage}</small>
                 </div>
               </div>
             ))}
@@ -177,7 +188,7 @@ const VolunteerMessages: React.FC = () => {
                 className="w-10 h-10 rounded-full mr-3"
               />
               <div>
-                <p className="mb-1 p-2">
+                <p className="mb-1">
                   <strong className="text-gray-600">{message?.sender?.name ? message?.sender?.name : 'ADMIN'}</strong>
                 </p>
                 <p>{message?.content}</p>
@@ -198,6 +209,7 @@ const VolunteerMessages: React.FC = () => {
           <button type="submit" className="bg-blue-700 text-white px-4 py-2 rounded-full">Send</button>
         </form>
       </div>
+      <NotificationComponent notifications={notifications} removeNotification={removeNotification} name={volunteer?.name}/>
     </div>
   );
 };

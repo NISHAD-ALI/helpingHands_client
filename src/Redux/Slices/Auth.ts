@@ -3,15 +3,20 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface AuthState {
     userData: any;
     communityData: any;
-    volunteerData : any;
+    volunteerData: any;
     adminData: any;
 }
 
+const getUserDataFromLocalStorage = (key: string) => {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+}
+
 const initialState: AuthState = {
-    userData: localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData') as string) : null,
-    communityData: localStorage.getItem('communityData') ? JSON.parse(localStorage.getItem('communityData') as string) : null,
-    volunteerData: localStorage.getItem('volunteerData') ? JSON.parse(localStorage.getItem('volunteerData') as string) : null,
-    adminData: localStorage.getItem('adminData') ? JSON.parse(localStorage.getItem('adminData') as string) : null,
+    userData: getUserDataFromLocalStorage('userData'),
+    communityData: getUserDataFromLocalStorage('communityData'),
+    volunteerData: getUserDataFromLocalStorage('volunteerData'),
+    adminData: getUserDataFromLocalStorage('adminData'),
 }
 
 const Auth = createSlice({
@@ -53,5 +58,5 @@ const Auth = createSlice({
     },
 });
 
-export const { setUserData, userLogout, setCommunityData, communityLogout,setVolunteerData,volunteerLogout,setAdminData,adminLogout } = Auth.actions;
+export const { setUserData, userLogout, setCommunityData, communityLogout, setVolunteerData, volunteerLogout, setAdminData, adminLogout } = Auth.actions;
 export default Auth.reducer;

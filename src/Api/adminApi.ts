@@ -97,3 +97,23 @@ export const terminatePost = async (postId: string, userId: string, reasons: str
         console.log(error.response.data.message);
     }
 }
+export const getAllVolunteers = async () => {
+    try {
+        let response = await axiosInstance.get('/admin/getAllVolunteers')
+        console.log(response)
+        return response
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+}
+export const getAllEvents = async () => {
+    try {
+        let response = await axiosInstance.get('/admin/getAllEvents')
+        console.log(response)
+        return response
+    } catch (error: any) {
+        console.log(error.response.data.message);
+        toast.error(error.response.data.message)
+    }
+}

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import io from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { getCommunityDetails } from '../../Api/volunteerApi';
 import { getMessages, sendMessageTo } from '../../Api/communityApi';
 import { MessageData } from '../../Interface/messageData';
+import NotificationComponent from '../Common/NotificationComponent';
 
 const socket = io('http://localhost:3001');
 
@@ -30,6 +31,8 @@ const CommunityMessages: React.FC = () => {
   const { id: communityId } = useParams<{ id: string }>();
   const [conversations, setConversations] = useState<string | null>(null);
   const [community, setCommunity] = useState<any>(null);
+  const [notifications, setNotifications] = useState<{ message: string, id: number }[]>([]);
+
   useEffect(() => {
     const fetchCommunity = async () => {
       try {
@@ -64,11 +67,23 @@ const CommunityMessages: React.FC = () => {
         setMessages((prevMessages) => [...prevMessages, message]);
       });
 
+      socket.on('receiveNotification', (notification) => {
+        setNotifications((prevNotifications) => [
+          ...prevNotifications,
+          { message: notification.message, id: Date.now() },
+        ]);
+      });
+
       return () => {
         socket.off('receiveMessage');
+        socket.off('receiveNotification');
       };
     }
   }, [conversations,messages]);
+
+  const removeNotification = useCallback((id: number) => {
+    setNotifications((prevNotifications) => prevNotifications.filter(n => n.id !== id));
+  }, []);
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,6 +114,7 @@ const CommunityMessages: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-gray-100">
+    
       <div className="flex-1 flex flex-col">
         <div className="p-4 bg-green-800 text-white text-center">
           <h2 className="text-xl font-semibold">Community Messages</h2>
@@ -106,12 +122,12 @@ const CommunityMessages: React.FC = () => {
         <div className="flex-1 p-4 overflow-y-auto">
           {messages.map((message, index) => (
             <div
-            key={index}
-            className={`mb-4 p-3 rounded-lg flex items-start ${message?.sender === null
-              ? 'bg-blue-100 self-end flex-row-reverse'
-              : 'bg-white self-start flex-row'
+              key={index}
+              className={`mb-4 p-3 rounded-lg flex items-start ${message?.sender === null
+                ? 'bg-blue-100 self-end flex-row-reverse'
+                : 'bg-white self-start flex-row'
               }`}
-          >
+            >
               <img
                 src={message.sender?.profileImage
                   ? message.sender?.profileImage
@@ -140,6 +156,7 @@ const CommunityMessages: React.FC = () => {
           <button type="submit" className="bg-green-700 text-white px-4 py-2 rounded-full">Send</button>
         </form>
       </div>
+<NotificationComponent notifications={notifications} removeNotification={removeNotification} name={community?.name}/>
     </div>
   );
 };

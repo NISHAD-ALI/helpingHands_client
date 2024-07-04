@@ -1,15 +1,20 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, ChangeEvent } from 'react';
 import { createPost } from '../../Api/userApi';
 import AvatarEditor from 'react-avatar-editor';
 
-const CreatePostModal = ({ isOpen, onClose }) => {
-  const [step, setStep] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [title, setTitle] = useState('');
-  const [imagePreview, setImagePreview] = useState(null);
-  const editorRef = useRef(null);
+interface CreatePostModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
-  const handleImageChange = (event) => {
+const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) => {
+  const [step, setStep] = useState<number>(1);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [title, setTitle] = useState<string>('');
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const editorRef = useRef<AvatarEditor | null>(null);
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedImage(file);
@@ -29,7 +34,7 @@ const CreatePostModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleTitleChange = (event) => {
+  const handleTitleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(event.target.value);
   };
 
@@ -38,18 +43,20 @@ const CreatePostModal = ({ isOpen, onClose }) => {
       if (selectedImage && title && editorRef.current) {
         const canvas = editorRef.current.getImageScaledToCanvas();
         canvas.toBlob(async (blob) => {
-          const formData = new FormData();
-          formData.append('image', blob, selectedImage.name);
-          formData.append('title', title);
-          const response = await createPost(formData);
-          if (response) {
-            onClose();
-            window.location.reload();
+          if (blob) {
+            const formData = new FormData();
+            formData.append('image', blob, selectedImage.name);
+            formData.append('title', title);
+            const response = await createPost(formData);
+            if (response) {
+              onClose();
+              window.location.reload();
+            }
           }
         }, 'image/jpeg');
       }
     } catch (error) {
-      console.log(error.message);
+      console.log((error as Error).message);
     }
   };
 
@@ -90,11 +97,11 @@ const CreatePostModal = ({ isOpen, onClose }) => {
             <div className="w-full max-w-md mx-auto">
               <AvatarEditor
                 ref={editorRef}
-                image={imagePreview}
+                image={imagePreview || ''}
                 width={360}
                 height={360}
                 border={0}
-                color={[255, 255, 255, 0.6]} // Background color
+                color={[255, 255, 255, 0.6]}
                 scale={1}
                 rotate={0}
                 borderRadius={0}

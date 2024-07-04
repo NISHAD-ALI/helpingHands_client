@@ -19,7 +19,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-64 bg-gray-800 text-white flex flex-col">
+    <div className="h-scrren w-64 bg-gray-800 text-white flex flex-col sticky z-50">
       <div className="p-4 text-2xl font-bold border-b border-gray-700">helpingHands</div>
       <nav className="flex-grow p-4">
         <ul>
