@@ -55,11 +55,14 @@ const SignupPage: React.FC = () => {
 
         try {
             const responseData = await signupCommunity(communityName, email, password, contactNumber);
-            if (responseData.data.success) {
+            if (responseData?.data.success) {
                 toast.success("Registration successful! Please check your email for the OTP.");
-                navigate('/community/otp');
+                setTimeout(() => {
+                    navigate('/community/otp');
+                  }, 2000);
+                
             } else {
-                toast.error(responseData.data.message);
+                toast.error(responseData?.data.message);
             }
         } catch (error) {
             console.error(error);

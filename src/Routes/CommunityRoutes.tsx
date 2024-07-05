@@ -10,7 +10,7 @@ import ProfilePage from '../Pages/Community/ProfilePage';
 import HireVolunteers from '../Pages/Community/HireVolunteers';
 import VolunteerManagement from '../Pages/Community/VolunteerManagement';
 import LiveStreamPage from '../Pages/Community/LiveStreamPage';
-import CommunityMessages from '../Components/CommunityComponents/CommunityMessages';
+import CommunityMessagesPage from '../Pages/Community/CommunityMessagePage';
 
 
 const SignupPage = lazy(() => import('../Pages/Community/SignupPage'));
@@ -38,7 +38,7 @@ const CommunityRoutes: React.FC = () => {
           <Route path='/hireNow' element={<HireVolunteers />} />
           <Route path='/manageVolunteers' element={<VolunteerManagement />} />
           <Route path='/stream/:id' element={<LiveStreamPage />} />
-          <Route path="/messages/:id" element={<CommunityMessages />} />
+          <Route path="/messages/:id" element={<CommunityMessagesPage />} />
           
         </Route>
         <Route path='/otp' element={<Otp />} />

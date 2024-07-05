@@ -1,7 +1,7 @@
 import React, { useState, useRef, ChangeEvent } from 'react';
 import { createPost } from '../../Api/userApi';
 import AvatarEditor from 'react-avatar-editor';
-
+import toast, { Toaster } from 'react-hot-toast';
 interface CreatePostModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -129,6 +129,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
           </div>
         )}
       </div>
+      <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { width: '350px' } }} />
     </div>
   );
 };

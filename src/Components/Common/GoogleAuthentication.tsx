@@ -23,7 +23,7 @@ const GoogleAuthentication: React.FC<gLogin> = ({ Login }) => {
       const data = {
         name: result.name,
         email: result.email,
-        password: 'Helping1!',
+        password: 'Nishucp!',
         isGoogle: true
       };
 

@@ -45,7 +45,9 @@ const Signup = () => {
         const responseData = await signup(username, email, password, phoned);
         if (responseData?.data.success) {
           toast.success('Registration successful!'); 
-          navigate('/verifyOtp');
+          setTimeout(() => {
+            navigate('/verifyOtp');
+          }, 2000);
         } else {
           setError({ ...newErrors, api: responseData?.data.message || "Signup failed" });
           toast.error(responseData?.data.message || "Signup failed");

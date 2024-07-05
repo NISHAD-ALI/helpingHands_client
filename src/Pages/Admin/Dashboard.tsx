@@ -175,7 +175,7 @@ const Dashboard: React.FC = () => {
   };
 
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -283,6 +283,7 @@ const Dashboard: React.FC = () => {
           </MapContainer>
         </div>
       </div>
+   
     </div>
   );
 };

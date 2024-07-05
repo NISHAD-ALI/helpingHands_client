@@ -62,16 +62,26 @@ const OtpPage: React.FC<Ioperator> = ({ operator }) => {
             if (responseData && responseData.data) {
                 if (operator === 'user') {
                     dispatch(setUserData(responseData.data.token));
-                    navigate('/');
+                    toast.success("OTP Verified Successfully!");
+                    setTimeout(() => {
+                        navigate('/');
+                      }, 2000);
                 } else if (operator === 'community') {
                     dispatch(setCommunityData(responseData.data.token));
-                    navigate('/community/home');
+                    toast.success("OTP Verified Successfully!");
+                    setTimeout(() => {
+                        navigate('/community/home');
+                      }, 2000);
                 }else{
                     dispatch(setVolunteerData(responseData.data.token));
-                    navigate('/volunteer/home');
+                    toast.success("OTP Verified Successfully!");
+                    setTimeout(() => {
+                        navigate('/volunteer/home');
+                      }, 2000);
+
                 }
                 
-                toast.success("OTP Verified Successfully!");
+                
             } else {
                 toast.error("Failed to verify OTP. Please try again.");
             }

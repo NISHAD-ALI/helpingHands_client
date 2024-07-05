@@ -30,7 +30,7 @@ const Login: React.FC = () => {
                 toast.success('Successfully logged in!');
                 navigate('/community/home');
             } else {
-                toast.error(responseData.data.message);
+                toast.error(responseData?.data.message);
             }
         } catch (error) {
             console.log(error);

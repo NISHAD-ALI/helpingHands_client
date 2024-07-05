@@ -3,7 +3,7 @@ import { editProfile } from '../../Api/userApi';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import Userdata from '../../Interface/user';
 
 interface LocationState {
@@ -60,7 +60,7 @@ const EditProfile: React.FC = () => {
             formData.append('name', values.name);
             formData.append('email', values.email);
             formData.append('address', values.address);
-            formData.append('phone', values.phone);
+            formData.append('phone', values.phone.toString());
             if (profileImage) {
                 formData.append('profileImage', profileImage);
             }
@@ -69,9 +69,9 @@ const EditProfile: React.FC = () => {
                 toast.success("Profile updated successfully!");
                 navigate('/profile');
             }
-        } catch (error :any) {
+        } catch (error: any) {
             console.error(error);
-            toast.error(error);
+           
         }
     };
 
@@ -102,7 +102,7 @@ const EditProfile: React.FC = () => {
                                     className="hidden"
                                     onChange={(e) => {
                                         handleImageChange(e);
-                                        setFieldValue('profileImage', e.target.files[0]);
+                                        setFieldValue('profileImage', e.target.files![0]);
                                     }}
                                 />
                                 Upload Photo
@@ -155,6 +155,7 @@ const EditProfile: React.FC = () => {
                     </Form>
                 )}
             </Formik>
+            <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { width: '350px' } }} />
         </div>
     );
 };

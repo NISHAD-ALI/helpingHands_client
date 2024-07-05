@@ -65,7 +65,7 @@ export const createDonation = async (data: FormData) => {
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+       
     }
 }
 export const getDonations = async() =>{
@@ -104,7 +104,6 @@ export const getAllVolunteers = async () => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }
 export const getAllEvents = async () => {
@@ -114,6 +113,5 @@ export const getAllEvents = async () => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }

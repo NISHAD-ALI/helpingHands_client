@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { getVolunteers } from '../../Api/communityApi';
 import { useNavigate } from 'react-router-dom';
+import volunteer from '../../Interface/volunteer';
 
 
 const VolunteerTable: React.FC = () => {
-  const [volunteers, setVolunteers] = useState([])
+  const [volunteers, setVolunteers] = useState<volunteer[]>([])
   const [CommId, setcommId] = useState()
   const navigate = useNavigate();
   useEffect(() => {
@@ -46,15 +47,15 @@ const VolunteerTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {volunteers.map((volunteer, index) => (
-            <tr key={volunteer.id} className="border-b text-sm">
+          {volunteers?.map((volunteer, index) => (
+            <tr key={volunteer._id} className="border-b text-sm">
               <td className="py-3 px-6">{index + 1}</td>
               <td className="py-3 px-6 flex items-center">
                 <img src={volunteer.profileImage} alt="Profile" className="w-8 h-8 rounded-full mr-2" />
                 {volunteer.name}
               </td>
-              <td className="py-3 px-6">{volunteer.eventsAttended}</td>
-              <td className="py-3 px-6">{volunteer.joiningDate || '12-02-2024'}</td>
+              <td className="py-3 px-6">{volunteer.events.length}</td>
+              <td className="py-3 px-6">{'12-02-2024'}</td>
               <td className="py-3 px-6">
                 <button className="bg-red-500 text-white px-4 py-2 rounded-md">Remove</button>
               </td>

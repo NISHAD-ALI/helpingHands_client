@@ -10,7 +10,6 @@ const UpcomingEvents: React.FC = () => {
     { location: "Delhi", date: "01.01.2024", image: "/public/50 Community Service Ideas.jpg" },
     { location: "Calicut", date: "01.02.2024", image: "/public/Gazas War Photography _Wallpaper _Photography.jpg" },
     { location: "Cochin", date: "01.03.2024", image: "/public/50 Community Service Ideas.jpg" },
-    // Add more events as needed
   ];
 
   return (

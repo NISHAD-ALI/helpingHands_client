@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import io from 'socket.io-client';
 import NavBar from '../../Components/VolunteerComponents/NavBar';
 import HeroSection from '../../Components/VolunteerComponents/HeroSection';
 import CommunityCard from '../../Components/VolunteerComponents/CommunityCard';
@@ -8,10 +9,14 @@ import { getAllPosts } from '../../Api/userApi';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import NotificationComponent from '../../Components/Common/NotificationComponent';
 
 const HomePage = () => {
+  const socket = io('http://localhost:3001');
+  
   const [communities, setCommunities] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [notifications, setNotifications] = useState<{ message: string, id: number }[]>([]);
 
   useEffect(() => {
     const fetchCommunities = async () => {
@@ -36,6 +41,24 @@ const HomePage = () => {
       }
     };
     fetchPosts();
+  }, []);
+
+  useEffect(() => {
+    socket.on('receiveNotification', (notification: any) => {
+      console.log(notification.message)
+      setNotifications((prevNotifications) => [
+        ...prevNotifications,
+        { message: notification.message, id: Date.now() },
+      ]);
+    });
+
+    return () => {
+      socket.off('receiveNotification');
+    };
+  }, [socket]);
+
+  const removeNotification = useCallback((id: number) => {
+    setNotifications((prevNotifications) => prevNotifications.filter(n => n.id !== id));
   }, []);
 
   const settings = {
@@ -113,6 +136,7 @@ const HomePage = () => {
         </Slider>
       </div>
       <Footer />
+      <NotificationComponent notifications={notifications} removeNotification={removeNotification} />
     </div>
   );
 };

@@ -4,22 +4,22 @@ import ReactPlayer from 'react-player';
 import ParticipantsCol from './ParticipantsCol';
 import { useParams } from 'react-router-dom';
 import { getEventsById } from '../../Api/communityApi';
-
+import event from '../../Interface/events';
 const ProjectDetails: React.FC = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const playerRef = useRef(null);
+  const [currentSlide, setCurrentSlide] = useState<any>(0);
+  const playerRef = useRef<ReactPlayer>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const { id } = useParams<{ id: string }>();
-  const [event, setEvent] = useState<any>(null);
+  const [event, setEvent] = useState<event | null>(null);
 
   useEffect(() => {
-      const fetchEvent = async () => {
-          console.log(id);
-          const response = await getEventsById(id);
-          console.log(response?.data?.event);
-          setEvent(response?.data?.event);
-      };
-      fetchEvent();
+    const fetchEvent = async () => {
+      console.log(id);
+      const response = await getEventsById(id as string);
+      console.log(response?.data?.event);
+      setEvent(response?.data?.event);
+    };
+    fetchEvent();
   }, [id]);
 
   const handleSlideChange = (index: number) => {
@@ -32,20 +32,22 @@ const ProjectDetails: React.FC = () => {
   };
 
   const slides = [
-    <img key={1} src={event?.images[0]} alt="Project" className="w-full rounded-md mb-4" />,
-    <img key={2} src={event?.images[1]} alt="Project" className="w-full rounded-md mb-4" />,
-    <img key={3} src={event?.images[2]} alt="Project" className="w-full rounded-md mb-4" />,
-    <div key={4} className="w-full h-full flex items-center justify-center bg-black rounded-md mb-4">
-      <ReactPlayer
-        ref={playerRef}
-        url={event?.video}
-        width="100%"
-        height="100%"
-        playing={currentSlide === 3 && isPlaying}
-        onEnded={handleVideoEnd}
-      />
-    </div>
-  ];
+    event?.images[0] && <img key={1} src={event.images[0]} alt="Project" className="w-full rounded-md mb-4" />,
+    event?.images[1] && <img key={2} src={event.images[1]} alt="Project" className="w-full rounded-md mb-4" />,
+    event?.images[2] && <img key={3} src={event.images[2]} alt="Project" className="w-full rounded-md mb-4" />,
+    event?.video && (
+      <div key={4} className="w-full h-full flex items-center justify-center bg-black rounded-md mb-4">
+        <ReactPlayer
+          ref={playerRef}
+          url={event.video}
+          width="100%"
+          height="100%"
+          playing={currentSlide === 3 && isPlaying}
+          onEnded={handleVideoEnd}
+        />
+      </div>
+    )
+  ].filter(Boolean); // Remove undefined slides
 
   return (
     <div className="flex flex-col md:flex-row md:space-x-4">

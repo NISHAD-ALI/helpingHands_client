@@ -1,4 +1,8 @@
 import React, { useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import '/src/Styles/NotificationComponent.css';
 
 interface Notification {
   message: string;
@@ -8,10 +12,9 @@ interface Notification {
 interface NotificationComponentProps {
   notifications: Notification[];
   removeNotification: (id: number) => void;
-  name: string;
 }
 
-const NotificationComponent: React.FC<NotificationComponentProps> = ({ notifications, removeNotification, name }) => {
+const NotificationComponent: React.FC<NotificationComponentProps> = ({ notifications, removeNotification }) => {
   useEffect(() => {
     const timerIds = notifications.map(notification => {
       return setTimeout(() => {
@@ -29,19 +32,23 @@ const NotificationComponent: React.FC<NotificationComponentProps> = ({ notificat
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
-      {notifications.map((notification) => (
-        <div key={notification.id} className="bg-white bg-opacity-85 text-black w-96 h-48 p-4 mb-2 rounded shadow-md br-3 transition-opacity duration-1000 relative">
-          <h3 className="text-3xl font-semibold mb-2">Hey there!</h3>
-          <p className="text-center">New Message: <strong>{notification.message}</strong></p>
-          <button
-            className="absolute top-2 right-2 text-white hover:text-red-500 focus:outline-none"
-            onClick={() => handleClose(notification.id)}
-          >
-            X
-          </button>
-        </div>
-      ))}
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end space-y-2">
+      <TransitionGroup>
+        {notifications.map((notification) => (
+          <CSSTransition key={notification.id} timeout={500} classNames="slide">
+            <div className="bg-white bg-opacity-90 text-black w-80 sm:w-96 p-4 rounded-lg shadow-lg transition-transform duration-500 ease-in-out transform translate-x-0">
+              <h3 className="text-xl font-semibold mb-2">Hey there!</h3>
+              <p className="mt-2">New Message: <strong>{notification.message}</strong></p>
+              <button
+                className="absolute top-2 right-2 text-red-600 hover:text-red-500 focus:outline-none"
+                onClick={() => handleClose(notification.id)}
+              >
+                <FontAwesomeIcon icon={faTimesCircle} size="lg" />
+              </button>
+            </div>
+          </CSSTransition>
+        ))}
+      </TransitionGroup>
     </div>
   );
 };

@@ -9,7 +9,7 @@ import { formatDistanceToNow } from 'date-fns';
 import Modal from './CommentModal'; 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
+import toast, { Toaster } from 'react-hot-toast';
 interface Post {
   _id: string;
   image: string;
@@ -58,6 +58,7 @@ const LatestFeeds: React.FC = () => {
   const handleLike = async (id: string, index: number) => {
     try {
       const response = await likePost(id);
+      toast.success('Cheers ✨')
       if (response) {
         setPosts(prevPosts => {
           const updatedPosts = [...prevPosts];
@@ -86,6 +87,7 @@ const LatestFeeds: React.FC = () => {
     if (activePostId && newComment.trim() !== '') {
       try {
         await addComment(activePostId, newComment);
+        toast.success("Yaay, You,re comment has been added")
         setNewComment('');
         const response = await getComments(activePostId);
         setComments(response?.data || []);

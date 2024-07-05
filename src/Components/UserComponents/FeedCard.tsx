@@ -7,7 +7,7 @@ import { formatDistanceToNow } from 'date-fns';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Modal from './CommentModal';
-
+import toast, { Toaster } from 'react-hot-toast';
 interface Post {
   _id: string;
   image: string;
@@ -80,6 +80,7 @@ const AllPosts: React.FC = () => {
       });
 
       await likePost(id);
+      toast.success('Cheers ✨')
     } catch (error) {
       console.error('Failed to like/unlike post:', error);
     }
@@ -91,6 +92,7 @@ const AllPosts: React.FC = () => {
         try {
           const response = await getComments(currentPostId);
           const fetchedData = response?.data || [];
+          
           setComments(fetchedData);
         } catch (error) {
           console.error('Failed to fetch comments:', error);
@@ -117,6 +119,7 @@ const AllPosts: React.FC = () => {
         const response = await addComment(currentPostId, newComment);
         if (response) {
           setNewComment('');
+          toast.success("Yaay, You,re comment has been added")
           const updatedComments = await getComments(currentPostId);
           setComments(updatedComments?.data);
         }
@@ -168,11 +171,13 @@ const AllPosts: React.FC = () => {
       const response = await reportPost(currentPostId as string,otherReason)
       if(response){
         console.log(response)
+        toast.success("You've Reported this post")
       }
     }else{
       const reponse = await reportPost(currentPostId as string,reportReason)
       if(reponse){
         console.log(reponse)
+        toast.success("You've Reported this post")
       }
     }
    
@@ -371,6 +376,7 @@ const AllPosts: React.FC = () => {
           </div>
         )}
       </div>
+      <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { width: '350px' } }} />
     </section>
   );
 };

@@ -38,14 +38,12 @@ const Login: React.FC = () => {
             } else {
                 const message = response.data.message;
                 setError(message);
-                toast.error(message);
             }
 
         } catch (err: any) {
             const message = err.message || "An error occurred. Please try again.";
             console.error("Error:", err);
             setError(message);
-            // toast.error(message);
         }
     };
 

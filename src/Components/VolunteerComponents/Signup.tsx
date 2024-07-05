@@ -56,12 +56,12 @@ const Signup: React.FC = () => {
 
     try {
       const responseData = await signupVolunteer(name, email, password, phone);
-      if (responseData.data.success) {
+      if (responseData?.data.success) {
         toast.success("Registration successful! Please check your email for the OTP.");
         console.log("success");
         navigate('/volunteer/verifyOtp');
       } else {
-        toast.error(responseData.data.message);
+        toast.error(responseData?.data.message);
       }
     } catch (error) {
       console.error(error);
@@ -155,7 +155,7 @@ const Signup: React.FC = () => {
               </div>
             </div>
             <div>
-              <button type="submit" className="w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              <button type="submit" className="w-full px-4 py-2 text-sm font-medium text-white bg-gray-900 border border-transparent rounded-md shadow-sm hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 Sign up
               </button>
             </div>

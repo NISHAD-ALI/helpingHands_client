@@ -2,7 +2,6 @@ import React from 'react';
 import homeVolunteer from '../../Interface/homeVolunteer';
 import { useNavigate } from 'react-router-dom';
 const VolunteerSection:React.FC<homeVolunteer> = ({ imageSrc, title, description, buttonText,click }) => {
-  const navigate = useNavigate()
   return (
     <section className="py-16">
       <div className="container mx-auto flex flex-col md:flex-row items-center">

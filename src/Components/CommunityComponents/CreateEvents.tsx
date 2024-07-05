@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
 import PleaseWait from '../Common/PleaseWait';
+import io, { Socket } from 'socket.io-client';
 
 const CreateEvents: React.FC = () => {
     const navigate = useNavigate();
@@ -25,6 +26,13 @@ const CreateEvents: React.FC = () => {
     const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
+    const socket = io('http://localhost:3001');
+
+    useEffect(() => {
+        return () => {
+            socket.disconnect();
+        };
+    }, [socket]);
     useEffect(() => {
         if (city) {
             fetchCitySuggestionsDebounced(city);
@@ -131,7 +139,11 @@ const CreateEvents: React.FC = () => {
             const response = await createEvents(formData);
             if (response) {
                 toast.success('Event Created Successfully');
-                navigate('/community/home');
+                const socket = io('http://localhost:3001');
+                socket.emit('receiveNotification', { message: "New Event created" });
+                setTimeout(() => {
+                    navigate('/community/home');
+                }, 2000);
             } else {
                 toast.error(response?.message);
             }
@@ -139,12 +151,12 @@ const CreateEvents: React.FC = () => {
             console.error(error);
             toast.error("An error occurred. Please try again.");
         } finally {
-            setIsLoading(false); 
+            setIsLoading(false);
         }
     };
 
     if (isLoading) {
-        return <PleaseWait />; 
+        return <PleaseWait />;
     }
 
     return (
@@ -191,10 +203,10 @@ const CreateEvents: React.FC = () => {
                             <label className="block mb-2 text-sm font-medium text-gray-700">Details:</label>
                             <textarea onChange={(e) => setDetails(e.target.value)} className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"></textarea>
 
-                            {/* Dropdown for selecting category */}
+                         
                             <label className="block mb-2 text-sm font-medium text-gray-700">Category:</label>
                             <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent">
-                            <option value="">Select a category</option>
+                                <option value="">Select a category</option>
                                 <option value="Health care">Health care</option>
                                 <option value="Education">Education</option>
                                 <option value="Shelters and support">Shelters and support</option>
@@ -203,7 +215,7 @@ const CreateEvents: React.FC = () => {
                                 <option value="Youth Recreation">Youth Recreation</option>
                             </select>
 
-                            {/* City input with suggestions */}
+            
                             <label className="block mb-2 text-sm font-medium text-gray-700">City:</label>
                             <input
                                 type="text"

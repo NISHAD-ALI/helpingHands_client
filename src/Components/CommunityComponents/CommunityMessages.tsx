@@ -156,6 +156,7 @@ const CommunityMessages: React.FC = () => {
           <button type="submit" className="bg-green-700 text-white px-4 py-2 rounded-full">Send</button>
         </form>
       </div>
+    
 <NotificationComponent notifications={notifications} removeNotification={removeNotification} name={community?.name}/>
     </div>
   );

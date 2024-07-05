@@ -1,30 +1,31 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, ChangeEvent } from 'react';
 import AvatarEditor from 'react-avatar-editor';
-import { editPost } from '../../Api/userApi'; 
+import { editPost } from '../../Api/userApi';
+import Post from '../../Interface/post';
 
 interface EditPostModalProps {
   isOpen: boolean;
   onClose: () => void;
-  post: any;
-  onSave: (updatedPost: any) => void;
+  post: Post;
+  onSave: (updatedPost: Post) => void;
 }
 
 const EditPostModal: React.FC<EditPostModalProps> = ({ isOpen, onClose, post, onSave }) => {
-  const [step, setStep] = useState(1);
-  const [selectedImage, setSelectedImage] = useState<any>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [title, setTitle] = useState(post.title);
-  const editorRef = useRef<AvatarEditor>(null); 
+  const [step, setStep] = useState<number>(1);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(post.image);
+  const [title, setTitle] = useState<string>(post.title);
+  const editorRef = useRef<AvatarEditor | null>(null);
 
   useEffect(() => {
     if (isOpen) {
-      setSelectedImage(post.image);
+      setSelectedImage(null); 
       setImagePreview(post.image);
       setTitle(post.title);
     }
   }, [isOpen, post]);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedImage(file);
@@ -44,7 +45,7 @@ const EditPostModal: React.FC<EditPostModalProps> = ({ isOpen, onClose, post, on
     }
   };
 
-  const handleTitleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTitleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setTitle(event.target.value);
   };
 
@@ -53,21 +54,23 @@ const EditPostModal: React.FC<EditPostModalProps> = ({ isOpen, onClose, post, on
       if (editorRef.current && title) {
         const canvas = editorRef.current.getImageScaledToCanvas();
         canvas.toBlob(async (blob) => {
-          const formData = new FormData();
-          formData.append('image', blob, selectedImage.name);
-          formData.append('title', title);
-          formData.append('id', post._id);
-          console.log(post._id)
-          const response = await editPost(formData);
-          if (response) {
-            onSave({ ...post, image: response.data.image, title });
-            onClose();
-            window.location.reload();
+          if (blob) {
+            const formData = new FormData();
+            formData.append('image', blob, selectedImage?.name || '');
+            formData.append('title', title);
+            formData.append('id', post._id || '');
+            
+            const response = await editPost(formData);
+            if (response) {
+              onSave({ ...post, image: response.data.image, title });
+              onClose();
+              window.location.reload();
+            }
           }
         }, 'image/jpeg');
       }
-    } catch (error :any) {
-      console.log(error.message);
+    } catch (error) {
+      console.log((error as Error).message);
     }
   };
 
@@ -108,7 +111,7 @@ const EditPostModal: React.FC<EditPostModalProps> = ({ isOpen, onClose, post, on
             <div className="w-full max-w-md mx-auto">
               <AvatarEditor
                 ref={editorRef}
-                image={imagePreview}
+                image={imagePreview || ''}
                 width={360}
                 height={360}
                 border={0}
