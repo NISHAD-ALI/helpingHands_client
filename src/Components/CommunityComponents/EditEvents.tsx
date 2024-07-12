@@ -4,20 +4,8 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import { editEvent, getEventsById } from '../../Api/communityApi';
-
-interface Shift {
-  date: string;
-  timeSlot: string;
-}
-
-interface Event {
-  name: string;
-  volunteerCount: string;
-  details: string;
-  shifts: Shift[];
-  images: string[] ;
-  video: string;
-}
+import  Event from '../../Interface/events';
+import { Shift } from '../../Interface/events';
 
 const EditEvents: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,12 +13,12 @@ const EditEvents: React.FC = () => {
   const [shifts, setShifts] = useState<Shift[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [name, setName] = useState<string>('');
-  const [volunteerCount, setVolunteerCount] = useState<string>('');
+  const [volunteerCount, setVolunteerCount] = useState<string|number>();
   const [details, setDetails] = useState<string>('');
-  const [images, setImages] = useState<(File | null)[]>([null, null, null]);
-  const [video, setVideo] = useState<File | null>(null);
+  const [images, setImages] = useState<(File | string | null)[]>([null, null, null]);
+  const [video, setVideo] = useState<File | string | null>(null);  
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
-  const [imagePreviews, setImagePreviews] = useState<string[]>([null, null, null]);
+  const [imagePreviews, setImagePreviews] = useState<(string | null)[]>([null, null, null]);
 
   const fetchEventData = async () => {
     try {
@@ -43,7 +31,6 @@ const EditEvents: React.FC = () => {
       setImagePreviews(eventData?.data?.event.images);
     } catch (error) {
       console.error('Error fetching event data:', error);
-      toast.error('Error fetching event data.');
     }
   };
 
@@ -130,7 +117,9 @@ const EditEvents: React.FC = () => {
       const response = await editEvent(id as string, eventData);
       if (response) {
         toast.success('Event Updated Successfully');
-        navigate('/community/home');
+        setTimeout(()=>{
+          navigate('/community/eventList')
+        },3000)
       } else {
         toast.error('Failed to update event.');
       }
@@ -170,7 +159,7 @@ const EditEvents: React.FC = () => {
                           Image
                         </label>
                       )}
-                      <input type="file" accept="image/*" onChange={(e) => handleImagesChange(index, e)} className="hidden" id={`imageUpload${index}`} />
+                      <input type="file" accept="image/*" onChange={(e) => handleImagesChange(index, e)} className="hidden" id={`imageUpload${index}`} aria-label={`imageUpload${index}`}/>
                     </div>
                   ))}
                 </div>
@@ -188,22 +177,24 @@ const EditEvents: React.FC = () => {
                 className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
               />
 
-              <label className="block mb-2 text-sm font-medium text-gray-700">
+              <label className="block mb-2 text-sm font-medium text-gray-700" htmlFor="volunteerCount">
                 No. of Volunteers Participating:
               </label>
               <input
                 type="number"
                 value={volunteerCount}
-                onChange={(e) => setVolunteerCount(e.target.value)}
+                onChange={(e) => setVolunteerCount((e.target.value))}
+                id="volunteerCount"
                 className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
               />
 
-              <label className="block mb-2 text-sm font-medium text-gray-700">
+              <label className="block mb-2 text-sm font-medium text-gray-700" htmlFor="details">
                 Details:
               </label>
               <textarea
                 value={details}
                 onChange={(e) => setDetails(e.target.value)}
+                id="details"
                 className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
               ></textarea>
             </div>
@@ -213,15 +204,26 @@ const EditEvents: React.FC = () => {
           <div className="grid grid-cols-1 gap-4 mb-8">
             {shifts.map((shift, index) => (
               <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4 items-center">
+              <div>
+                <label className="block mb-2 text-sm font-medium text-gray-700" htmlFor={`date${index}`}>
+                  Date:
+                </label>
                 <input
                   type="date"
                   value={shift.date}
                   onChange={(e) => handleShiftChange(index, 'date', e.target.value)}
+                  id={`date${index}`}
                   className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent bg-transparent"
                 />
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium text-gray-700" htmlFor={`timeSlot${index}`}>
+                  Time Slot:
+                </label>
                 <select
                   value={shift.timeSlot}
                   onChange={(e) => handleShiftChange(index, 'timeSlot', e.target.value)}
+                  id={`timeSlot${index}`}
                   className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent bg-transparent"
                 >
                   {['9am - 1pm', '1pm - 5pm'].map((slot) => (
@@ -230,15 +232,17 @@ const EditEvents: React.FC = () => {
                     </option>
                   ))}
                 </select>
-                <button type="button" onClick={() => removeShift(index)} className="text-red-500 hover:text-red-700 focus:outline-none">
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-                {errors[index] && <div className="text-red-500 text-sm mt-1">{errors[index]}</div>}
               </div>
+              <button type="button" onClick={() => removeShift(index)} aria-label="Remove Shift" className="text-red-500 hover:text-red-700 focus:outline-none">
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
+              {errors[index] && <div className="text-red-500 text-sm mt-1">{errors[index]}</div>}
+            </div>
+            
             ))}
           </div>
 
-          <button type="button" onClick={addShift} className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 mx-auto block">
+          <button type="button" onClick={addShift}  className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 mx-auto block">
             + Add Shift
           </button>
 

@@ -55,7 +55,7 @@ const OtpPage: React.FC<Ioperator> = ({ operator }) => {
                 responseData = await verifyOtp(compOtp);
             } else if (operator === 'community') {
                 responseData = await verifyOtpCommunity(compOtp);
-            }else{
+            } else {
                 responseData = await verifyOtpVolunteer(compOtp);
             }
 
@@ -65,23 +65,20 @@ const OtpPage: React.FC<Ioperator> = ({ operator }) => {
                     toast.success("OTP Verified Successfully!");
                     setTimeout(() => {
                         navigate('/');
-                      }, 2000);
+                    }, 2000);
                 } else if (operator === 'community') {
                     dispatch(setCommunityData(responseData.data.token));
                     toast.success("OTP Verified Successfully!");
                     setTimeout(() => {
                         navigate('/community/home');
-                      }, 2000);
-                }else{
+                    }, 2000);
+                } else {
                     dispatch(setVolunteerData(responseData.data.token));
                     toast.success("OTP Verified Successfully!");
                     setTimeout(() => {
                         navigate('/volunteer/home');
-                      }, 2000);
-
+                    }, 2000);
                 }
-                
-                
             } else {
                 toast.error("Failed to verify OTP. Please try again.");
             }
@@ -101,10 +98,9 @@ const OtpPage: React.FC<Ioperator> = ({ operator }) => {
         }
     };
 
-
     return (
         <div className="bg-gray-100 flex flex-col items-center justify-center h-screen w-full dark:bg-gray-900">
-            <h1 className="absolute text-2xl top-10 left-10 font-bold  text-black z-10">helpingHands</h1>
+            <h1 className="absolute text-2xl top-10 left-10 font-bold text-black z-10">helpingHands</h1>
             <div className="w-full max-w-md px-8 py-10 bg-white rounded-lg shadow-md dark:bg-gray-950 dark:text-gray-200">
                 <h1 className="text-2xl font-semibold text-center mb-6">Enter OTP</h1>
                 <p className="text-gray-600 text-center mb-4">Please check your Inbox for OTP</p>
@@ -118,6 +114,7 @@ const OtpPage: React.FC<Ioperator> = ({ operator }) => {
                             value={otp[key as keyof typeof otp]}
                             onChange={handleChange}
                             maxLength={1}
+                            aria-label={`Digit ${index + 1}`}
                             className="rounded-lg bg-gray-100 cursor-text dark:bg-gray-800 w-14 aspect-square flex items-center justify-center text-center"
                         />
                     ))}

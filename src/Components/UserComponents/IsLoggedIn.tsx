@@ -1,21 +1,14 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import { getProfile } from "../../Api/userApi";
 import { userLogout } from "../../Redux/Slices/Auth";
 import Loader from "./Loader";
 
-interface RootState {
-    auth: {
-        userData: string | null;
-    };
-}
-
 const IsLoggedIn = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
-    const userData = useSelector((state: RootState) => state.auth.userData);
 
     useEffect(() => {
         const fetchData = async () => {

@@ -3,11 +3,12 @@ import { Route, Routes } from 'react-router-dom'
 import Loader from '../Components/UserComponents/Loader'
 import IsLoggedIn from '../Components/UserComponents/IsLoggedIn'
 import IsLoggedOut from '../Components/UserComponents/IsLoggedOut'
-import ErrorPage from '../Pages/Common/ErrorPage'
 import Fundraiser from '../Pages/User/Fundraiser'
 import PaymentSuccess from '../Pages/User/PaymentSuccess'
 import PaymentFailure from '../Pages/User/PaymentFailure'
 import AllPosts from '../Pages/User/AllPosts'
+import NotFoundPage from '../Pages/Common/ErrorPage'
+import AboutUs from '../Pages/User/AboutUs'
 const Home = lazy(() => import('../Pages/User/Home'))
 const Login = lazy(() => import('../Pages/User/Login'))
 const Signup = lazy(() => import('../Pages/User/Signup'))
@@ -23,13 +24,12 @@ const UserRoutes = () => {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/error' element={<ErrorPage/>}/>
         <Route path='' element={<IsLoggedOut />}>
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/verifyOtp' element={<Otp />} />
         </Route>
-
+        <Route path='/*' element = {<NotFoundPage redirectTo='/' />} />
         <Route path='/forgetPassword' element={<ForgetPassword />} />
         <Route path='/forgetPassOtp' element={<ForgetPassOtp />} />
         <Route path='/changePassword' element={<ChangePassword />} />
@@ -42,6 +42,7 @@ const UserRoutes = () => {
           <Route path='/donate/success' element={<PaymentSuccess />} />
           <Route path='/donate/failure' element={<PaymentFailure />} />
           <Route path='/allPosts' element={<AllPosts/>} />
+          <Route path='/aboutUs' element={<AboutUs/>} />
       </Routes>
     </Suspense>
   )

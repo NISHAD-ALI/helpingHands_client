@@ -12,11 +12,13 @@ import EventPage from '../Pages/Volunteer/EventsPage'
 import JoinStream from '../Pages/Volunteer/JoinStream'
 import MyEventsPage from '../Pages/Volunteer/MyEventPage'
 import VolunteerMessages from '../Components/VolunteerComponents/VolunteerMessages'
+import NotFoundPage from '../Pages/Common/ErrorPage'
 
 
 const VolunteerRoutes:React.FC = () => {
   return (
     <Routes>
+      <Route path='/*' element = {<NotFoundPage redirectTo='/volunteer/login' />} />
        <Route path='/login' element = {<LoginPage />} />
        <Route path='/signup' element = {<SignupPage />} />
        <Route path='/' element = {<HomePage />} />

@@ -6,6 +6,7 @@ import { getCommunityDetails } from '../../Api/volunteerApi';
 import { getMessages, sendMessageTo } from '../../Api/communityApi';
 import { MessageData } from '../../Interface/messageData';
 import NotificationComponent from '../Common/NotificationComponent';
+import EmojiInput from 'react-input-emoji'; 
 
 const socket = io('http://localhost:3001');
 
@@ -30,7 +31,6 @@ const CommunityMessages: React.FC = () => {
   const [newMessage, setNewMessage] = useState('');
   const { id: communityId } = useParams<{ id: string }>();
   const [conversations, setConversations] = useState<string | null>(null);
-  const [community, setCommunity] = useState<any>(null);
   const [notifications, setNotifications] = useState<{ message: string, id: number }[]>([]);
 
   useEffect(() => {
@@ -39,7 +39,6 @@ const CommunityMessages: React.FC = () => {
         const response = await getCommunityDetails(communityId as string);
         const defaultConversation = response.data.updated.defaultConversation;
         setConversations(defaultConversation);
-        setCommunity(response.data.updated)
         socket.emit('joinGroup', defaultConversation);
       } catch (error) {
         console.error('Error fetching community:', error);
@@ -79,24 +78,23 @@ const CommunityMessages: React.FC = () => {
         socket.off('receiveNotification');
       };
     }
-  }, [conversations,messages]);
+  }, [conversations, messages]);
 
   const removeNotification = useCallback((id: number) => {
     setNotifications((prevNotifications) => prevNotifications.filter(n => n.id !== id));
   }, []);
 
-  const sendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newMessage.trim() === '' || !conversations) return;
+  const sendMessage = async (messageContent: string) => {
+    if (messageContent.trim() === '' || !conversations) return;
 
     const messageData: MessageData = {
       sender: {
         _id: communityId as string,
-        name: 'ADMIN', 
+        name: 'ADMIN',
         profileImage: '',
       },
       group: conversations,
-      content: newMessage,
+      content: messageContent,
       conversation: conversations,
       communityId: communityId as string,
       timestamp: new Date().toISOString()
@@ -106,7 +104,6 @@ const CommunityMessages: React.FC = () => {
       socket.emit('sendMessage', messageData);
 
       setMessages((prevMessages) => [...prevMessages, messageData]);
-      setNewMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -114,7 +111,7 @@ const CommunityMessages: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-gray-100">
-    
+
       <div className="flex-1 flex flex-col">
         <div className="p-4 bg-green-800 text-white text-center">
           <h2 className="text-xl font-semibold">Community Messages</h2>
@@ -126,7 +123,7 @@ const CommunityMessages: React.FC = () => {
               className={`mb-4 p-3 rounded-lg flex items-start ${message?.sender === null
                 ? 'bg-blue-100 self-end flex-row-reverse'
                 : 'bg-white self-start flex-row'
-              }`}
+                }`}
             >
               <img
                 src={message.sender?.profileImage
@@ -145,19 +142,23 @@ const CommunityMessages: React.FC = () => {
             </div>
           ))}
         </div>
-        <form className="flex p-4 bg-white border-t" onSubmit={sendMessage}>
-          <input
-            type="text"
+        <div className="p-4 bg-green-200 border-t">
+          <EmojiInput
             value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
+            onChange={(text) => setNewMessage(text)}
+            cleanOnEnter
             placeholder="Type your message"
-            className="flex-1 p-2 border rounded-full mr-2"
+            onEnter={(text) => {
+              sendMessage(text);
+              setNewMessage('');
+            }}
+            shouldReturn={true}
+            shouldConvertEmojiToImage={false}
           />
-          <button type="submit" className="bg-green-700 text-white px-4 py-2 rounded-full">Send</button>
-        </form>
+        </div>
       </div>
-    
-<NotificationComponent notifications={notifications} removeNotification={removeNotification} name={community?.name}/>
+
+      <NotificationComponent notifications={notifications} removeNotification={removeNotification} />
     </div>
   );
 };

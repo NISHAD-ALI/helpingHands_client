@@ -1,30 +1,6 @@
 import axiosInstance from "../Config/AxiosInstance";
-import toast from "react-hot-toast";
 import { MessageData } from "../Interface/messageData";
 
-axiosInstance.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('volunteerOtpToken');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    }
-);
-
-axiosInstance.interceptors.response.use(
-    (response) => {
-        return response;
-    },
-    (error) => {
-        console.log(error.response.data.message + "interceptor");
-        toast.error(error.response.data.message);
-        return Promise.reject(error);
-    }
-);
 
 
 export const signupVolunteer = async (name: string, email: string, password: string, phone: number) => {
@@ -220,7 +196,6 @@ export const getMessages = async(conversations:string) =>{
         return response.data
     } catch (error :any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }
 export const sendMessageTo = async(message:MessageData) =>{
@@ -230,7 +205,6 @@ export const sendMessageTo = async(message:MessageData) =>{
         return response
     } catch (error :any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }
 export const fetchDefaultConversations = async(volunteerId:string) =>{
@@ -239,6 +213,5 @@ export const fetchDefaultConversations = async(volunteerId:string) =>{
         return response
     } catch (error :any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
     }
 }

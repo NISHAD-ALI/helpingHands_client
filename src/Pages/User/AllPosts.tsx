@@ -6,7 +6,9 @@ import ScrollToTop from '../../Components/Common/ScrollToTop';
 const AllPostsPage:React.FC = () => {
   return (
     <div className='bg-gradient-to-br from-teal-50 to-green-200 font-inter'>
-      <Nav  />
+       <div className="sticky top-0 z-50">
+        <Nav />
+      </div>
       <AllPosts />
       <Footer />
       <ScrollToTop />

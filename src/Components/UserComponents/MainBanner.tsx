@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MainBanner = () => {
+const MainBanner:React.FC = () => {
   return (
     <div>
       <div className='flex flex-col items-center justify-center h-screen -mt-20'>

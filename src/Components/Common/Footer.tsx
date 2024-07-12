@@ -14,13 +14,13 @@ const Footer: React.FC = () => {
                 type="email"
                 placeholder="Enter your email here"
                 className="bg-gray-800 text-gray-300 px-4 py-2 focus:outline-none w-full"
+                aria-label="Email input"
               />
-              <button className="bg-green-500 p-3">
+              <button className="bg-green-500 p-3" aria-label="Submit email">
                 <FaArrowRight className="text-white" />
               </button>
             </div>
           </div>
-          
         </div>
         <div className="border-t border-gray-700 pt-4 mt-8 text-center md:text-left">
           <p className="mb-2">&copy; 2024 helpingHands Inc. Copyright and rights reserved</p>

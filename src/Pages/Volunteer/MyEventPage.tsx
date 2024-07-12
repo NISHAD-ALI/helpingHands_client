@@ -5,12 +5,13 @@ import EventCard from '../../Components/VolunteerComponents/EventCard';
 import { getEnrolledEvents } from '../../Api/volunteerApi';
 import { useNavigate } from 'react-router-dom';
 import { BiSearch } from 'react-icons/bi';
+import Event from '../../Interface/events';
 
 const MyEventsPage: React.FC = () => {
     const navigate = useNavigate();
-    const [events, setEvents] = useState([]);
+    const [events, setEvents] = useState<Event[] | any>([]);
     const [searchQuery, setSearchQuery] = useState<string>('');
-    const [filteredEvents, setFilteredEvents] = useState([]);
+    const [filteredEvents, setFilteredEvents] = useState<Event[] | any>([]);
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -19,7 +20,7 @@ const MyEventsPage: React.FC = () => {
                 console.log(response?.data.data.events);
                 const fetchedEvents = response?.data.data.events || [];
                 
-                const upcomingEvents = fetchedEvents.filter(event =>
+                const upcomingEvents = fetchedEvents.filter((event:Event) =>
                     event.shifts.some((shift: any) => new Date(shift.date) > new Date())
                 );
                 setEvents(upcomingEvents);
@@ -37,7 +38,7 @@ const MyEventsPage: React.FC = () => {
 
     const handleSearch = () => {
         if (searchQuery.trim()) {
-            const searchedEvents = events.filter(event =>
+            const searchedEvents = events.filter((event:Event) =>
                 event.name.toLowerCase().includes(searchQuery.toLowerCase())
             );
             setFilteredEvents(searchedEvents);
@@ -62,6 +63,7 @@ const MyEventsPage: React.FC = () => {
                                 className="p-2 border border-gray-300 rounded w-full"
                             />
                             <button
+                            aria-label='search'
                                 onClick={handleSearch}
                                 className="bg-green-600 text-white px-2 py-2 rounded flex items-center"
                             >
@@ -70,7 +72,7 @@ const MyEventsPage: React.FC = () => {
                         </div>
                         {filteredEvents.length !== 0 ? (
                             <>
-                                {filteredEvents.map((event, index) => (
+                                {filteredEvents.map((event:Event, index:number) => (
                                     <EventCard
                                         key={index}
                                         date={new Date(event.shifts[0].date).toLocaleDateString('en-IN', {
@@ -81,9 +83,9 @@ const MyEventsPage: React.FC = () => {
                                         title={event.name}
                                         description={event.details}
                                         location={event.city}
-                                        volunteers={event.volunteers.length}
-                                        image={event.images[0]}
-                                        onClick={() => handleEventClick(event._id)}
+                                        volunteers={event?.volunteers?.length || 0}
+                                        image={event.images[0] as string}
+                                        onClick={() => handleEventClick(event._id as string)}
                                         isOnline={event.is_online}
                                         isEnrolled={true}
                                     />

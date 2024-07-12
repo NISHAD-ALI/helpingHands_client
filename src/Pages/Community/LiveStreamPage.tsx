@@ -31,13 +31,6 @@ const LiveStreamPage: React.FC = () => {
       randomID(5),
       randomID(5)
     );
-
-    // Clean up previous resources before joining new room
-    // if (zpRef.current) {
-    //   zpRef.current.leaveRoom();
-    //   zpRef.current.dispose();
-    // }
-
     const zp = ZegoUIKitPrebuilt.create(kitToken);
     zpRef.current = zp;
     zp.joinRoom({
@@ -50,13 +43,6 @@ const LiveStreamPage: React.FC = () => {
       },
     });
 
-    // Optionally return a clean-up function if necessary
-    // return () => {
-    //   if (zpRef.current) {
-    //     zpRef.current.leaveRoom();
-    //     zpRef.current.dispose();
-    //   }
-    // };
   }, [roomID]);
 
   const handleEndStream = () => {

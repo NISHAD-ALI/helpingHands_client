@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
-import { signup, signupVolunteer } from '../../Api/volunteerApi';
+import {  signupVolunteer } from '../../Api/volunteerApi';
 
 const Signup: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -49,7 +49,7 @@ const Signup: React.FC = () => {
       return;
     }
 
-    if (!/^\d+$/.test(phone)) {
+    if (!/^\d+$/.test(phone as any)) {
       toast.error("Contact number must contain only digits.");
       return;
     }

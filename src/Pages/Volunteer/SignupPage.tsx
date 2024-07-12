@@ -1,7 +1,7 @@
 import React from 'react'
 import Signup from '../../Components/VolunteerComponents/Signup'
 
-const SignupPage = () => {
+const SignupPage:React.FC = () => {
   return (
     <Signup />
   )

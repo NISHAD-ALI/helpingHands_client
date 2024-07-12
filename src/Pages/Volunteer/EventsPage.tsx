@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Counter from '../../Components/CommunityComponents/Counter';
 import ProjectDetails from '../../Components/CommunityComponents/ProjectDetails';
@@ -7,21 +7,21 @@ import { getEventsById } from '../../Api/communityApi';
 import { enrollToEvents } from '../../Api/volunteerApi';
 import NavBar from '../../Components/VolunteerComponents/NavBar';
 import toast, { Toaster } from 'react-hot-toast';
-
+import Event from '../../Interface/events';
 
 const EventPage: React.FC = () => {
     const [eventDate, setEventDate] = useState<Date | null>(null);
     const [isStreaming, setIsStreaming] = useState(false);
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
-    const [event,setEvent ] = useState();
+    const [event,setEvent ] = useState<Event>();
 
     useEffect(() => {
         const fetchEvent = async () => {
-            const response = await getEventsById(id);
+            const response = await getEventsById(id as string);
             setEvent(response?.data?.event)
             if (response?.data?.event?.shifts?.length > 0) {
-                setEventDate(new Date(response.data.event.shifts[0].date));
+                setEventDate(new Date(response?.data.event.shifts[0].date));
             }
         };
         fetchEvent();

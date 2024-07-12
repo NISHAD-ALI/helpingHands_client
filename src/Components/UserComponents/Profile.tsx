@@ -1,51 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import user from '../../Interface/user';
-import { deletePost, getPostsOne, getProfile, likePost } from '../../Api/userApi';
+import { deletePost, getPostsOne, getProfile, savePost, getSavedPosts } from '../../Api/userApi';
 import { useNavigate } from 'react-router-dom';
 import PostCard from '../../Components/UserComponents/PostCard';
 import CreatePostModal from '../../Components/UserComponents/CreatePostModal';
 import EditPostModal from '../../Components/UserComponents/EditPostModal';
-import { toast } from 'react-toastify';
+import toast, { Toaster } from 'react-hot-toast';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Profile: React.FC = () => {
   const [data, setData] = useState<user>();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [savedPosts, setSavedPosts] = useState<any[]>([]);
+  const [showSavedPosts, setShowSavedPosts] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchedData = async () => {
+    const fetchData = async () => {
       try {
-        const response: any = await getProfile();
-        setData(response?.data.data);
-        console.log(response.data);
+        const profileResponse: any = await getProfile();
+        setData(profileResponse?.data.data);
+        const postsResponse = await getPostsOne();
+        setPosts(postsResponse?.posts?.posts);
+        const savedPostsResponse = await getSavedPosts();
+        console.log(savedPostsResponse?.data.posts.postId)
+        setSavedPosts(savedPostsResponse?.data.posts.postId);
       } catch (error) {
-        console.error('Error fetching profile data:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchedData();
+    fetchData();
   }, []);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await getPostsOne();
-        const fetchedData = response?.posts?.posts;
-        console.log(fetchedData);
-        setPosts(fetchedData);
-      } catch (error) {
-        console.error('Failed to fetch posts:', error);
-      }
-    };
-
-    fetchPosts();
-  }, []);
-
-  const handleEditPost = (post) => {
+  const handleEditPost = (post: any) => {
     setSelectedPost(post);
     setIsEditModalOpen(true);
   };
@@ -54,7 +45,11 @@ const Profile: React.FC = () => {
     try {
       const response = await deletePost(id);
       if (response) {
-        setPosts(posts.filter((post) => post._id !== id));
+        if (showSavedPosts) {
+          setSavedPosts(savedPosts.filter((post: any) => post?._id !== id));
+        } else {
+          setPosts(posts.filter((post: any) => post?._id !== id));
+        }
         toast.success('Post deleted successfully');
       }
     } catch (error) {
@@ -62,10 +57,26 @@ const Profile: React.FC = () => {
       toast.error('Failed to delete post');
     }
   };
-  
+
+  const handleSave = async (post: any) => {
+    try {
+      const response = await savePost(post);
+      if (response) {
+        toast.success('Post saved successfully');
+        setSavedPosts([...savedPosts, post]);
+      }
+    } catch (error) {
+      console.error('Failed to save post:', error);
+      toast.error('Failed to save post');
+    }
+  };
 
   const handleSaveEdit = (updatedPost: any) => {
-    setPosts(posts.map((post: any) => (post._id === updatedPost._id ? updatedPost : post)));
+    if (showSavedPosts) {
+      setSavedPosts(savedPosts.map((post: any) => (post._id === updatedPost._id ? updatedPost : post)));
+    } else {
+      setPosts(posts.map((post: any) => (post._id === updatedPost._id ? updatedPost : post)));
+    }
     setIsEditModalOpen(false);
   };
 
@@ -75,11 +86,6 @@ const Profile: React.FC = () => {
         <div className="w-full md:w-64 bg-white rounded-lg shadow-lg p-4 flex-shrink-0 h-full">
           <img src={data?.profileImage} alt="Profile" className="w-full h-auto rounded-lg mb-4" />
           <h2 className="text-xl font-semibold">{data?.name}</h2>
-          <div className="flex space-x-4 my-2">
-            <a href="#" className="text-blue-600"><i className="fab fa-facebook"></i></a>
-            <a href="#" className="text-blue-400"><i className="fab fa-twitter"></i></a>
-            <a href="#" className="text-pink-600"><i className="fab fa-instagram"></i></a>
-          </div>
           <p>{data?.email}</p>
           <p>{data?.address}</p>
           <p>{data?.phone}</p>
@@ -112,20 +118,56 @@ const Profile: React.FC = () => {
             >
               Create a new Post
             </button>
+            <button
+              className="px-4 py-2 text-sm font-semibold rounded-lg text-gray-900 bg-green-500 focus:outline-none focus:shadow-outline ml-2"
+              onClick={() => setShowSavedPosts(!showSavedPosts)}
+            >
+              {showSavedPosts ? 'Show My Posts' : 'Show Saved Posts'}
+            </button>
           </div>
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-            {posts.map((post, index) => (
-              <PostCard
-                key={index}
-                image={post?.image}
-                description={post?.title}
-                postedDate={post?.postedDate}
-                onEdit={() => handleEditPost(post)}
-                onDelete={() => handleDelete(post?._id)}
-                id = {post?._id}
-                initialTotalLiked = {post?.likes?.length}
-              />
-            ))}
+          <div className="mt-8">
+            {showSavedPosts ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {savedPosts?.length > 0 ? (
+                  savedPosts.map((post: any, index: number) => (
+                    <PostCard
+                      key={index}
+                      image={post?.image}
+                      description={post?.title}
+                      postedDate={post?.postedDate}
+                      id={post?._id}
+                      initialTotalLiked={post?.likes?.length}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-full flex items-center justify-center">
+                    <p>No saved posts available.</p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {posts.length > 0 ? (
+                  posts.map((post: any, index: number) => (
+                    <PostCard
+                      key={index}
+                      image={post?.image}
+                      description={post?.title}
+                      postedDate={post?.postedDate}
+                      onEdit={() => handleEditPost(post)}
+                      onDelete={() => handleDelete(post?._id)}
+                      id={post?._id}
+                      initialTotalLiked={post?.likes?.length}
+                      onSave={() => handleSave(post)}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-full flex items-center justify-center">
+                    <p>No posts available.</p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -138,6 +180,7 @@ const Profile: React.FC = () => {
           onSave={handleSaveEdit}
         />
       )}
+      <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { width: '350px' } }} />
     </main>
   );
 };

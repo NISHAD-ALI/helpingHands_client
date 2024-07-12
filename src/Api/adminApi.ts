@@ -46,13 +46,20 @@ export const blockUser = async (id: string) => {
         console.log(error.response.data.message);
     }
 }
+export const blockCommunity = async (id: string) => {
+    try {
+        let res = await axiosInstance.post(`/admin/blockCommunity/${id}`);
+        return res;
+    } catch (error : any) {
+        console.log(error.response.data.message);
+    }
+}
 export const logoutAdmin = async () => {
     try {
         const response = await axiosInstance.get('/admin/logout')
         return response
     } catch (error) {
         console.log(error)
-        throw error
     }
 }
 export const createDonation = async (data: FormData) => {
@@ -111,6 +118,14 @@ export const getAllEvents = async () => {
         let response = await axiosInstance.get('/admin/getAllEvents')
         console.log(response)
         return response
+    } catch (error: any) {
+        console.log(error.response.data.message);
+    }
+}
+export const closeDonation = async (id:string) => {
+    try {
+        let res = await axiosInstance.delete(`/admin/deleteDonation/${id}`);
+        return res;
     } catch (error: any) {
         console.log(error.response.data.message);
     }

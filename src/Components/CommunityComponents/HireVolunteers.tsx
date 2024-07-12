@@ -1,6 +1,5 @@
 import React from 'react';
 import homeVolunteer from '../../Interface/homeVolunteer';
-import { useNavigate } from 'react-router-dom';
 const VolunteerSection:React.FC<homeVolunteer> = ({ imageSrc, title, description, buttonText,click }) => {
   return (
     <section className="py-16">

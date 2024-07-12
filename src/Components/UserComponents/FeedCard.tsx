@@ -1,23 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as regularHeart, faComment } from '@fortawesome/free-regular-svg-icons';
-import { faHeart as solidHeart,faEllipsisV } from '@fortawesome/free-solid-svg-icons';
-import { addComment, getAllPosts, getComments, isLiked, likePost, reportPost } from '../../Api/userApi';
+import { faHeart as solidHeart, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import { addComment, getAllPosts, getComments, isLiked, likePost, reportPost, savePost } from '../../Api/userApi';
 import { formatDistanceToNow } from 'date-fns';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Modal from './CommentModal';
 import toast, { Toaster } from 'react-hot-toast';
-interface Post {
-  _id: string;
-  image: string;
-  title: string;
-  description: string;
-  postedDate: Date;
-  userId: { name: string; profileImage: string };
-  totalLiked: number;
-  liked: boolean;
-}
+import Post from '../../Interface/post';
 
 interface Comment {
   _id: string;
@@ -47,7 +38,7 @@ const AllPosts: React.FC = () => {
         const fetchedData = response?.posts || [];
         const postsWithLikes = await Promise.all(
           fetchedData.map(async (post: Post) => {
-            const likedResponse = await isLiked(post._id);
+            const likedResponse = await isLiked(post._id as string);
             return { ...post, liked: likedResponse?.data?.post || false, totalLiked: post.totalLiked || 0 };
           })
         );
@@ -92,7 +83,7 @@ const AllPosts: React.FC = () => {
         try {
           const response = await getComments(currentPostId);
           const fetchedData = response?.data || [];
-          
+
           setComments(fetchedData);
         } catch (error) {
           console.error('Failed to fetch comments:', error);
@@ -163,30 +154,40 @@ const AllPosts: React.FC = () => {
     setOtherReason('');
     setCurrentPostId(null);
   };
-
-  const handleReportSubmit = async() => {
+  const handleSave = async (post: any) => {
+    try {
+      const response = await savePost(post);
+      if (response) {
+        toast.success('Post saved successfully');
+      }
+    } catch (error) {
+      console.error('Failed to save post:', error);
+      toast.error('Failed to save post');
+    }
+  };
+  const handleReportSubmit = async () => {
     console.log(`Reported post ${currentPostId} for reason: ${reportReason}`);
     if (reportReason === 'other') {
       console.log(`Other reason provided: ${otherReason}`);
-      const response = await reportPost(currentPostId as string,otherReason)
-      if(response){
+      const response = await reportPost(currentPostId as string, otherReason)
+      if (response) {
         console.log(response)
         toast.success("You've Reported this post")
       }
-    }else{
-      const reponse = await reportPost(currentPostId as string,reportReason)
-      if(reponse){
+    } else {
+      const reponse = await reportPost(currentPostId as string, reportReason)
+      if (reponse) {
         console.log(reponse)
         toast.success("You've Reported this post")
       }
     }
-   
+
     handleReportModalClose();
   };
 
   return (
     <section className="py-16 font-inter relative">
-      <div className={`w-full sticky top-0 z-10 mx-auto transition-all duration-300 ${isSticky ? 'bg-green-100 shadow-md' : ''}`}>
+      <div className={`w-full mx-auto transition-all duration-300 ${isSticky ? 'bg-green-100 shadow-md' : ''}`}>
         <h2 className="text-3xl font-bold text-center py-4 mb-8">Latest Feeds</h2>
       </div>
       <div className="w-full max-w-2xl mx-auto">
@@ -213,20 +214,26 @@ const AllPosts: React.FC = () => {
                       className="w-10 h-10 rounded-full mr-4"
                     />
                     <div>
-                      <h4 className="font-bold">{post.userId.name}</h4>
+                      <h4 className="font-bold">{post.userId?.name}</h4>
                     </div>
                   </div>
                   <div className="relative">
-                    <button onClick={() => toggleDropdown(post._id)}>
+                    <button onClick={() => toggleDropdown(post._id as string)} aria-label='toggle'>
                       <FontAwesomeIcon icon={faEllipsisV} size="lg" className="text-white" />
                     </button>
-                    {showDropdown[post._id] && (
+                    {showDropdown && showDropdown[post?._id as string] && (
                       <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
                         <button
                           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          onClick={() => handleReport(post._id)}
+                          onClick={() => handleReport(post._id as string)}
                         >
                           Report Post
+                        </button>
+                        <button
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          onClick={() => handleSave(post)}
+                        >
+                          Save Post
                         </button>
                       </div>
                     )}
@@ -234,20 +241,25 @@ const AllPosts: React.FC = () => {
                 </div>
                 <div>
                   <div className="flex items-center mb-2">
-                    <button className="mr-4" onClick={() => handleLike(post._id)}>
+                    <button
+                      className="mr-4"
+                      onClick={() => handleLike(post._id as string)}
+                      aria-label={post.liked ? 'Unlike' : 'Like'}
+                    >
                       <FontAwesomeIcon
                         icon={post.liked ? solidHeart : regularHeart}
                         size="lg"
                         className={post.liked ? 'text-red-600' : 'text-white'}
                       />
                     </button>
-                    <button onClick={() => handleCommentClick(post._id)}>
+                    <button onClick={() => handleCommentClick(post._id as string)} aria-label="Comment">
                       <FontAwesomeIcon icon={faComment} size="lg" />
                     </button>
+
                   </div>
                   <h4 className="font-bold">{post.userId.name}</h4>
                   <p>{post.title}</p>
-                  <p className="mb-2 text-sm text-gray-300">Liked by <span className='font-semibold'>{post.likes.length}</span> users</p>
+                  <p className="mb-2 text-sm text-gray-300">Liked by <span className='font-semibold'>{post?.likes ? post.likes.length : 0}</span> users</p>
                   <p className="text-gray-200 text-sm">{formatDistanceToNow(new Date(post.postedDate), { addSuffix: true })}</p>
                 </div>
               </div>

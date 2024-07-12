@@ -38,10 +38,10 @@ const ForgetPassOtp: React.FC = () => {
             event.preventDefault();
             let compOtp = Object.values(otp).join("");
             let responseData = await verifyOtpForgotPassword(compOtp);
-            if (responseData.data) {
+            if (responseData?.data) {
                 navigate('/changePassword');
             } else {
-                setError(responseData.data.message);
+                setError(responseData?.data.message);
             }
         } catch (error) {
             console.log(error);
@@ -67,8 +67,10 @@ const ForgetPassOtp: React.FC = () => {
                 <p className="text-center m-2">Resend OTP in {timer} seconds</p>
                 {error && <p className="text-red-500 text-center mb-4">{error}</p>}
                 <div className="grid grid-cols-5 gap-x-4 my-2">
+                    <label htmlFor="otp">otp</label>
                     {Object.keys(otp).map((key, index) => (
                         <input
+                            id='otp'
                             key={index}
                             type="text"
                             name={key}

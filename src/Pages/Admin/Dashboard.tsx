@@ -13,9 +13,11 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { getCoordinates } from '../../Api/geocode';
-
+import donations from '../../Interface/donations';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import Event from '../../Interface/events';
+import community from '../../Interface/community';
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -27,15 +29,15 @@ L.Marker.prototype.options.icon = DefaultIcon;
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 const Dashboard: React.FC = () => {
-  const [donations, setDonations] = useState([]);
-  const [communities, setCommunities] = useState([]);
+  const [donations, setDonations] = useState<donations[] | any[]>([]);
+  const [communities, setCommunities] = useState<community[]| any[]>([]);
   const [volunteers, setVolunteers] = useState([]);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [reportedPost, setReportedPost] = useState<any>(null);
-  const [eventCoordinates, setEventCoordinates] = useState([]);
+  const [eventCoordinates, setEventCoordinates] = useState<Event[]>([]);
   const navigate = useNavigate();
   let totalAmountCollected = donations.reduce((total, fund) => total + fund?.amountCollected, 0);
-
+console.log(donations)
   useEffect(() => {
     const fetchDonations = async () => {
       try {
@@ -151,8 +153,8 @@ const Dashboard: React.FC = () => {
 
   const lastCommunities = communities.sort((a, b) => b.events.length - a.events.length).slice(0, 3);
   console.log("LS::", lastCommunities);
-  const onlineEventCounts = lastCommunities.map(community => community.events.filter(event => event.is_online === true).length);
-  const offlineEventCounts = lastCommunities.map(community => community.events.filter(event => event.is_online === false).length);
+  const onlineEventCounts = lastCommunities.map(community => community.events.filter((event :any) => event.is_online === true).length);
+  const offlineEventCounts = lastCommunities.map(community => community.events.filter((event :any) => event.is_online === false).length);
 
   const barData = {
     labels: lastCommunities.map(community => community?.name),
@@ -266,20 +268,22 @@ const Dashboard: React.FC = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
-             {eventCoordinates.map(event => (
-            <Marker key={event._id} position={[event.location.lat, event.location.lon]}>
-              <Popup>
-                <div className="popup-card bg-cover bg-center rounded-lg shadow-md text-white"
-                  style={{ backgroundImage: `url(${event?.images[0]})`, backgroundSize: 'cover' }}
-                >
-                  <div className="popup-content p-2 bg-black bg-opacity-50 rounded">
-                    <h3 className="text-sm font-semibold">{event.name}</h3>
-                    <p>{event?.time}</p>
-                  </div>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
+            {eventCoordinates.map((event) => (
+              event.location && (
+                <Marker key={event._id} position={[event.location.lat, event.location.lon]}>
+                  <Popup>
+                    <div className="popup-card bg-cover bg-center rounded-lg shadow-md text-white"
+                      style={{ backgroundImage: `url(${event?.images[0]})`, backgroundSize: 'cover' }}
+                    >
+                      <div className="popup-content p-2 bg-black bg-opacity-50 rounded">
+                        <h3 className="text-sm font-semibold">{event.name}</h3>
+                      </div>
+                    </div>
+                  </Popup>
+                </Marker>
+              )
+            ))}
+
           </MapContainer>
         </div>
       </div>

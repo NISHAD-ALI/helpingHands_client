@@ -1,7 +1,7 @@
 import React from 'react'
 import OtpPage from '../../Components/Common/OtpPage'
 
-const Otp = () => {
+const Otp:React.FC = () => {
   return (
     <OtpPage operator='volunteer' />
   )

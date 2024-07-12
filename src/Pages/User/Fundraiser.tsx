@@ -30,17 +30,23 @@ const Fundraiser: React.FC = () => {
       <main className="flex-1 container mx-auto p-4">
         <h1 className="text-3xl font-bold mb-4">Fundraiser</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {fundraiser.map((fundraiser, index) => (
-            <FundraiserCard
-              key={index}
-              category={fundraiser.type}
-              image={fundraiser.image}
-              progress={Math.round((fundraiser?.amountCollected / fundraiser?.targetAmount) * 100)}
-              name={fundraiser.name}
-              details={fundraiser.details}
-              _id={fundraiser._id}
-            />
-          ))}
+          {fundraiser.map((fundraiser, index) => {
+            const amountCollected = fundraiser.amountCollected ?? 0;
+            const targetAmount = fundraiser.targetAmount ?? 1;
+            const progress = Math.round((amountCollected / targetAmount) * 100);
+
+            return (
+              <FundraiserCard
+                key={index}
+                category={fundraiser.type}
+                image={fundraiser.image}
+                progress={progress}
+                name={fundraiser.name}
+                details={fundraiser.details}
+                _id={fundraiser._id as string}
+              />
+            );
+          })}
         </div>
       </main>
       <Footer />

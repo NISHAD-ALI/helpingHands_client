@@ -5,13 +5,14 @@ import ProjectDetails from '../../Components/CommunityComponents/ProjectDetails'
 import Footer from '../../Components/Common/Footer';
 import { useNavigate, useParams } from 'react-router-dom';
 import { deleteEvent, getEventsById } from '../../Api/communityApi';
-import toast, { Toaster } from 'react-hot-toast';
+import  { Toaster } from 'react-hot-toast';
+import Event from '../../Interface/events';
 
 const EventPage: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [eventDate, setEventDate] = useState<Date | null>(null);
-    const [data,setData] = useState([])
+    const [data,setData] = useState<Event | any>([])
 
     useEffect(() => {
         const fetchEvent = async () => {

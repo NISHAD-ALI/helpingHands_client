@@ -3,27 +3,28 @@ import NavBar from '../../Components/VolunteerComponents/NavBar';
 import Footer from '../../Components/Common/Footer';
 import Calendar from '../../Components/Common/Calender';
 import EventCard from '../../Components/VolunteerComponents/EventCard';
-import {  getEventsFilteredByCategory, getEventsFilteredByDateRange, searchEvents } from '../../Api/communityApi';
-import {  getNotEnrolledEvents } from '../../Api/volunteerApi';
+import { getEventsFilteredByCategory, getEventsFilteredByDateRange, searchEvents } from '../../Api/communityApi';
+import { getNotEnrolledEvents } from '../../Api/volunteerApi';
 import { useNavigate } from 'react-router-dom';
 import { BiSearch, BiFilter } from 'react-icons/bi';
 import Slider from 'react-slick';
+import Event from '../../Interface/events';
 
 const EventsListPage: React.FC = () => {
     const navigate = useNavigate();
     const [startDate, setStartDate] = useState<string>('');
     const [endDate, setEndDate] = useState<string>('');
-    const [filteredEvents, setFilteredEvents] = useState([]);
-    const [events, setEvents] = useState([]);
+    const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
+    const [events, setEvents] = useState<Event[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>('');
-    
+
     useEffect(() => {
         const fetchEvents = async () => {
             try {
                 const response = await getNotEnrolledEvents();
-                console.log(response)
+                console.log(response);
                 const fetchedEvents = response?.data?.data || [];
-                const upcomingEvents = fetchedEvents.filter(event =>
+                const upcomingEvents = fetchedEvents.filter((event:any) =>
                     event.shifts.some((shift: any) => new Date(shift.date) >= new Date())
                 );
                 setEvents(upcomingEvents);
@@ -41,7 +42,7 @@ const EventsListPage: React.FC = () => {
 
     const handleDateClick = (date: Date) => {
         const selectedDateEvents = events.filter(event =>
-            event.shifts.some((shift: any) => new Date(shift.date).toDateString() === date.toDateString())
+            event?.shifts.some((shift: any) => new Date(shift.date).toDateString() === date.toDateString())
         );
         setFilteredEvents(selectedDateEvents);
     };
@@ -51,7 +52,7 @@ const EventsListPage: React.FC = () => {
             try {
                 const response = await getEventsFilteredByDateRange(startDate, endDate);
                 const filteredByDateRange = response?.result || [];
-                const upcomingEvents = filteredByDateRange.filter(event =>
+                const upcomingEvents = filteredByDateRange.filter((event:any) =>
                     event.shifts.some((shift: any) => new Date(shift.date) >= new Date())
                 );
                 setFilteredEvents(upcomingEvents);
@@ -65,17 +66,17 @@ const EventsListPage: React.FC = () => {
         if (searchQuery.trim()) {
             try {
                 const response = await searchEvents(searchQuery);
-                console.log(response?.events)
+                console.log(response?.events);
                 const searchedEvents = response?.events || [];
-                const upcomingEvents = searchedEvents.filter(event =>
-                    event.shifts.some(shift => new Date(shift.date) >= new Date())
+                const upcomingEvents = searchedEvents.filter((event:any) =>
+                    event.shifts.some((shift:any) => new Date(shift.date) >= new Date())
                 );
                 setFilteredEvents(upcomingEvents);
             } catch (error) {
                 console.error('Failed to search events:', error);
             }
         } else {
-            setFilteredEvents(events); 
+            setFilteredEvents(events);
         }
     };
 
@@ -116,18 +117,20 @@ const EventsListPage: React.FC = () => {
             },
         ],
     };
+
     const handleCategoryFilter = async (name: string) => {
         try {
             const response = await getEventsFilteredByCategory(name);
             const filteredByCategory = response?.data?.result || [];
-            const upcomingEvents = filteredByCategory.filter(event =>
-                event.shifts.some(shift => new Date(shift.date) >= new Date())
+            const upcomingEvents = filteredByCategory.filter((event:any) =>
+                event.shifts.some((shift:any) => new Date(shift.date) >= new Date())
             );
             setFilteredEvents(upcomingEvents);
         } catch (error) {
             console.error('Failed to filter events by category:', error);
         }
     };
+
     return (
         <div className='bg-gradient-to-br from-teal-50 to-green-200 font-inter min-h-screen flex flex-col'>
             <NavBar />
@@ -147,33 +150,38 @@ const EventsListPage: React.FC = () => {
                     <div className="w-full md:w-1/3">
                         <Calendar events={events} onDateClick={handleDateClick} />
                         <div className="mt-4">
-                            <div className="flex space-x-2">
-                                <input
-                                    type="date"
-                                    value={startDate}
-                                    onChange={(e) => setStartDate(e.target.value)}
-                                    className="p-2 border border-gray-300 rounded"
-                                />
-                                <input
-                                    type="date"
-                                    value={endDate}
-                                    onChange={(e) => setEndDate(e.target.value)}
-                                    className="p-2 border border-gray-300 rounded"
-                                />
-                                <button
-                                    onClick={handleFilterEvents}
-                                    className="bg-green-600 text-white px-2 py-2 rounded flex items-center"
-                                >
-                                    <BiFilter  />
-                                </button>
-                            </div>
+                            <label htmlFor="start-date" className="sr-only">Start Date</label>
+                            <input
+                                type="date"
+                                id="start-date"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                                className="p-2 border border-gray-300 rounded"
+                            />
+                            <label htmlFor="end-date" className="sr-only">End Date</label>
+                            <input
+                                type="date"
+                                id="end-date"
+                                value={endDate}
+                                onChange={(e) => setEndDate(e.target.value)}
+                                className="p-2 border border-gray-300 rounded"
+                            />
+                            <button
+                                onClick={handleFilterEvents}
+                                aria-label="Filter Events"
+                                className="bg-green-600 text-white px-2 py-2 rounded flex items-center"
+                            >
+                                <BiFilter />
+                            </button>
                         </div>
                     </div>
                     <div className="flex-1 mt-3 md:mt-0 md:ml-4">
                         <h2 className="text-2xl font-bold mt-1 mb-2">Your upcoming events</h2>
                         <div className="flex space-x-2 mb-4">
+                            <label htmlFor="search-events" className="sr-only">Search Events</label>
                             <input
                                 type="text"
+                                id="search-events"
                                 placeholder="Search events..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -181,9 +189,10 @@ const EventsListPage: React.FC = () => {
                             />
                             <button
                                 onClick={handleSearch}
+                                aria-label="Search Events"
                                 className="bg-green-600 text-white px-2 py-2 rounded flex items-center"
                             >
-                                <BiSearch  /> 
+                                <BiSearch />
                             </button>
                         </div>
                         {filteredEvents?.length !== 0 ? (
@@ -195,13 +204,13 @@ const EventsListPage: React.FC = () => {
                                             day: '2-digit',
                                             month: '2-digit',
                                             year: 'numeric',
-                                          })}
+                                        })}
                                         title={event?.name}
                                         description={event?.details}
                                         location={event?.city}
-                                        volunteers={event?.volunteers.length}
-                                        image={event?.images[0]}
-                                        onClick={() => handleEventClick(event._id)}
+                                        volunteers={event?.volunteers?.length}
+                                        image={event?.images[0] as string}
+                                        onClick={() => handleEventClick(event._id as string)}
                                         isOnline={event?.is_online}
                                     />
                                 ))}

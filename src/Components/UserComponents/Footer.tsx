@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
                 placeholder="Enter your email here"
                 className="bg-gray-800 text-gray-300 px-4 py-2 focus:outline-none w-full"
               />
-              <button className="bg-green-500 p-3">
+              <button className="bg-green-500 p-3" type='button' aria-label='arrow'>
                 <FaArrowRight className="text-white" />
               </button>
             </div>

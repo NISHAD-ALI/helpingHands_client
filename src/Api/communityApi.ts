@@ -1,7 +1,7 @@
-
 import axiosInstance from "../Config/AxiosInstance";
-import toast from "react-hot-toast";
 import { MessageData } from "../Interface/messageData";
+import Event from "../Interface/events";
+
 
 export const signupCommunity = async (name: string, email: string, password: string, mobile: number) => {
     try {
@@ -12,7 +12,7 @@ export const signupCommunity = async (name: string, email: string, password: str
         return formData
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+
     }
 }
 
@@ -32,7 +32,7 @@ export const verifyOtpCommunity = async (otp: string) => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+
     }
 }
 
@@ -43,7 +43,7 @@ export const loginCommunity = async (email: string, password: string) => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+
     }
 }
 
@@ -71,7 +71,7 @@ export const resendOtpCommunity = async () => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+
     }
 }
 
@@ -88,7 +88,7 @@ export const createEvents = async (data: FormData) => {
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+
     }
 }
 
@@ -99,7 +99,7 @@ export const getEvents = async () => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+
     }
 }
 export const getEventsById = async (id: string) => {
@@ -108,7 +108,7 @@ export const getEventsById = async (id: string) => {
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message);
+;
     }
 };
 export const deleteEvent = async (id: string) => {
@@ -117,10 +117,10 @@ export const deleteEvent = async (id: string) => {
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message);
+;
     }
 };
-export const editEvent = async (id: string, formData: FormData) => {
+export const editEvent = async (id: string, formData: FormData | Event) => {
     try {
         console.log("-----api----")
         console.log(formData)
@@ -129,7 +129,7 @@ export const editEvent = async (id: string, formData: FormData) => {
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message);
+;
     }
 };
 export const getProfile = async () => {
@@ -170,7 +170,7 @@ export const getVolunteers = async () => {
         return response
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+
     }
 }
 export const getEventsFilteredByDateRange = async (startDate = '', endDate = '') => {
@@ -182,7 +182,7 @@ export const getEventsFilteredByDateRange = async (startDate = '', endDate = '')
         return response.data;
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+
     }
 };
 export const getEventsFilteredByCategory = async (name:string) => {
@@ -196,7 +196,7 @@ export const getEventsFilteredByCategory = async (name:string) => {
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+
     }
 };
 export const getEventsFilteredByDay = async (date:Date) => {
@@ -210,7 +210,7 @@ export const getEventsFilteredByDay = async (date:Date) => {
         return response.data;
     } catch (error: any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+
     }
 };
 export const searchEvents = async(query:string) =>{
@@ -221,7 +221,7 @@ export const searchEvents = async(query:string) =>{
         return response.data
     } catch (error :any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+
     }
 }
 export const getMessages = async(conversations:string) =>{
@@ -231,7 +231,7 @@ export const getMessages = async(conversations:string) =>{
         return response.data
     } catch (error :any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+
     }
 }
 export const sendMessageTo = async(message:MessageData) =>{
@@ -240,6 +240,6 @@ export const sendMessageTo = async(message:MessageData) =>{
         return response.data
     } catch (error :any) {
         console.log(error.response.data.message);
-        toast.error(error.response.data.message)
+
     }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useRef, ChangeEvent } from 'react';
 import { createPost } from '../../Api/userApi';
 import AvatarEditor from 'react-avatar-editor';
-import toast, { Toaster } from 'react-hot-toast';
+import  { Toaster } from 'react-hot-toast';
 interface CreatePostModalProps {
   isOpen: boolean;
   onClose: () => void;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createDonation } from '../../Api/adminApi';
-
+import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 const AddDonation: React.FC = () => {
   const [formData, setFormData] = useState({
     fundraiserName: '',
@@ -16,7 +17,7 @@ const AddDonation: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('https://via.placeholder.com/100');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
+  const navigate = useNavigate()
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -65,8 +66,6 @@ const AddDonation: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
-      console.log(formData);
-
       const formDataInstance = new FormData();
       formDataInstance.append('fundraiserName', formData.fundraiserName);
       formDataInstance.append('email', formData.email);
@@ -82,7 +81,11 @@ const AddDonation: React.FC = () => {
 
       const response = await createDonation(formDataInstance); 
       if(response?.data?.success){
-        console.log('success', response);
+        toast.success('New Fundraiser has been successFully created ✨')
+        setTimeout(() => {
+          navigate('/admin/donationManagement')
+      }, 2000);
+        
       }
     }
   };
@@ -110,9 +113,10 @@ const AddDonation: React.FC = () => {
           <div className="w-full">
             <div className="flex flex-wrap -mx-2 mb-4">
               <div className="w-full md:w-1/2 px-2">
-                <label className="block text-gray-700 mb-2">Fundraiser Name</label>
+                <label className="block text-gray-700 mb-2" htmlFor="fundraiserName">Fundraiser Name</label>
                 <input
                   type="text"
+                  id="fundraiserName"
                   name="fundraiserName"
                   value={formData.fundraiserName}
                   onChange={handleChange}
@@ -123,9 +127,10 @@ const AddDonation: React.FC = () => {
                 )}
               </div>
               <div className="w-full md:w-1/2 px-2">
-                <label className="block text-gray-700 mb-2">Target Amount</label>
+                <label className="block text-gray-700 mb-2" htmlFor="targetAmount">Target Amount</label>
                 <input
                   type="text"
+                  id="targetAmount"
                   name="targetAmount"
                   value={formData.targetAmount}
                   onChange={handleChange}
@@ -138,9 +143,10 @@ const AddDonation: React.FC = () => {
             </div>
             <div className="flex flex-wrap -mx-2 mb-4">
               <div className="w-full md:w-1/2 px-2">
-                <label className="block text-gray-700 mb-2">Email</label>
+                <label className="block text-gray-700 mb-2" htmlFor="email">Email</label>
                 <input
                   type="email"
+                  id="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
@@ -151,8 +157,9 @@ const AddDonation: React.FC = () => {
                 )}
               </div>
               <div className="w-full md:w-1/2 px-2">
-                <label className="block text-gray-700 mb-2">Donation Type</label>
+                <label className="block text-gray-700 mb-2" htmlFor="donationType">Donation Type</label>
                 <select
+                  id="donationType"
                   name="donationType"
                   value={formData.donationType}
                   onChange={handleChange}
@@ -166,9 +173,10 @@ const AddDonation: React.FC = () => {
             </div>
             <div className="flex flex-wrap -mx-2 mb-4">
               <div className="w-full md:w-1/2 px-2">
-                <label className="block text-gray-700 mb-2">Start Date</label>
+                <label className="block text-gray-700 mb-2" htmlFor="startDate">Start Date</label>
                 <input
                   type="date"
+                  id="startDate"
                   name="startDate"
                   value={formData.startDate}
                   onChange={handleChange}
@@ -179,9 +187,10 @@ const AddDonation: React.FC = () => {
                 )}
               </div>
               <div className="w-full md:w-1/2 px-2">
-                <label className="block text-gray-700 mb-2">End Date</label>
+                <label className="block text-gray-700 mb-2" htmlFor="endDate">End Date</label>
                 <input
                   type="date"
+                  id="endDate"
                   name="endDate"
                   value={formData.endDate}
                   onChange={handleChange}
@@ -194,9 +203,10 @@ const AddDonation: React.FC = () => {
             </div>
             <div className="flex flex-wrap -mx-2 mb-4">
               <div className="w-full px-2">
-                <label className="block text-gray-700 mb-2">Contact Address</label>
+                <label className="block text-gray-700 mb-2" htmlFor="contactAddress">Contact Address</label>
                 <input
                   type="text"
+                  id="contactAddress"
                   name="contactAddress"
                   value={formData.contactAddress}
                   onChange={handleChange}
@@ -209,8 +219,9 @@ const AddDonation: React.FC = () => {
             </div>
             <div className="flex flex-wrap -mx-2 mb-4">
               <div className="w-full px-2">
-                <label className="block text-gray-700 mb-2">Details</label>
+                <label className="block text-gray-700 mb-2" htmlFor="details">Details</label>
                 <textarea
+                  id="details"
                   name="details"
                   value={formData.details}
                   onChange={handleChange}
@@ -229,6 +240,8 @@ const AddDonation: React.FC = () => {
           </button>
         </div>
       </form>
+      <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { width: '350px' } }} />
+
     </div>
   );
 };

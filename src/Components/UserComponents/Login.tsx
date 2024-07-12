@@ -36,7 +36,7 @@ const Login: React.FC = () => {
                 navigate('/');
                 toast.success("Login successful!");
             } else {
-                const message = response.data.message;
+                const message = response?.data.message;
                 setError(message);
             }
 
@@ -58,7 +58,7 @@ const Login: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="hidden lg:block lg:w-1/2" style={{ backgroundImage: "url(./public/shane-rounce-DNkoNXQti3c-unsplash.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
+                <div className="backImage hidden lg:block lg:w-1/2" style={{ backgroundImage: "url(./public/shane-rounce-DNkoNXQti3c-unsplash.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
                     <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
                         <div>
                             <h2 className="text-4xl font-bold bg-gradient-to-r from-slate-100 to-emerald-100 text-transparent bg-clip-text">"Connecting Communities, Empowering Lives."</h2>
@@ -107,6 +107,7 @@ const Login: React.FC = () => {
                                     </button>
                                 </div>
                             </form>
+                            {/* {error && <span className='text-red-600'>{error}</span>} */}
                             <div className="mt-6 flex items-center justify-center">
                                 <GoogleAuthentication Login={true} />
                             </div>

@@ -42,6 +42,7 @@ const NotificationComponent: React.FC<NotificationComponentProps> = ({ notificat
               <button
                 className="absolute top-2 right-2 text-red-600 hover:text-red-500 focus:outline-none"
                 onClick={() => handleClose(notification.id)}
+                aria-label="Close notification"
               >
                 <FontAwesomeIcon icon={faTimesCircle} size="lg" />
               </button>

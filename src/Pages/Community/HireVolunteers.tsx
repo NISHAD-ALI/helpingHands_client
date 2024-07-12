@@ -2,25 +2,25 @@ import React, { useEffect, useState } from 'react';
 import NavBar from '../../Components/CommunityComponents/NavBar';
 import ApplicationCard from '../../Components/CommunityComponents/ApplicationCard';
 import Footer from '../../Components/Common/Footer';
-import { getProfile, updateVolunteerStatus } from '../../Api/communityApi'; // Add updateVolunteerStatus function
-import { useSelector } from 'react-redux';
+import { getProfile, updateVolunteerStatus } from '../../Api/communityApi';
 import { getVolunteerById } from '../../Api/volunteerApi';
-import toast,{Toaster} from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+import Volunteer from '../../Interface/volunteer';
+
 const HireVolunteers: React.FC = () => {
-  const [volunteers, setVolunteers] = useState([]);
-  const [userMap, setUserMap] = useState({});
-  const [volunteerIds, setVolunteerIds] = useState([]); 
-  const isLoggedIn = useSelector((state: any) => state.auth.communityData );
+  const [volunteers, setVolunteers] = useState<Volunteer[]>([]);
+  const [userMap, setUserMap] = useState<{ [key: string]: Volunteer }>({});
+  const [volunteerIds, setVolunteerIds] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchEvent = async () => {
       try {
         const response = await getProfile();
         if (response) {
-          const fetchedVolunteers = response?.data?.data?.volunteers || [];
-          setVolunteers(fetchedVolunteers.filter(volunteer => !volunteer.is_accepted));
-          const ids = fetchedVolunteers.map((volunteer) => volunteer.volunteerId);
-          setVolunteerIds(ids);
+          const fetchedVolunteers: Volunteer[] = response?.data?.data?.volunteers || [];
+          setVolunteers(fetchedVolunteers.filter((volunteer: Volunteer) => !volunteer.is_accepted));
+          const ids = fetchedVolunteers.map((volunteer: Volunteer) => volunteer.volunteerId);
+          setVolunteerIds(ids as any);
         }
       } catch (error) {
         console.error("Error fetching volunteers:", error);
@@ -45,16 +45,16 @@ const HireVolunteers: React.FC = () => {
     };
 
     fetchUserDetails();
-  }, [volunteerIds]);
+  }, [volunteerIds, userMap]);
 
-  const handleAccept = async (volunteerId) => {
+  const handleAccept = async (volunteerId: string) => {
     try {
       await updateVolunteerStatus(volunteerId, true);
       const updatedResponse = await getProfile();
       if (updatedResponse) {
-        toast.success('Volunteer accepted into community')
+        toast.success('Volunteer accepted into community');
         const updatedVolunteers = updatedResponse?.data?.data?.volunteers || [];
-        setVolunteers(updatedVolunteers.filter(volunteer => !volunteer.is_accepted));
+        setVolunteers(updatedVolunteers.filter((volunteer: Volunteer) => !volunteer.is_accepted));
       }
     } catch (error) {
       console.error("Error accepting volunteer:", error);
@@ -67,15 +67,21 @@ const HireVolunteers: React.FC = () => {
       <main className="flex-1 container mx-auto p-4 h-max">
         <h1 className="text-3xl font-bold mb-8">Recent Applications</h1>
         {volunteers.length > 0 ? (
-          volunteers.map((volunteer) => (
-            <ApplicationCard
-              key={volunteer?.id || volunteer?._id}
-              name={userMap[volunteer?.volunteerId]?.name || volunteer?.name || volunteer?.volunteerId}
-              image={volunteer?.profileImage || userMap[volunteer?.volunteerId]?.profileImage|| "https://via.placeholder.com/150"}
-              volunteer={volunteer}
-              onAccept={() => handleAccept(volunteer?.volunteerId)}
-            />
-          ))
+          volunteers.map((volunteer) => {
+            const volunteerId = volunteer?.volunteerId;
+            if (volunteerId) {
+              return (
+                <ApplicationCard
+                  key={volunteer?.id || volunteer?._id}
+                  name={userMap[volunteerId]?.name || volunteer?.name || volunteerId}
+                  image={volunteer?.profileImage || userMap[volunteerId]?.profileImage || "https://via.placeholder.com/150"}
+                  volunteer={volunteer}
+                  onAccept={() => handleAccept(volunteerId)}
+                />
+              );
+            }
+            return null;
+          })
         ) : (
           <p>No applications found.</p>
         )}

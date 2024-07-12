@@ -1,8 +1,10 @@
 import React from 'react';
+import Volunteer from '../../Interface/volunteer';
 
 interface ApplicationCardProps {
   name: string;
   image: string;
+  volunteer?: Volunteer;
   onAccept: () => void; 
 }
 

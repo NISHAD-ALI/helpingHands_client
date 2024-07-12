@@ -7,7 +7,6 @@ export type RootState = {
    
 };
 
-// Combine reducers
 const rootReducer: Reducer<RootState> = combineReducers({
     auth: AuthReducer,
     

@@ -10,7 +10,6 @@ const Signup = () => {
   const [password, setPassword] = useState<string>('Nishucp1!');
   const [phone, setPhone] = useState<string>('9876543211');
   const [passwordConfirm, setPasswordConfirm] = useState<string>('Nishucp1!');
-  const [error, setError] = useState<{ [key: string]: string }>({});
   const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const phoneNumberRegex = /^[0-9]{10}$/;
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[0-9a-zA-Z!@#$%^&*()_+]{8,}$/;
@@ -49,15 +48,11 @@ const Signup = () => {
             navigate('/verifyOtp');
           }, 2000);
         } else {
-          setError({ ...newErrors, api: responseData?.data.message || "Signup failed" });
           toast.error(responseData?.data.message || "Signup failed");
         }
-      } else {
-        setError(newErrors);
       }
     } catch (error: any) {
       console.log(error);
-      setError({ api: error.message });
       toast.error(error.message);
     }
   };

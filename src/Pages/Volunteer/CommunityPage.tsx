@@ -3,26 +3,17 @@ import { useParams } from 'react-router-dom';
 import NavBar from '../../Components/VolunteerComponents/NavBar';
 import Footer from '../../Components/Common/Footer';
 import { enrollToComm, getCommunityDetails, getProfileVolunteer } from '../../Api/volunteerApi';
-import { useSelector } from 'react-redux';
-
-interface Community {
-    id: string;
-    name: string;
-    about: string;
-    profileImage: string;
-    activeVolunteers: number;
-    hoursSpent: number;
-}
-
+import Community from '../../Interface/community';
+import volunteer from '../../Interface/volunteer';
 const CommunityPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [community, setCommunity] = useState<Community | null>(null);
-    const [volunteer,setVolunteer] = useState('')
+    const [volunteer,setVolunteer] = useState<volunteer>()
     const [enroll,setEnroll] = useState(false)
     useEffect(() => {
         const fetchCommunityDetails = async () => {
             console.log(id)
-            const response = await getCommunityDetails(id);
+            const response = await getCommunityDetails(id as string);
             const responseVolunteer = await getProfileVolunteer()
             console.log(responseVolunteer?.data)
             console.log(response?.data?.updated)
@@ -33,8 +24,7 @@ const CommunityPage: React.FC = () => {
     }, [id]);
     const handleEnroll = async () => {
         console.log(id)
-        console.log(volunteer._id+"-----")
-        const response = await enrollToComm(id,volunteer._id)
+        const response = await enrollToComm(id as string,volunteer?._id as string )
         console.log(response.data.data+'hooooi')
         if(response.data.data){
             setEnroll(true)

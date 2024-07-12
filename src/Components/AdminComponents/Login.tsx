@@ -30,7 +30,7 @@ const Login: React.FC = () => {
         navigate('/admin/dashboard');
         toast.success("Login successful!");
       } else {
-        const message = response.data.message;
+        const message = response?.data.message;
         toast.error(message);
       }
 

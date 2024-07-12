@@ -25,13 +25,13 @@ const Calendar: React.FC<CalendarProps> = ({ events, onDateClick }) => {
   const renderHeader = () => {
     return (
       <div className="flex justify-between items-center mb-2 rounded-lg">
-        <button onClick={prevMonth} className="text-gray-600">
+        <button onClick={prevMonth} className="text-gray-600" aria-label='month'>
           <FiChevronLeft />
         </button>
         <span className="text-lg font-bold">
           {format(currentMonth, 'MMMM yyyy')}
         </span>
-        <button onClick={nextMonth} className="text-gray-600">
+        <button onClick={nextMonth} className="text-gray-600" aria-label='next_month'>
           <FiChevronRight />
         </button>
       </div>
@@ -72,7 +72,7 @@ const Calendar: React.FC<CalendarProps> = ({ events, onDateClick }) => {
           events.length > 0 &&
           events.some(event =>
             event.shifts.some(
-              shift => new Date(shift.date).toDateString() === day.toDateString()
+              (shift:any) => new Date(shift.date).toDateString() === day.toDateString()
             )
           );
         days.push(

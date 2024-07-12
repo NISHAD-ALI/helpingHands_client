@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import NavBar from '../../Components/CommunityComponents/NavBar'
 import UpcomingEvents from '../../Components/CommunityComponents/UpcomingEvents'
 import HireVolunteers from '../../Components/CommunityComponents/HireVolunteers'
 import CreateEvent from '../../Components/CommunityComponents/ScheduleEvent'
 import Footer from '../../Components/UserComponents/Footer'
-import { useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
+import io from 'socket.io-client';
+import NotificationComponent from '../../Components/Common/NotificationComponent'
 
 const HomePage: React.FC = () => {
+  const socket = io('http://localhost:3001');
+ 
   const navigate = useNavigate()
+
+  
+
+  const [notifications, setNotifications] = useState<{ message: string, id: number }[]>([]);
   const handleRouteToCe = () => {
     navigate('/community/createEvents')
   }
@@ -17,6 +25,23 @@ const HomePage: React.FC = () => {
   const handleRouteToHireNow = () => {
     navigate('/community/hireNow')
   }
+  useEffect(() => {
+    socket.on('receiveNotification', (notification: any) => {
+      console.log(notification.message)
+      setNotifications((prevNotifications) => [
+        ...prevNotifications,
+        { message: notification.message, id: Date.now() },
+      ]);
+    });
+
+    return () => {
+      socket.off('receiveNotification');
+    };
+  }, [socket]);
+
+  const removeNotification = useCallback((id: number) => {
+    setNotifications((prevNotifications) => prevNotifications.filter(n => n.id !== id));
+  }, []);
   return (
     <>
       <NavBar />
@@ -44,6 +69,8 @@ const HomePage: React.FC = () => {
         buttonText="Manage volunteers"
         click={handleRouteToManageVolun}
       />
+       <NotificationComponent notifications={notifications} removeNotification={removeNotification} />
+      
       <Footer />
     </>
   )

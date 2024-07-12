@@ -18,10 +18,10 @@ const ForgotPasswordPage: React.FC = () => {
             }
 
             const responseData = await forgotPassword(email);
-            if (responseData.data.success) {
+            if (responseData?.data.success) {
                 navigate('/forgetPassOtp');
             } else {
-                toast.error(responseData.data.message);
+                console.error(responseData?.data.message);
             }
         } catch (error) {
             console.error(error);

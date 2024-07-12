@@ -8,12 +8,18 @@ interface Comment {
 
 interface Post {
     _id?: string;
-    userId: string;
+    userId: {
+        _id:string;
+        name:string;
+        profileImage:string
+    };
     title: string;
     image: string;
     likes?: string[];
     comments?: Comment[];
-    postedDate?: Date;
+    postedDate?: Date | any;
+    liked?:boolean;
+    totalLiked?: any; 
 }
 
 export default Post;

@@ -51,21 +51,23 @@ const ChangePassword: React.FC = () => {
           {error && <div className="mb-4 text-red-500">{error}</div>}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700">Create New Password</label>
+              <label className="block text-gray-700" htmlFor='password'>Create New Password</label>
               <input
                 type="password"
                 className="w-full p-2 border rounded mt-2"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                id='password'
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700">Re-enter New Password</label>
+              <label className="block text-gray-700" htmlFor='confirmPasword'>Re-enter New Password</label>
               <input
                 type="password"
                 className="w-full p-2 border rounded mt-2"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                id='confirmPasword'
               />
             </div>
             <div className="mb-6">

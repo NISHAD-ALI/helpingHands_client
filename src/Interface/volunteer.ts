@@ -13,6 +13,9 @@ interface volunteer {
     bloodGroup: string,
     about:string,
     communities:[string],
+    is_accepted?:boolean,
+    volunteerId?:string,
+    id?:string
 
 }
 

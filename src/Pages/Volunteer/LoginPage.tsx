@@ -1,7 +1,7 @@
 import React from 'react'
 import Login from '../../Components/VolunteerComponents/Login'
 
-const LoginPage = () => {
+const LoginPage:React.FC = () => {
   return (
     <Login />
   )

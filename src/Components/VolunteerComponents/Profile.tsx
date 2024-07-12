@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getProfileVolunteer, editProfileVolunteer } from "../../Api/volunteerApi";
 import { useNavigate } from "react-router-dom";
 
-const Profile = () => {
+const Profile: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
     const [profileData, setProfileData] = useState({
@@ -16,22 +16,28 @@ const Profile = () => {
         phone: '',
     });
 
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     useEffect(() => {
         const getData = async () => {
-            const response = await getProfileVolunteer();
-            let data = response?.data?.data;
-            setProfileData({
-                name: data.name,
-                email: data.email,
-                age: data.age,
-                bloodGroup: data.bloodGroup,
-                address: data.address,
-                aboutMe: data.aboutMe,
-                profileImage: data.profileImage,
-                phone: data.phone,
-            });
+            try {
+                const response = await getProfileVolunteer();
+                let data = response?.data?.data;
+                if (data) {
+                    setProfileData({
+                        name: data.name,
+                        email: data.email,
+                        age: data.age,
+                        bloodGroup: data.bloodGroup,
+                        address: data.address,
+                        aboutMe: data.aboutMe,
+                        profileImage: data.profileImage,
+                        phone: data.phone,
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching profile data:", error);
+            }
         };
         getData();
     }, []);
@@ -63,14 +69,16 @@ const Profile = () => {
         setIsEditing(!isEditing);
     };
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setProfileData({ ...profileData, [name]: value });
     };
 
-    const handleFileChange = (e) => {
-        setSelectedFile(e.target.files[0]);
-        setProfileData({ ...profileData, profileImage: URL.createObjectURL(e.target.files[0]) });
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setSelectedFile(e.target.files[0]);
+            setProfileData({ ...profileData, profileImage: URL.createObjectURL(e.target.files[0]) });
+        }
     };
 
     return (
@@ -83,13 +91,14 @@ const Profile = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="col-span-1">
+                        <label htmlFor="image" className="block text-gray-700">Image</label>
                         {isEditing ? (
                             <input
                                 type="file"
                                 accept="image/*"
                                 className="w-full h-auto rounded-lg"
                                 onChange={handleFileChange}
-                                
+                                id="image"
                             />
                         ) : (
                             <img className="w-full h-auto rounded-lg" src={profileData.profileImage} alt="Profile" />
@@ -101,9 +110,10 @@ const Profile = () => {
                             <h3 className="text-xl font-semibold mb-2">Personal Information:</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-gray-700">Name</label>
+                                    <label htmlFor="name" className="block text-gray-700">Name</label>
                                     <input
                                         type="text"
+                                        id="name"
                                         name="name"
                                         className="w-full px-4 py-2 border rounded-lg"
                                         value={profileData.name}
@@ -111,9 +121,10 @@ const Profile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700">Email</label>
+                                    <label htmlFor="email" className="block text-gray-700">Email</label>
                                     <input
                                         type="email"
+                                        id="email"
                                         name="email"
                                         className="w-full px-4 py-2 border rounded-lg"
                                         value={profileData.email}
@@ -121,9 +132,10 @@ const Profile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700">Age</label>
+                                    <label htmlFor="age" className="block text-gray-700">Age</label>
                                     <input
                                         type="number"
+                                        id="age"
                                         name="age"
                                         className="w-full px-4 py-2 border rounded-lg"
                                         value={profileData.age}
@@ -131,8 +143,9 @@ const Profile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700">Blood Group</label>
+                                    <label htmlFor="bloodGroup" className="block text-gray-700">Blood Group</label>
                                     <select
+                                        id="bloodGroup"
                                         name="bloodGroup"
                                         className="w-full px-4 py-2 border rounded-lg"
                                         value={profileData.bloodGroup}
@@ -150,8 +163,9 @@ const Profile = () => {
                                     </select>
                                 </div>
                                 <div className="col-span-2">
-                                    <label className="block text-gray-700">Residing Address</label>
+                                    <label htmlFor="address" className="block text-gray-700">Residing Address</label>
                                     <textarea
+                                        id="address"
                                         name="address"
                                         className="w-full px-4 py-2 border rounded-lg"
                                         value={profileData.address}
@@ -159,8 +173,9 @@ const Profile = () => {
                                     ></textarea>
                                 </div>
                                 <div className="col-span-2">
-                                    <label className="block text-gray-700">About Me</label>
+                                    <label htmlFor="aboutMe" className="block text-gray-700">About Me</label>
                                     <textarea
+                                        id="aboutMe"
                                         name="aboutMe"
                                         className="w-full px-4 py-2 border rounded-lg"
                                         value={profileData.aboutMe}
@@ -168,9 +183,10 @@ const Profile = () => {
                                     ></textarea>
                                 </div>
                                 <div className="col-span-2">
-                                    <label className="block text-gray-700">Phone</label>
+                                    <label htmlFor="phone" className="block text-gray-700">Phone</label>
                                     <input
                                         type="text"
+                                        id="phone"
                                         name="phone"
                                         className="w-full px-4 py-2 border rounded-lg"
                                         value={profileData.phone}
@@ -213,7 +229,7 @@ const Profile = () => {
                             </div>
                         </section>
                         <div className="text-right">
-                            <a onClick={()=>navigate('/volunteer/changePassword')} className="text-blue-600 hover:underline">Forgot password/change Password?</a>
+                            <a onClick={() => navigate('/volunteer/changePassword')} className="text-blue-600 hover:underline">Forgot password/change Password?</a>
                         </div>
                     </div>
                 </div>

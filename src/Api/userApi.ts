@@ -1,36 +1,6 @@
 import axiosInstance from "../Config/AxiosInstance";
-import toast from "react-hot-toast";
 import userEndpoints from "../Endpoints/userEndpoints";
-import { useNavigate } from "react-router-dom";
 
-export const useCustomAxiosInterceptors = () => {
-  const navigate = useNavigate();
-
-  axiosInstance.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem('userToken');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
-
-  axiosInstance.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    (error) => {
-      console.log(error.response.data.message + "interceptor");
-      toast.error(error.response.data.message);
-      navigate('/error'); 
-      return Promise.reject(error);
-    }
-  );
-};
 
 
 export const signup = async (name: string, email: string, password: string, phone: number) => {
@@ -150,64 +120,64 @@ export const getProfile = async () => {
     }
 }
 
-export const editProfile = async(data :FormData) => {
+export const editProfile = async (data: FormData) => {
     try {
         const headers = {
             'Content-Type': 'multipart/form-data'
         }
         const response = await axiosInstance.patch(userEndpoints.editProfile, data, { headers });
         return response;
-    } catch (error : any) {
+    } catch (error: any) {
         console.log(error.response.data.message);
     }
 }
 
-export const googleAuth = async(name:string,email:string,password:string) => {
+export const googleAuth = async (name: string, email: string, password: string) => {
     try {
-        const response = await axiosInstance.post(userEndpoints.googleAuth,{name,email,password})
+        const response = await axiosInstance.post(userEndpoints.googleAuth, { name, email, password })
         return response
-    } catch (error :any) {
+    } catch (error: any) {
         console.log(error.response.data.message);
     }
 }
-export const payment = async (amount: number,donationId:string) => {
+export const payment = async (amount: number, donationId: string) => {
     try {
-      const response = await axiosInstance.post('/payment', { amount ,donationId});
-      return response.data;
+        const response = await axiosInstance.post('/payment', { amount, donationId });
+        return response.data;
     } catch (error: any) {
-      console.error('Payment error:', error.response.data.message);
+        console.error('Payment error:', error.response.data.message);
     }
-  };
+};
 
-  export const createPost = async (formData :FormData) => {
+export const createPost = async (formData: FormData) => {
     try {
-      const headers = {
-        'Content-Type': 'multipart/form-data'
-      };
-  
-      const response = await axiosInstance.post('/createPost', formData, { headers });
-      return response;
+        const headers = {
+            'Content-Type': 'multipart/form-data'
+        };
+
+        const response = await axiosInstance.post('/createPost', formData, { headers });
+        return response;
     } catch (error: any) {
-      console.log(error.response?.data?.message || 'Error creating post');
+        console.log(error.response?.data?.message || 'Error creating post');
     }
-  };
-  export const editPost = async (formData :FormData) => {
+};
+export const editPost = async (formData: FormData) => {
     try {
-      const headers = {
-        'Content-Type': 'multipart/form-data'
-      };
-  
-      const response = await axiosInstance.patch('/editPost', formData, { headers });
-      return response;
+        const headers = {
+            'Content-Type': 'multipart/form-data'
+        };
+
+        const response = await axiosInstance.patch('/editPost', formData, { headers });
+        return response;
     } catch (error: any) {
-      console.log(error.response?.data?.message || 'Error editing post');
+        console.log(error.response?.data?.message || 'Error editing post');
     }
-  };
-  
-  export const getPostsOne = async () => {
+};
+
+export const getPostsOne = async () => {
     try {
         let response = await axiosInstance.get('/getPostsOne')
-        console.log(response+"in here")
+        console.log(response + "in here")
         return response.data
     } catch (error: any) {
         console.log(error.response.data.message);
@@ -237,7 +207,7 @@ export const deletePost = async (id: string) => {
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
-     
+
     }
 };
 export const likePost = async (id: string) => {
@@ -246,45 +216,63 @@ export const likePost = async (id: string) => {
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
-     
+
     }
 };
 
 export const isLiked = async (id: string) => {
     try {
-        console.log(id,"jj")
+        console.log(id, "jj")
         let response = await axiosInstance.get(`/isLiked/${id}`);
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
-     
+
     }
 };
-export const addComment = async (id: string,message:string) => {
+export const addComment = async (id: string, message: string) => {
     try {
-        console.log(id,"jj")
-        let response = await axiosInstance.post(`/addComment/${id}`,{message});
+        console.log(id, "jj")
+        let response = await axiosInstance.post(`/addComment/${id}`, { message });
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
-     
+
     }
 };
-export const getComments = async (id:string) => {
+export const getComments = async (id: string) => {
     try {
         let response = await axiosInstance.get(`/getComments/${id}`)
-        console.log(response+"^^^")
+        console.log(response + "^^^")
         return response.data
     } catch (error: any) {
         console.log(error.response.data.message);
     }
 }
-export const reportPost = async (postId: string,message:string) => {
+export const reportPost = async (postId: string, message: string) => {
     try {
-        let response = await axiosInstance.post('/reportPost',{postId,message});
+        let response = await axiosInstance.post('/reportPost', { postId, message });
         return response;
     } catch (error: any) {
         console.log(error.response.data.message);
-     
+
+    }
+};
+export const savePost = async (post: any) => {
+    try {
+        let response = await axiosInstance.post('/savePost', { post });
+        return response;
+    } catch (error: any) {
+        console.log(error.response.data.message);
+
+    }
+};
+export const getSavedPosts = async () => {
+    try {
+        let response = await axiosInstance.get('/getSavedPosts');
+        return response;
+    } catch (error: any) {
+        console.log(error.response.data.message);
+
     }
 };

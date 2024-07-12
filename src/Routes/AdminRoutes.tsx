@@ -8,13 +8,15 @@ import CommunityManagement from '../Pages/Admin/CommunityManagement'
 import AddDonationPage from '../Pages/Admin/AddDonationPage'
 import DonationManagement from '../Pages/Admin/DonationManagement'
 import ReportPostManagement from '../Pages/Admin/ReportPostManagement'
+import NotFoundPage from '../Pages/Common/ErrorPage'
 
 
-const AdminRoutes = () => {
+const AdminRoutes:React.FC = () => {
   return (
     <Routes>
         <Route path='/login' element = {<Login />} />
       <Route path='' element={<IsLoggedIn/>}>
+      <Route path='/*' element = {<NotFoundPage redirectTo='/admin/dashboard' />} />
         <Route path='/dashboard' element = {<Dashboard />} />
         <Route path='/userManagement' element = {<UserManagement />} />
         <Route path='/communityManagement' element = {<CommunityManagement/>} />

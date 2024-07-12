@@ -5,7 +5,7 @@ import moment from 'moment';
 import { fetchDefaultConversations, getMessages, getVolunteerById, sendMessageTo } from '../../Api/volunteerApi';
 import { MessageData } from '../../Interface/messageData';
 import NotificationComponent from '../Common/NotificationComponent';
-
+import EmojiPicker from 'react-input-emoji';
 const socket = io('http://localhost:3001');
 
 const VolunteerMessages: React.FC = () => {
@@ -79,15 +79,14 @@ const VolunteerMessages: React.FC = () => {
         socket.off('receiveNotification');
       };
     }
-  }, [selectedConversation,messages]);
+  }, [selectedConversation, messages]);
 
   const removeNotification = useCallback((id: number) => {
     setNotifications((prevNotifications) => prevNotifications.filter(n => n.id !== id));
   }, []);
 
-  const sendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newMessage.trim() === '' || !selectedConversation) return;
+  const sendMessage = async (messageContent: string) => {
+    if (messageContent.trim() === '' || !selectedConversation) return;
 
     const messageData: MessageData = {
       sender: {
@@ -96,7 +95,7 @@ const VolunteerMessages: React.FC = () => {
         profileImage: volunteer?.profileImage
       },
       group: selectedConversation._id,
-      content: newMessage,
+      content: messageContent,
       conversation: selectedConversation._id,
       communityId: selectedConversation?.communityId._id,
       timestamp: new Date().toISOString()
@@ -174,8 +173,8 @@ const VolunteerMessages: React.FC = () => {
             <div
               key={index}
               className={`mb-4 p-3 rounded-lg flex items-start ${message?.sender?._id === volunteerId
-                  ? 'bg-blue-100 self-end flex-row-reverse'
-                  : 'bg-white self-start flex-row'
+                ? 'bg-blue-100 self-end flex-row-reverse'
+                : 'bg-white self-start flex-row'
                 }`}
             >
               <img
@@ -198,18 +197,26 @@ const VolunteerMessages: React.FC = () => {
           ))}
         </div>
 
-        <form className="flex p-4 bg-white border-t" onSubmit={sendMessage}>
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type your message"
-            className="flex-1 p-2 border rounded-full mr-2"
-          />
+        <form className="flex p-4 bg-white border-t" onSubmit={(e) => {
+          e.preventDefault();
+          sendMessage(newMessage);
+        }}>
+          <div className="flex-1 p-2 border rounded-full mr-2">
+            <EmojiPicker
+              value={newMessage}
+              onChange={setNewMessage}
+              cleanOnEnter
+              onEnter={() => {
+                sendMessage(newMessage);
+                setNewMessage('');
+              } }
+              placeholder="Type your message" shouldReturn={false} shouldConvertEmojiToImage={false}            />
+          </div>
+
           <button type="submit" className="bg-blue-700 text-white px-4 py-2 rounded-full">Send</button>
         </form>
       </div>
-      <NotificationComponent notifications={notifications} removeNotification={removeNotification} name={volunteer?.name}/>
+      <NotificationComponent notifications={notifications} removeNotification={removeNotification} />
     </div>
   );
 };

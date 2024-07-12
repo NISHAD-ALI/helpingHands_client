@@ -10,12 +10,15 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import NotificationComponent from '../../Components/Common/NotificationComponent';
+import community from '../../Interface/community';
+import Post from '../../Interface/post';
 
-const HomePage = () => {
+
+const HomePage:React.FC = () => {
   const socket = io('http://localhost:3001');
   
-  const [communities, setCommunities] = useState([]);
-  const [posts, setPosts] = useState([]);
+  const [communities, setCommunities] = useState<community[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [notifications, setNotifications] = useState<{ message: string, id: number }[]>([]);
 
   useEffect(() => {
@@ -112,7 +115,7 @@ const HomePage = () => {
           <CommunityCard
             key={index}
             id={community._id}
-            description={community?.description}
+            description={community?.about}
             imageSrc={community?.profileImage}
             location={community?.name}
           />

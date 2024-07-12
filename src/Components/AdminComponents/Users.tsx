@@ -42,7 +42,7 @@ const Users: React.FC = () => {
           <thead>
             <tr>
               <th className="px-4 py-2 border-b">SL No</th>
-              <th className="px-4 py-2 border-b"></th>
+              <th className="px-4 py-2 border-b"> </th>
               <th className="px-4 py-2 border-b">Name</th>
               <th className="px-4 py-2 border-b">Amount Donated</th>
               <th className="px-4 py-2 border-b">No. of Essentials Donated</th>
@@ -72,7 +72,7 @@ const Users: React.FC = () => {
 
                   </td>
                   <td className="px-4 py-2 border-b">
-                    <button
+                    <button className='text-red-900'
                       onClick={() => handleViewDetails(user)}
                     >
                       View Details

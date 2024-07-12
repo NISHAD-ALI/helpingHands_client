@@ -10,7 +10,6 @@ import { setVolunteerData } from "../../Redux/Slices/Auth";
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('n@gmail.com');
     const [password, setPassword] = useState<string>('Nishucp1!');
-    const [error, setError] = useState<string>('');
 
     const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const navigate = useNavigate();
@@ -20,12 +19,10 @@ const Login: React.FC = () => {
         try {
             if (!emailPattern.test(email)) {
                 const message = "Enter a valid email!";
-                setError(message);
                 toast.error(message);
                 return;
             } else if (password.trim().length < 5) {
                 const message = "Password must contain at least 5 characters!";
-                setError(message);
                 toast.error(message);
                 return;
             }
@@ -37,15 +34,11 @@ const Login: React.FC = () => {
                 toast.success("Login successful!");
             } else {
                 const message = response?.data.message;
-                setError(message);
                 toast.error(message);
             }
 
         } catch (err: any) {
-            const message = err.message || "An error occurred. Please try again.";
-            console.error("Error:", err);
-            setError(message);
-            // toast.error(message);
+            console.error("Error:", err)
         }
     };
     return (
@@ -74,28 +67,12 @@ const Login: React.FC = () => {
                             </div>
                         </div>
                         <div className="flex items-center justify-between">
-                            {/* <div className="text-sm">
-                                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">Forgot Password?</a>
-                            </div> */}
                         </div>
                         <div>
                             <button type="submit" className="w-full px-4 py-2 text-sm font-medium text-white bg-gray-900 border border-transparent rounded-md shadow-sm hover:bg-gray-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 Sign in
                             </button>
                         </div>
-                        {/* <div className="flex items-center justify-center mt-6">
-                            <span className="w-full border-t border-gray-300"></span>
-                            <span className="px-2 text-sm text-gray-500">Or</span>
-                            <span className="w-full border-t border-gray-300"></span>
-                        </div>
-                        <div>
-                            <button type="button" className="w-full px-4 py-2 mb-2 text-sm font-medium text-gray-700 bg-white border rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                <span className="flex items-center justify-center">
-                                    <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" className="w-5 h-5 mr-2" />
-                                    Sign in with Google
-                                </span>
-                            </button>
-                        </div> */}
                     </form>
                     <p className="mt-2 text-sm text-center text-gray-600 cursor-pointer">
                         Don't have an account?{" "}

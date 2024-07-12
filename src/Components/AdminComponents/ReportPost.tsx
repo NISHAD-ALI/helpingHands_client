@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getAllReports, terminatePost } from '../../Api/adminApi'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronUp, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import ConfirmationModal from '../Common/ConfirmationModal';
 
 interface Report {
   userId: { name: string, profileImage: string };
@@ -10,13 +11,15 @@ interface Report {
 
 interface ReportedPost {
   _id: string;
-  postId: { _id: string,userId:string, title: string };
+  postId: { _id: string, userId: string, title: string };
   reportedUsers: Report[];
 }
 
 const ReportPost: React.FC = () => {
   const [reportedPosts, setReportedPosts] = useState<ReportedPost[]>([]);
   const [expandedPostIds, setExpandedPostIds] = useState<string[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState<{ postId: string, userId: string, reasons: string[] } | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,13 +50,22 @@ const ReportPost: React.FC = () => {
     );
   };
 
-  const handleTerminatePost = async (postId: string,userId:string, reasons: string[]) => {
-    try {
-      await terminatePost(postId,userId, reasons);
-      setReportedPosts(prev => prev.filter(post => post.postId._id !== postId));
-    } catch (error) {
-      console.error('Failed to delete post:', error);
+  const handleTerminatePost = async () => {
+    if (selectedPost) {
+      try {
+        await terminatePost(selectedPost.postId, selectedPost.userId, selectedPost.reasons);
+        setReportedPosts(prev => prev.filter(post => post.postId._id !== selectedPost.postId));
+        setIsModalOpen(false);
+        setSelectedPost(null);
+      } catch (error) {
+        console.error('Failed to delete post:', error);
+      }
     }
+  };
+
+  const openConfirmationModal = (postId: string, userId: string, reasons: string[]) => {
+    setSelectedPost({ postId, userId, reasons });
+    setIsModalOpen(true);
   };
 
   return (
@@ -75,6 +87,8 @@ const ReportPost: React.FC = () => {
                     <td className="py-2 px-4 border-b">
                       <div className="flex items-center">
                         <button
+                          type="button"
+                          title={expandedPostIds.includes(post.postId._id) ? 'Collapse' : 'Expand'}
                           onClick={() => togglePostExpansion(post.postId._id)}
                           className="mr-2 focus:outline-none"
                         >
@@ -85,7 +99,8 @@ const ReportPost: React.FC = () => {
                     </td>
                     <td className="py-2 px-4 border-b">
                       <button
-                        onClick={() => handleTerminatePost(post.postId._id,post.postId.userId, post.reportedUsers.map(user => user.reason))}
+                        type="button"
+                        onClick={() => openConfirmationModal(post.postId._id, post.postId.userId, post.reportedUsers.map(user => user.reason))}
                         className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none"
                       >
                         Terminate
@@ -125,6 +140,12 @@ const ReportPost: React.FC = () => {
           </table>
         </div>
       </div>
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleTerminatePost}
+        message="Are you sure you want to terminate this post?"
+      />
     </div>
   );
 };

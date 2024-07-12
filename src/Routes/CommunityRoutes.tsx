@@ -11,6 +11,7 @@ import HireVolunteers from '../Pages/Community/HireVolunteers';
 import VolunteerManagement from '../Pages/Community/VolunteerManagement';
 import LiveStreamPage from '../Pages/Community/LiveStreamPage';
 import CommunityMessagesPage from '../Pages/Community/CommunityMessagePage';
+import NotFoundPage from '../Pages/Common/ErrorPage';
 
 
 const SignupPage = lazy(() => import('../Pages/Community/SignupPage'));
@@ -28,6 +29,7 @@ const CommunityRoutes: React.FC = () => {
           <Route path='/signup' element={<SignupPage />} />
         </Route>
         <Route path='' element={<IsLogged/>}>
+        <Route path='/*' element = {<NotFoundPage redirectTo='/community/home' />} />
           <Route path='/' element={<HomePage />} />
           <Route path='/home' element={<HomePage />} />
           <Route path='/createEvents' element={<CreateEvents />} />

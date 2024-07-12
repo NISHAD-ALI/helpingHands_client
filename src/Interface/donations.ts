@@ -8,5 +8,6 @@ export default interface donations{
     type:string
     startDate:string,
     endDate:string,
-    contact:string
+    contact:string,
+    amountCollected?:number
 }
