@@ -58,7 +58,7 @@ const Login: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="backImage hidden lg:block lg:w-1/2" style={{ backgroundImage: "url(./public/shane-rounce-DNkoNXQti3c-unsplash.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
+                <div className="backImage hidden lg:block lg:w-1/2" style={{ backgroundImage: "url(../shane-rounce-DNkoNXQti3c-unsplash.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
                     <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
                         <div>
                             <h2 className="text-4xl font-bold bg-gradient-to-r from-slate-100 to-emerald-100 text-transparent bg-clip-text">"Connecting Communities, Empowering Lives."</h2>
