@@ -8,7 +8,7 @@ const FounderMessage: React.FC = () => {
             </div>
             <div className="mb-4">
                 <img
-                    src="../src/assets/nishad1.jpg"
+                    src="src/assets/nishad1.jpg"
                     alt="Founder"
                     className="w-80 h-80 rounded-full object-cover"
                 />
