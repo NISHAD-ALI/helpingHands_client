@@ -5,8 +5,8 @@ import { useDispatch } from 'react-redux';
 import { loginAdmin } from '../../Api/adminApi';
 import { setAdminData } from '../../Redux/Slices/Auth';
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>('nishadalichenadan@gmail.com');
-  const [password, setPassword] = useState<string>('Nishucp1!');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const navigate = useNavigate();
