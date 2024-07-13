@@ -81,12 +81,12 @@ const EventsListPage: React.FC = () => {
     };
 
     const categories = [
-        { name: 'Health care', image: '/public/bermix-studio-NztECzFtPyw-unsplash.jpg' },
-        { name: 'Education', image: '/public/patrick-tomasso-Oaqk7qqNh_c-unsplash.jpg' },
-        { name: 'Shelters and Support', image: '/public/andrik-langfield-ujx_KIIujRg-unsplash.jpg' },
-        { name: 'Food', image: '/public/maja-petric-vGQ49l9I4EE-unsplash.jpg' },
-        { name: 'Child Welfare', image: '/public/larm-rmah-AEaTUnvneik-unsplash.jpg' },
-        { name: 'Youth Recreation', image: '/public/jeffrey-f-lin-QV47mIeSm64-unsplash.jpg' },
+        { name: 'Health care', image: '../bermix-studio-NztECzFtPyw-unsplash.jpg' },
+        { name: 'Education', image: '../patrick-tomasso-Oaqk7qqNh_c-unsplash.jpg' },
+        { name: 'Shelters and Support', image: '../andrik-langfield-ujx_KIIujRg-unsplash.jpg' },
+        { name: 'Food', image: '../maja-petric-vGQ49l9I4EE-unsplash.jpg' },
+        { name: 'Child Welfare', image: '../larm-rmah-AEaTUnvneik-unsplash.jpg' },
+        { name: 'Youth Recreation', image: '../jeffrey-f-lin-QV47mIeSm64-unsplash.jpg' },
     ];
 
     const settings = {
