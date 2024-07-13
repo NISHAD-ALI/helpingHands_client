@@ -167,7 +167,7 @@ const Signup: React.FC = () => {
         </div>
       </div>
       <div className="hidden lg:block lg:w-1/2">
-        <img className="object-cover w-full h-full" src="/public/josh-appel-0nkFvdcM-X4-unsplash.jpg" alt="Decorative" />
+        <img className="object-cover w-full h-full" src="../josh-appel-0nkFvdcM-X4-unsplash.jpg" alt="Decorative" />
       </div>
       <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { width: '350px' } }} />
     </div>

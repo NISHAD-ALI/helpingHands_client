@@ -8,7 +8,7 @@ const Fundraiser: React.FC = () => {
       <div className="max-w-4xl mx-auto bg-white shadow-md rounded flex flex-col md:flex-row">
         <div className="md:w-1/2">
           <img
-            src="public/Gazas War Photography _Wallpaper _Photography.jpg"
+            src="../Gazas War Photography _Wallpaper _Photography.jpg"
             alt="Children in Gaza"
             className="w-full h-96 object-cover rounded-l"
           />
