@@ -47,7 +47,7 @@ const HomePage: React.FC = () => {
       <NavBar />
       <UpcomingEvents />
       <HireVolunteers
-        imageSrc="/public/cytonn-photography-n95VMLxqM2I-unsplash.jpg"
+        imageSrc="../cytonn-photography-n95VMLxqM2I-unsplash.jpg"
         title="Hire Volunteers"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor..Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod temporLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor."
         buttonText="Hire Now"
@@ -55,7 +55,7 @@ const HomePage: React.FC = () => {
       />
       <div className='mt-8 bg-gray-100'>
         <CreateEvent
-          imageSrc="/public/12 1.jpg"
+          imageSrc="../12 1.jpg"
           title="Create Your Event"
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor..Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod temporLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor."
           buttonText="Create an Event"
@@ -63,7 +63,7 @@ const HomePage: React.FC = () => {
         />
       </div>
       <HireVolunteers
-        imageSrc="/public/The Comprehensive List Of How And Where To Volunteer In Columbus.jpg"
+        imageSrc="../The Comprehensive List Of How And Where To Volunteer In Columbus.jpg"
         title="Manage your Volunteers"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor..Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod temporLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor."
         buttonText="Manage volunteers"
