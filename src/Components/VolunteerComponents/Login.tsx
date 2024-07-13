@@ -82,7 +82,7 @@ const Login: React.FC = () => {
             </div>
             <div className="hidden lg:block lg:w-1/2 relative">
                 <h1 className="absolute top-0 right-0 text-white text-3xl font-bold p-4">helpingHands</h1>
-                <img className="object-cover w-full h-full" src="/public/josh-appel-0nkFvdcM-X4-unsplash.jpg" alt="Decorative" />
+                <img className="object-cover w-full h-full" src="../josh-appel-0nkFvdcM-X4-unsplash.jpg" alt="Decorative" />
             </div>
             <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { width: '350px' } }} />
         </div>
