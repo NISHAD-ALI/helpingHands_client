@@ -12,7 +12,7 @@ const AboutUs: React.FC = () => {
       </div>
       <Banner 
         title="About Us"
-        image="../src/assets/1342.png"
+        image="../assets/1342.png"
       />
       <div className="flex-grow p-36  text-center">
         <h2 className="text-3xl font-bold mb-4">Our Story</h2>
