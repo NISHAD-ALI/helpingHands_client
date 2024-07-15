@@ -9,7 +9,7 @@ const Hero: React.FC = () => {
         {["Support", "Education", "Volunteers", "Donations"].map((item) => (
           <div key={item} className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-lg font-semibold">{item}</h2>
-            <p className="text-gray-600 mt-2">When deciding which charity to donate to, it's important to do your research.</p>
+            <p className="text-gray-600 mt-2">When deciding which charity to donate to, it's important to do your research!.</p>
           </div>
         ))}
       </div>
