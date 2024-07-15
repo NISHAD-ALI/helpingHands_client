@@ -160,7 +160,7 @@ const EventListPage: React.FC = () => {
                                         id="start-date"
                                         value={startDate}
                                         onChange={(e) => setStartDate(e.target.value)}
-                                        className="p-2 border border-gray-300 rounded"
+                                        className="p-1 border border-gray-300 rounded"
                                     />
                                 </div>
                                 <div className="flex flex-col">
@@ -170,12 +170,12 @@ const EventListPage: React.FC = () => {
                                         id="end-date"
                                         value={endDate}
                                         onChange={(e) => setEndDate(e.target.value)}
-                                        className="p-2 border border-gray-300 rounded"
+                                        className="p-1 border border-gray-300 rounded"
                                     />
                                 </div>
                                 <button aria-label='filterEents'
                                     onClick={handleFilterEvents}
-                                    className="bg-green-600 text-white px-2 py-2 rounded flex items-center"
+                                    className="bg-green-600 text-white px-1 rounded flex items-center"
                                 >
                                     <BiFilter />
                                 </button>

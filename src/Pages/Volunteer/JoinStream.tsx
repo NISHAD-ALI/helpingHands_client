@@ -20,7 +20,7 @@ const JoinStream = () => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const appID = 1409135051; 
-  const serverSecret = import.meta.env.VITE_ZEGOCLOUD_SECRET1; 
+  const serverSecret = import.meta.env.VITE_ZEGOCLOUD_SECRET2; 
   const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
     appID,
     serverSecret,
