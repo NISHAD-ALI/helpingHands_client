@@ -19,8 +19,8 @@ const JoinStream = () => {
   const role = ZegoUIKitPrebuilt.Audience;
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const appID = 1517725939; 
-  const serverSecret = import.meta.env.VITE_ZEGOCLOUD_SECRET; 
+  const appID = 1409135051; 
+  const serverSecret = import.meta.env.VITE_ZEGOCLOUD_SECRET1; 
   const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
     appID,
     serverSecret,
