@@ -5,11 +5,11 @@ import toast, { Toaster } from 'react-hot-toast';
 import GoogleAuthentication from '../Common/GoogleAuthentication';
 
 const Signup = () => {
-  const [username, setUsername] = useState<string>('nishad');
-  const [email, setEmail] = useState<string>('nishadali267@gmail.com');
-  const [password, setPassword] = useState<string>('Nishucp1!');
-  const [phone, setPhone] = useState<string>('9876543211');
-  const [passwordConfirm, setPasswordConfirm] = useState<string>('Nishucp1!');
+  const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [passwordConfirm, setPasswordConfirm] = useState<string>('');
   const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const phoneNumberRegex = /^[0-9]{10}$/;
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[0-9a-zA-Z!@#$%^&*()_+]{8,}$/;

@@ -5,11 +5,11 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const SignupPage: React.FC = () => {
     const [formData, setFormData] = useState({
-        email: 'nishadalichenadan@gmail.com',
-        communityName: 'Green corps',
-        contactNumber: 8157055699,
-        password: 'Nishucp1!',
-        confirmPassword: 'Nishucp1!'
+        email: '',
+        communityName: '',
+        contactNumber: 0,
+        password: '',
+        confirmPassword: ''
     });
     const navigate = useNavigate();
 
