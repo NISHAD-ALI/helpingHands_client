@@ -23,7 +23,7 @@ const LiveStreamPage: React.FC = () => {
 
   useEffect(() => {
     const appID = 1409135051;
-    const serverSecret = import.meta.env.VITE_ZEGOCLOUD_SECRET2;
+    const serverSecret = '54f2381d066850b7f4b15cdd964873d0';
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appID,
       serverSecret,
