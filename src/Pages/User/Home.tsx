@@ -7,8 +7,9 @@ import Fundraiser from '../../Components/UserComponents/Fundraiser';
 import LatestFeeds from '../../Components/UserComponents/LatestFeeds';
 import Footer from '../../Components/UserComponents/Footer';
 import ScrollToTop from '../../Components/Common/ScrollToTop';
-
+import { useSelector } from 'react-redux';
 const Home: React.FC = () => {
+  const isLoggedIn = useSelector((state: any) => state.auth.userData !== null);
   const navigate = useNavigate();
 
   return (
@@ -19,12 +20,14 @@ const Home: React.FC = () => {
       <MainBanner />
       <Features />
       <Fundraiser />
+      {isLoggedIn && <>
       <LatestFeeds />
       <div className='flex justify-center '>
         <button className="text-white bg-green-500 rounded-sm px-4 mb-3 py-2 cursor-pointer" onClick={() => navigate('/allPosts')}>
           See More
         </button>
       </div>
+      </>}
       <ScrollToTop />
       <Footer />
     </div>
