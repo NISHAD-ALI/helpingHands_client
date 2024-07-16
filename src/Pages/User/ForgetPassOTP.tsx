@@ -67,7 +67,7 @@ const ForgetPassOtp: React.FC = () => {
                 <p className="text-center m-2">Resend OTP in {timer} seconds</p>
                 {error && <p className="text-red-500 text-center mb-4">{error}</p>}
                 <div className="grid grid-cols-5 gap-x-4 my-2">
-                    <label htmlFor="otp">otp</label>
+                    <label htmlFor="otp" className="sr-only">otp</label>
                     {Object.keys(otp).map((key, index) => (
                         <input
                             id='otp'
