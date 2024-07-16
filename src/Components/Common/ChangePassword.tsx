@@ -24,7 +24,7 @@ const ChangePasswordPage: React.FC = () => {
 
             const responseData = await changePassword(newPassword);
             if (responseData?.data.success) {
-                toast.success("Password changed successfully!");
+                toast.success("Your password changed successfully!");
                 navigate('/login');
             } else {
                 throw new Error(responseData?.data.message);
