@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import donations from '../../Interface/donations';
 
 interface FundraiserModalProps {
   show: boolean;
   onClose: () => void;
-  fundraisers: donations | any
 }
 
-const FundraiserModal: React.FC<FundraiserModalProps> = ({ show, onClose, fundraisers }) => {
+const FundraiserModal: React.FC<FundraiserModalProps> = ({ show, onClose }) => {
   const [, setIsVisible] = useState(false);
-  console.log(fundraisers)
   useEffect(() => {
     if (show) {
       setIsVisible(true);
@@ -36,16 +33,7 @@ const FundraiserModal: React.FC<FundraiserModalProps> = ({ show, onClose, fundra
         <div className="flex flex-col items-center">
           <h2 className="text-2xl font-eduHand font-semibold mb-4 text-center">Be part of making the world a better place.</h2>
           <div className="flex flex-wrap justify-center">
-            {fundraisers.map((fundraiser :any) => (
-              <div key={fundraiser.id} className="relative flex flex-col justify-between mx-3 mb-4 w-1/2 md:w-1/3 lg:w-1/4">
-                <img
-                  src={fundraiser.image}
-                  alt={`Fundraiser: ${fundraiser.name}`}
-                  className="w-full max-h-52 object-cover rounded-md"
-                />
-                <h3 className="text-lg font-semibold mt-2 text-center">{fundraiser.name}</h3>
-              </div>
-            ))}
+            
           </div>
         </div>
       </div>
