@@ -9,11 +9,12 @@ export default {
     extend: {
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
+        eduHand: ['"Edu AU VIC WA NT Hand"', 'cursive'],
       },
       colors: {
         custom: '#050214',
-        pinky:' #C10C99',
-        bluely:'#4D47C3'
+        pinky: '#C10C99',
+        bluely: '#4D47C3',
       },
     },
   },
@@ -21,5 +22,3 @@ export default {
     require('flowbite/plugin')
   ],
 }
-
-
