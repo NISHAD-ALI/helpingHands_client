@@ -10,6 +10,7 @@ import Modal from './CommentModal';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import toast from 'react-hot-toast';
+
 interface Post {
   _id: string;
   image: string;
@@ -19,7 +20,7 @@ interface Post {
   userId: { name: string, profileImage: string };
   totalLiked: number;
   liked: boolean;
-  likes?:[number]
+  likes?: [number];
 }
 
 interface Comment {
@@ -35,11 +36,10 @@ const LatestFeeds: React.FC = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState<string>('');
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        console.log('hi');
-        
         const response = await getAllPosts();
         const fetchedData = response?.posts || [];
         const postsWithLikes = await Promise.all(
@@ -60,12 +60,14 @@ const LatestFeeds: React.FC = () => {
   const handleLike = async (id: string, index: number) => {
     try {
       const response = await likePost(id);
-      toast.success('Cheers ✨')
+      toast.success('Cheers ✨');
       if (response) {
         setPosts(prevPosts => {
           const updatedPosts = [...prevPosts];
           updatedPosts[index].liked = !updatedPosts[index].liked;
-          updatedPosts[index].totalLiked = updatedPosts[index].liked ? updatedPosts[index].totalLiked + 1 : updatedPosts[index].totalLiked - 1;
+          updatedPosts[index].totalLiked = updatedPosts[index].liked
+            ? updatedPosts[index].totalLiked + 1
+            : updatedPosts[index].totalLiked - 1;
           return updatedPosts;
         });
       }
@@ -89,7 +91,7 @@ const LatestFeeds: React.FC = () => {
     if (activePostId && newComment.trim() !== '') {
       try {
         await addComment(activePostId, newComment);
-        toast.success("Yaay, You,re comment has been added")
+        toast.success("Yaay, Your comment has been added");
         setNewComment('');
         const response = await getComments(activePostId);
         setComments(response?.data || []);
@@ -115,24 +117,28 @@ const LatestFeeds: React.FC = () => {
         <h2 className="text-5xl font-bold text-center mb-8">Latest Feeds</h2>
         <Slider {...settings}>
           {posts.map((post, index) => (
-            <div key={post._id} >
-              <div className="flex bg-green-300 shadow-md m-2 rounded-lg overflow-hidden">
-                <div className="w-1/2 flex flex-col justify-between p-4 mr-1 bg-gray-50">
-                  <div>
-                    <div className='flex items-start'>
-                      <img
-                        src={post.userId.profileImage || 'default-profile.png'}
-                        alt={post.userId.name}
-                        className="w-10 h-10 rounded-full mr-4"
-                      />
-                      <div>
-                        <h4 className="font-bold mt-2">{post.userId.name}</h4>
-                      </div>
+            <div key={post._id}>
+              <article className="group p-2">
+                <img
+                  alt={post.title}
+                  src={post.image}
+                  className="h-72 w-full rounded-xl object-cover shadow-xl transition group-hover:grayscale-[50%]"
+                />
+                <div className="p-4">
+                  <div className='flex items-start'>
+                    <img
+                      src={post?.userId?.profileImage || ''}
+                      alt={post?.userId?.name}
+                      className="w-10 h-10 rounded-full mr-4"
+                    />
+                    <div>
+                      <h3 className="text-lg font-medium text-gray-900">{post.title}</h3>
+                      <p className="text-sm text-gray-500">{formatDistanceToNow(new Date(post.postedDate), { addSuffix: true })}</p>
                     </div>
-                    <p className="text-gray-700 mt-3">{post.title}</p>
-                    <p className="mb-2 text-sm">Liked by <span className='font-semibold'>{post?.likes?.length || 0}</span> users</p>
-                    <p className="text-gray-500 text-sm">{formatDistanceToNow(new Date(post.postedDate), { addSuffix: true })}</p>
                   </div>
+                  <p className="mt-2 line-clamp-3 text-sm/relaxed text-gray-500">
+                    {post.description}
+                  </p>
                   <div className="flex justify-end mt-4">
                     <button className="mr-4" onClick={() => handleLike(post._id, index)} aria-label='heart-regular'>
                       <FontAwesomeIcon icon={post.liked ? solidHeart : regularHeart} size="lg" className={`${post.liked ? 'text-red-600' : 'text-blue-600'}`} />
@@ -142,14 +148,7 @@ const LatestFeeds: React.FC = () => {
                     </button>
                   </div>
                 </div>
-                <div className="w-1/2 h-64">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
+              </article>
             </div>
           ))}
         </Slider>
@@ -178,8 +177,8 @@ const LatestFeeds: React.FC = () => {
                 placeholder="Add your comment..."
               ></textarea>
               <button
-              type='button'
-              aria-label='telegram'
+                type='button'
+                aria-label='telegram'
                 onClick={handleCommentSubmit}
                 className="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 focus:outline-none"
               >
