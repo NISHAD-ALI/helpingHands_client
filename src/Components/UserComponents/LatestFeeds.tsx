@@ -109,49 +109,54 @@ const LatestFeeds: React.FC = () => {
     slidesToScroll: 1,
     centerMode: true,
     centerPadding: '0',
+    adaptiveHeight: true,
   };
 
   return (
     <section className="py-16 font-inter flex justify-center">
       <div className="w-full max-w-5xl">
         <h2 className="text-5xl font-bold text-center mb-8">Latest Feeds</h2>
-        <Slider {...settings}>
-          {posts.map((post, index) => (
-            <div key={post._id}>
-              <article className="group p-2">
-                <img
-                  alt={post.title}
-                  src={post.image}
-                  className="h-72 w-full rounded-xl object-cover shadow-xl transition group-hover:grayscale-[50%]"
-                />
-                <div className="p-4">
-                  <div className='flex items-start'>
-                    <img
-                      src={post?.userId?.profileImage || ''}
-                      alt={post?.userId?.name}
-                      className="w-10 h-10 rounded-full mr-4"
-                    />
-                    <div>
-                      <h3 className="text-lg font-medium text-gray-900">{post.title}</h3>
-                      <p className="text-sm text-gray-500">{formatDistanceToNow(new Date(post.postedDate), { addSuffix: true })}</p>
+        {posts.length > 0 ? (
+          <Slider {...settings}>
+            {posts.map((post, index) => (
+              <div key={post._id} className="p-2">
+                <article className="group">
+                  <img
+                    alt={post.title}
+                    src={post.image}
+                    className="h-72 w-full rounded-xl object-cover shadow-xl transition group-hover:grayscale-[50%]"
+                  />
+                  <div className="p-4">
+                    <div className='flex items-start'>
+                      <img
+                        src={post?.userId?.profileImage || ''}
+                        alt={post?.userId?.name}
+                        className="w-10 h-10 rounded-full mr-4"
+                      />
+                      <div>
+                        <h3 className="text-lg font-medium text-gray-900">{post.title}</h3>
+                        <p className="text-sm text-gray-500">{formatDistanceToNow(new Date(post.postedDate), { addSuffix: true })}</p>
+                      </div>
+                    </div>
+                    <p className="mt-2 line-clamp-3 text-sm/relaxed text-gray-500">
+                      {post.description}
+                    </p>
+                    <div className="flex justify-end mt-4">
+                      <button className="mr-4" onClick={() => handleLike(post._id, index)} aria-label='heart-regular'>
+                        <FontAwesomeIcon icon={post.liked ? solidHeart : regularHeart} size="lg" className={`${post.liked ? 'text-red-600' : 'text-blue-600'}`} />
+                      </button>
+                      <button onClick={() => handleCommentClick(post._id)} aria-label='comment'>
+                        <FontAwesomeIcon icon={faComment} size="lg" className="text-blue-600" />
+                      </button>
                     </div>
                   </div>
-                  <p className="mt-2 line-clamp-3 text-sm/relaxed text-gray-500">
-                    {post.description}
-                  </p>
-                  <div className="flex justify-end mt-4">
-                    <button className="mr-4" onClick={() => handleLike(post._id, index)} aria-label='heart-regular'>
-                      <FontAwesomeIcon icon={post.liked ? solidHeart : regularHeart} size="lg" className={`${post.liked ? 'text-red-600' : 'text-blue-600'}`} />
-                    </button>
-                    <button onClick={() => handleCommentClick(post._id)} aria-label='comment'>
-                      <FontAwesomeIcon icon={faComment} size="lg" className="text-blue-600" />
-                    </button>
-                  </div>
-                </div>
-              </article>
-            </div>
-          ))}
-        </Slider>
+                </article>
+              </div>
+            ))}
+          </Slider>
+        ) : (
+          <p className="text-center text-lg font-semibold text-gray-500">No posts available</p>
+        )}
       </div>
       {showCommentModal && (
         <Modal onClose={() => setShowCommentModal(false)}>
