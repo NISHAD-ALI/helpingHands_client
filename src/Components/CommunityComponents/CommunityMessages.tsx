@@ -8,7 +8,7 @@ import { MessageData } from '../../Interface/messageData';
 import NotificationComponent from '../Common/NotificationComponent';
 import EmojiInput from 'react-input-emoji'; 
 
-const socket = io('http://localhost:3001');
+const socket = io('http://localhost:3000');
 
 interface Sender {
   _id: string;

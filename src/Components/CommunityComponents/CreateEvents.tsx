@@ -30,7 +30,7 @@ const CreateEvents: React.FC = () => {
     const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const socket = io('http://localhost:3001');
+    const socket = io('http://localhost:3000');
 
     useEffect(() => {
         return () => {
@@ -144,7 +144,7 @@ const CreateEvents: React.FC = () => {
             const response = await createEvents(formData);
             if (response) {
                 toast.success('Event Created Successfully');
-                const socket = io('http://localhost:3001');
+                const socket = io('http://localhost:3000');
                 socket.emit('receiveNotification', { message: 'New Event created' });
                 setTimeout(() => {
                     navigate('/community/home');

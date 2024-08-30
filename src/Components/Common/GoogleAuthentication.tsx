@@ -50,14 +50,18 @@ const GoogleAuthentication: React.FC<gLogin> = ({ Login }) => {
   return (
     <div className="flex justify-center">
           <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              googleSignUp(credentialResponse);
-            }}
-            onError={() => {
-              console.log("Login failed!");
-            }}
-            type="icon"
-          />
+        onSuccess={(credentialResponse) => {
+          googleSignUp(credentialResponse);
+        }}
+        onError={() => {
+          console.log("Login failed!");
+        }}
+        useOneTap
+        text="signin_with"
+        shape="rectangular"
+        theme="filled_black"
+        type="standard"
+      />
     </div>
   );
 };
