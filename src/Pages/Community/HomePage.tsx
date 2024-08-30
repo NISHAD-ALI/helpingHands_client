@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
 
             <div className="bg-gray-100 p-6 rounded-lg shadow-lg text-center">
               <img
-                src="../leader.jpg"
+                src=".../events.png"
                 alt="Create Event"
                 className="w-full h-48 object-cover mb-6 rounded"
               />
@@ -92,7 +92,7 @@ const HomePage: React.FC = () => {
 
             <div className="bg-gray-100 p-6 rounded-lg shadow-lg text-center">
               <img
-                src="../public/josh-appel-0nkFvdcM-X4-unsplash.jpg"
+                src="../leader.jpg"
                 alt="Manage Volunteers"
                 className="w-full h-48 object-cover mb-6 rounded"
               />
