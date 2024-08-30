@@ -161,18 +161,18 @@ const CreateEvents: React.FC = () => {
     if (isLoading) {
         return (
             <div className="flex flex-col items-center justify-center h-full">
-                <div className="spinner1 flex justify-center items-center space-x-2">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                <h1 className="mt-4 text-lg text-white font-bold text-center">Hang on tight while we create your event...</h1>
-            </div>
+          <div className="spinner1 flex justify-center items-center space-x-2">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <h1 className="mt-4 text-lg text-white font-bold text-center">Hang on tight while we create your post...</h1>
+        </div>
         );
     }
 
