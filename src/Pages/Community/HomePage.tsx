@@ -36,7 +36,7 @@ const HomePage: React.FC = () => {
 
       <section
         className="relative h-screen bg-cover bg-center"
-        style={{ backgroundImage: 'url("../public/8k.jpg")' }}
+        style={{ backgroundImage: 'url("../8k.jpg")' }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-blue-500 opacity-20"></div>
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-4">
@@ -56,7 +56,7 @@ const HomePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             <div className="bg-gray-100 p-6 rounded-lg shadow-lg text-center">
               <img
-                src="../public/josh-appel-0nkFvdcM-X4-unsplash.jpg"
+                src="../hireVolunterr.jpg"
                 alt="Hire Volunteers"
                 className="w-full h-48 object-cover mb-6 rounded"
               />
@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
 
             <div className="bg-gray-100 p-6 rounded-lg shadow-lg text-center">
               <img
-                src="../public/josh-appel-0nkFvdcM-X4-unsplash.jpg"
+                src="../leader.jpg"
                 alt="Create Event"
                 className="w-full h-48 object-cover mb-6 rounded"
               />
