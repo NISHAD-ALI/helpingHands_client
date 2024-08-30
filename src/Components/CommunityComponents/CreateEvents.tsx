@@ -6,7 +6,6 @@ import { createEvents } from '../../Api/communityApi';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
-import PleaseWait from '../Common/PleaseWait';
 import io from 'socket.io-client';
 
 interface Shift {
@@ -160,7 +159,21 @@ const CreateEvents: React.FC = () => {
     };
 
     if (isLoading) {
-        return <PleaseWait />;
+        return (
+            <div className="flex flex-col items-center justify-center h-full">
+                <div className="spinner1 flex justify-center items-center space-x-2">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <h1 className="mt-4 text-lg text-white font-bold text-center">Hang on tight while we create your event...</h1>
+            </div>
+        );
     }
 
     return (
@@ -170,7 +183,7 @@ const CreateEvents: React.FC = () => {
                 <h4 className="text-sm mb-8 text-center">Let your Volunteers Know your plan</h4>
                 <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-8">
                     <h2 className="text-2xl font-semibold mb-4">Basic Details:</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="flex flex-col items-center">
                             <div className="w-full md:w-1/2 mb-4">
                                 <div className="bg-gray-200 rounded-lg flex items-center justify-center h-48 mb-4">

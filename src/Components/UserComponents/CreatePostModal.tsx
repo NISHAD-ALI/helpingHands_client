@@ -43,7 +43,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
   const handleSubmit = async () => {
     try {
       if (selectedImage && title && editorRef.current) {
-        setIsLoading(true); // Set loading state to true
+        setIsLoading(true);
         const canvas = editorRef.current.getImageScaledToCanvas();
         canvas.toBlob(async (blob) => {
           if (blob) {
@@ -52,7 +52,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
             formData.append('title', title);
             const response = await createPost(formData);
             if (response) {
-              setIsLoading(false); // Set loading state to false
+              setIsLoading(false); 
               onClose();
               window.location.reload();
             }
@@ -60,7 +60,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
         }, 'image/jpeg');
       }
     } catch (error) {
-      setIsLoading(false); // Set loading state to false in case of an error
+      setIsLoading(false); 
       console.log((error as Error).message);
     }
   };
