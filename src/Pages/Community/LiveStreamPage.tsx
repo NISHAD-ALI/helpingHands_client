@@ -52,7 +52,7 @@ const LiveStreamPage: React.FC = () => {
 
   return (
     <div>
-      <NavBar />
+     <NavBar bgColor="bg-gray-600" />
       <div ref={containerRef} style={{ width: '80vw', height: '80vh' }} className='ml-24'></div>
       <button
         onClick={handleEndStream}

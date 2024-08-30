@@ -7,7 +7,7 @@ import { getEventsById } from '../../Api/communityApi';
 import { Shift } from '../../Interface/events';
 
 const ProjectDetails: React.FC = () => {
-    const [currentSlide, setCurrentSlide] = useState<any>(0);
+    const [currentSlide, setCurrentSlide] = useState(0);
     const playerRef = useRef<ReactPlayer>(null);
     const [isPlaying, setIsPlaying] = useState(true);
     const { id } = useParams<{ id: string }>();
@@ -31,11 +31,23 @@ const ProjectDetails: React.FC = () => {
     };
 
     const slides = [
-        event?.images[0] && <img key={1} src={event.images[0] as string} alt="Project" className="w-full rounded-md mb-4" />,
-        event?.images[1] && <img key={2} src={event.images[1] as string} alt="Project" className="w-full rounded-md mb-4" />,
-        event?.images[2] && <img key={3} src={event.images[2] as string} alt="Project" className="w-full rounded-md mb-4" />,
+        event?.images[0] && (
+            <div key={1} className="w-full h-96 bg-gray-200 rounded-lg overflow-hidden">
+                <img src={event.images[0] as string} alt="Project" className="object-cover w-full h-full" />
+            </div>
+        ),
+        event?.images[1] && (
+            <div key={2} className="w-full h-96 bg-gray-200 rounded-lg overflow-hidden">
+                <img src={event.images[1] as string} alt="Project" className="object-cover w-full h-full" />
+            </div>
+        ),
+        event?.images[2] && (
+            <div key={3} className="w-full h-96 bg-gray-200 rounded-lg overflow-hidden">
+                <img src={event.images[2] as string} alt="Project" className="object-cover w-full h-full" />
+            </div>
+        ),
         event?.video && (
-            <div key={4} className="w-full h-full flex items-center justify-center bg-black rounded-md mb-4">
+            <div key={4} className="w-full h-96 bg-black rounded-lg flex items-center justify-center">
                 <ReactPlayer
                     ref={playerRef}
                     url={event.video as string}
@@ -49,24 +61,24 @@ const ProjectDetails: React.FC = () => {
     ].filter(Boolean);
 
     return (
-        <div className="flex flex-col md:flex-row md:space-x-4">
-            <div className="md:w-3/5 w-full">
-                <Carousel slide={currentSlide} onSlideChange={handleSlideChange} indicators={false} pauseOnHover>
+        <div className="flex flex-col md:flex-row md:space-x-8">
+            <div className="md:w-3/5 w-full mb-8 md:mb-0">
+                <Carousel slide={currentSlide as any} onSlideChange={handleSlideChange} indicators={true} pauseOnHover>
                     {slides}
                 </Carousel>
             </div>
-            <div className="md:w-2/5 w-full bg-gray-100 p-4 rounded-md">
-                <h2 className="text-xl font-bold mb-4">Project: {event?.name}</h2>
+            <div className="md:w-2/5 w-full bg-white shadow-lg p-6 rounded-lg">
+                <h2 className="text-2xl font-bold mb-4">Project: {event?.name}</h2>
                 <ParticipantsCol />
-                <div className="text-gray-600 mt-4">
+                <div className="text-gray-700 mt-6">
                     {event?.shifts?.map((shift: Shift, index: number) => (
-                        <div key={index} className="mb-2">
+                        <div key={index} className="mb-4">
                             <p><strong>Date:</strong> {new Date(shift.date).toLocaleDateString()}</p>
                             <p><strong>Time:</strong> {shift.timeSlot}</p>
                         </div>
                     ))}
                 </div>
-                <p className="text-gray-600 mt-4">
+                <p className="text-gray-700 mt-4">
                     {event?.details}
                 </p>
             </div>

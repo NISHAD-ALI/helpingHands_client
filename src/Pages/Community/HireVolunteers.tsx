@@ -63,7 +63,7 @@ const HireVolunteers: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-      <NavBar />
+      <NavBar bgColor="bg-gray-600" />
       <main className="flex-1 container mx-auto p-4 h-max">
         <h1 className="text-3xl font-bold mb-8">Recent Applications</h1>
         {volunteers.length > 0 ? (

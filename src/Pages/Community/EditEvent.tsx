@@ -5,7 +5,7 @@ import EditEvents from '../../Components/CommunityComponents/EditEvents'
 const EditEvent:React.FC = () => {
   return (
     <div className='bg-gradient-to-br from-teal-50 to-green-200 font-inter'>
-        <NavBar />
+        <NavBar bgColor="bg-gray-600" />
         <EditEvents />
       
     </div>

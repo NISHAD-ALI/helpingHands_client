@@ -1,36 +1,10 @@
-@keyframes slideBg {
-    0% { background-position: 0 0; }
-    100% { background-position: -500% 0; }
-  }
-  .sliding-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+
+.bg {
+    background-image: url('../public/1q.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     height: 100%;
-    z-index: -1;
-    background: url('../assets/134.jpg');
-    background-size: 99% 100%;
-    animation: slideBg 10s linear infinite;
-  }
-  @media (max-width: 1024px) {
-    .sliding-bg {
-      background-size: 60% 100%;
-      animation: slideBg 40s linear infinite;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .sliding-bg {
-      background-size: 90% 100%;
-      animation: slideBg 30s linear infinite;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .sliding-bg {
-      background-size: 100% 100%;
-      animation: slideBg 20s linear infinite;
-    }
+    width: 100%;
   }
   

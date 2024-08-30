@@ -134,7 +134,7 @@ const EventListPage: React.FC = () => {
 
     return (
         <div className='bg-gradient-to-br from-teal-50 to-green-200 font-inter min-h-screen flex flex-col'>
-            <NavBar />
+            <NavBar bgColor="bg-gray-600" />
             <main className="flex-1 container mx-auto p-4 pt-20">
                 <h1 className="text-3xl font-bold">Welcome, Admin <span role="img" aria-label="wave">👋</span></h1>
                 <Slider {...settings} className="w-full pt-10">
@@ -220,7 +220,7 @@ const EventListPage: React.FC = () => {
                                 ))}
                             </>
                         ) : (
-                            <h3>No events found</h3>
+                            <h3>No events found.<a className='font-bold cursor-pointer' onClick={() => navigate('/community/createEvents')}> Start by creating a new event</a></h3>
                         )}
                     </div>
                 </div>

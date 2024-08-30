@@ -6,7 +6,7 @@ import Footer from '../../Components/Common/Footer'
 const ProfilePage:React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-            <NavBar />
+           <NavBar bgColor="bg-gray-600" />
            <Profile />
             <Footer />
         </div>
