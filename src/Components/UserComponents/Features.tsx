@@ -6,19 +6,19 @@ const features = [
   {
     title: 'Build the team',
     description: 'Specially designed for the people and NGOs who need special support and attention.',
-    image: '/hannah-busing-Zyx1bK9mqmA-unsplash.jpg',
+    image: './hannah-busing-Zyx1bK9mqmA-unsplash.jpg',
     icon: FaUsers,
   },
   {
     title: 'Hire Volunteers',
     description: 'Hire volunteers with our technology.',
-    image: '/cytonn-photography-n95VMLxqM2I-unsplash.jpg',
+    image: './cytonn-photography-n95VMLxqM2I-unsplash.jpg',
     icon: FaHandshake,
   },
   {
     title: 'Make the world better',
     description: 'We always provide useful information to make it easier for you every day.',
-    image: '/dani-guitarra-7JbUsmYPwP8-unsplash.jpg',
+    image: './dani-guitarra-7JbUsmYPwP8-unsplash.jpg',
     icon: FaHeart,
   },
 ];
