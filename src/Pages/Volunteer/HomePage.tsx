@@ -15,7 +15,7 @@ import Post from '../../Interface/post';
 
 
 const HomePage:React.FC = () => {
-  const socket = io('http://localhost:3001');
+  const socket = io('http://localhost:3000');
   
   const [communities, setCommunities] = useState<community[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);

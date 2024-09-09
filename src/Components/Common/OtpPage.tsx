@@ -64,19 +64,19 @@ const OtpPage: React.FC<Ioperator> = ({ operator }) => {
                     dispatch(setUserData(responseData.data.token));
                     toast.success("OTP Verified Successfully!");
                     setTimeout(() => {
-                        navigate('/');
+                        navigate('/login');
                     }, 2000);
                 } else if (operator === 'community') {
                     dispatch(setCommunityData(responseData.data.token));
                     toast.success("OTP Verified Successfully!");
                     setTimeout(() => {
-                        navigate('/community/home');
+                        navigate('/community/login');
                     }, 2000);
                 } else {
                     dispatch(setVolunteerData(responseData.data.token));
                     toast.success("OTP Verified Successfully!");
                     setTimeout(() => {
-                        navigate('/volunteer/home');
+                        navigate('/volunteer/login');
                     }, 2000);
                 }
             } else {

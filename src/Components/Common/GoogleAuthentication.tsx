@@ -32,7 +32,7 @@ const GoogleAuthentication: React.FC<gLogin> = ({ Login }) => {
         if (response?.data.success) {
           dispatch(setUserData(response.data.token));
           console.log('Google signup success');
-          navigate('/');
+          navigate('/login');
         }
       } else {
         const response = await login(data.email, data.password);

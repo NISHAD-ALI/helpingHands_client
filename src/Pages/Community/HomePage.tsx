@@ -11,7 +11,7 @@ import NotificationComponent from '../../Components/Common/NotificationComponent
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState<{ message: string; id: number }[]>([]);
-  const socket = io('http://localhost:3001');
+  const socket = io('http://localhost:3000');
 
   useEffect(() => {
     socket.on('receiveNotification', (notification: any) => {

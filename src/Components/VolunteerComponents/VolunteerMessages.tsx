@@ -6,7 +6,7 @@ import { fetchDefaultConversations, getMessages, getVolunteerById, sendMessageTo
 import { MessageData } from '../../Interface/messageData';
 import NotificationComponent from '../Common/NotificationComponent';
 import EmojiPicker from 'react-input-emoji';
-const socket = io('http://localhost:3001');
+const socket = io('http://localhost:3000');
 
 const VolunteerMessages: React.FC = () => {
   const [conversations, setConversations] = useState([]);

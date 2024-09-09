@@ -136,7 +136,7 @@ const EventListPage: React.FC = () => {
         <div className='bg-gradient-to-br from-teal-50 to-green-200 font-inter min-h-screen flex flex-col'>
             <NavBar bgColor="bg-gray-600" />
             <main className="flex-1 container mx-auto p-4 pt-20">
-                <h1 className="text-3xl font-bold">Welcome, Admin <span role="img" aria-label="wave">👋</span></h1>
+                <h1 className="text-3xl mt-5 font-bold">Welcome, Admin <span role="img" aria-label="wave">👋</span></h1>
                 <Slider {...settings} className="w-full pt-10">
                     {categories.map((category, index) => (
                         <div key={index} className="relative w-44 h-44 pl-2 overflow-hidden rounded-lg group">
