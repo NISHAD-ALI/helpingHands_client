@@ -5,19 +5,19 @@ import { useNavigate } from 'react-router-dom';
 const features = [
   {
     title: 'Build the team',
-    description: 'Specially designed for the people and NGOs who need special support and attention.',
+    description: 'Build a community that ignites connection, compassion and transformation.',
     image: './hannah-busing-Zyx1bK9mqmA-unsplash.jpg',
     icon: FaUsers,
   },
   {
     title: 'Hire Volunteers',
-    description: 'Hire volunteers with our technology.',
+    description: 'Hire volunteers who meets you community ethics with our technology.',
     image: './cytonn-photography-n95VMLxqM2I-unsplash.jpg',
     icon: FaHandshake,
   },
   {
     title: 'Make the world better',
-    description: 'We always provide useful information to make it easier for you every day.',
+    description: 'Empower others and unite to create a better world.',
     image: './dani-guitarra-7JbUsmYPwP8-unsplash.jpg',
     icon: FaHeart,
   },
