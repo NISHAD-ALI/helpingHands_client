@@ -35,16 +35,17 @@ const Home: React.FC = () => {
       <MainBanner />
       <Features />
       <Fundraiser />
-      {isLoggedIn && <>
-        <LatestFeeds />
-        <div className='flex justify-center'>
-          <button className="hBtn rounded-md px-4 mb-3 py-2 cursor-pointer" onClick={() => navigate('/allPosts')}>
-            See More
-          </button>
-        </div>
-      </>}
+      {isLoggedIn && (
+        <>
+          <LatestFeeds />
+          <div className='flex justify-center mt-8'>
+            <button className="bg-green-600 text-white rounded-lg px-6 py-3 shadow-lg hover:bg-green-700 transition-colors duration-300" onClick={() => navigate('/allPosts')}>
+              See More
+            </button>
+          </div>
+        </>
+      )}
       <ScrollToTop />
-      
       <Footer />
     </div>
   );

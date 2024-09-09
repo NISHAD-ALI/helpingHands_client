@@ -11,7 +11,7 @@ interface FundraiserCardProps {
   _id: string;
 }
 
-const FundraiserCard: React.FC<FundraiserCardProps> = ({ category, image, progress, name, details, _id }) => {
+const FundraiserCard: React.FC<FundraiserCardProps> = ({ category, image, progress, name, _id }) => {
   const handleDonateNow = async () => {
     try {
       const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string);
@@ -29,19 +29,18 @@ const FundraiserCard: React.FC<FundraiserCardProps> = ({ category, image, progre
   };
 
   return (
-    <div className="relative bg-white shadow-md rounded-lg overflow-hidden group">
+    <div className="relative bg-white shadow-lg rounded-xl overflow-hidden transition-transform transform hover:scale-105">
       <div className="relative">
         <img
           src={image}
           alt={category}
-          className="w-full h-60 object-cover transform transition-transform duration-300 group-hover:scale-105" // Increased height to h-60
+          className="w-full h-60 object-cover transition duration-500 group-hover:opacity-80"
         />
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center p-4">
-          <h2 className="text-xl font-semibold text-white mb-2">{name}</h2>
-          <p className="text-gray-200 text-center mb-2">{category}</p>
-          <p className="text-gray-200 text-center mb-4">{details}</p>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 flex flex-col justify-center items-center p-4 transition-all duration-500 hover:bg-black/60">
+          <h2 className="text-2xl font-semibold text-white mb-2">{name}</h2>
+          <p className="text-sm text-gray-200 mb-4">{category}</p>
           <button
-            className="bg-green-500 text-white px-4 py-2 rounded mt-2"
+            className="bg-green-600 text-white px-5 py-3 rounded-full hover:bg-green-500 focus:outline-none focus:ring focus:ring-green-300"
             onClick={handleDonateNow}
           >
             Donate $10
@@ -50,20 +49,12 @@ const FundraiserCard: React.FC<FundraiserCardProps> = ({ category, image, progre
       </div>
       {progress !== undefined && (
         <div className="p-4">
-          <div className="relative pt-1">
-            <div className="flex mb-2 items-center justify-between">
-              <div className="text-right">
-                <span className="text-xs font-semibold inline-block text-black">
-                  {progress}% completed
-                </span>
-              </div>
-            </div>
-            <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
-              <div
-                style={{ width: `${progress}%` }}
-                className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-600"
-              ></div>
-            </div>
+          <p className="text-gray-600 text-center mb-2">{progress}% funded</p>
+          <div className="h-2 w-full bg-gray-200 rounded-full">
+            <div
+              style={{ width: `${progress}%` }}
+              className="h-full bg-green-600 rounded-full transition-width duration-300"
+            />
           </div>
         </div>
       )}

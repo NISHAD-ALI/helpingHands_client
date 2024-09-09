@@ -25,7 +25,6 @@ const AllPosts: React.FC = () => {
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState<Comment[]>([]);
   const [currentPostId, setCurrentPostId] = useState<string | null>(null);
-  const [isSticky, setIsSticky] = useState(false);
   const [showDropdown, setShowDropdown] = useState<{ [key: string]: boolean }>({});
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportReason, setReportReason] = useState('');
@@ -120,14 +119,6 @@ const AllPosts: React.FC = () => {
     }
   };
 
-  const handleScroll = () => {
-    if (window.scrollY > 10) {
-      setIsSticky(true);
-    } else {
-      setIsSticky(false);
-    }
-  };
-
   const toggleDropdown = (postId: string) => {
     setShowDropdown(prevState => ({
       ...prevState,
@@ -140,14 +131,6 @@ const AllPosts: React.FC = () => {
     setCurrentPostId(postId);
     setShowDropdown({});
   };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   const handleReportModalClose = () => {
     setShowReportModal(false);
     setReportReason('');
@@ -187,8 +170,8 @@ const AllPosts: React.FC = () => {
 
   return (
     <section className="py-16 font-inter relative">
-      <div className={`w-full mx-auto transition-all duration-300 ${isSticky ? 'bg-green-100 shadow-md' : ''}`}>
-        <h2 className="text-3xl font-bold text-center py-4 mb-8">Latest Feeds</h2>
+      <div className={`w-full mx-auto transition-all duration-300`}>
+      <h2 className="text-4xl font-bold font-inter text-center mb-10">Explore Our Latest Posts</h2>
       </div>
       <div className="w-full max-w-2xl mx-auto">
         <div className="flex flex-wrap justify-around z-10">

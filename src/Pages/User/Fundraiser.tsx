@@ -14,7 +14,6 @@ const Fundraiser: React.FC = () => {
       try {
         const response = await getDonations();
         if (response?.data?.donations) {
-          console.log(response.data.donations);
           setFundraiser(response.data.donations);
         }
       } catch (error) {
@@ -25,11 +24,16 @@ const Fundraiser: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-br from-teal-50 to-green-200 font-inter min-h-screen flex flex-col">
+    <div className="bg-gray-50 font-inter min-h-screen flex flex-col">
       <Nav />
-      <main className="flex-1 container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-4">Fundraiser</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      
+      <header className="bg-gradient-to-r from-green-300 to-teal-500 text-white py-12 text-center">
+        <h1 className="text-5xl font-extrabold">Support Our $10 Fundraisers</h1>
+        <p className="text-lg mt-4">Empower communities by contributing to campaigns that bring real change.</p>
+      </header>
+
+      <main className="flex-1 container mx-auto p-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {fundraiser.map((fundraiser, index) => {
             const amountCollected = fundraiser.amountCollected ?? 0;
             const targetAmount = fundraiser.targetAmount ?? 1;
