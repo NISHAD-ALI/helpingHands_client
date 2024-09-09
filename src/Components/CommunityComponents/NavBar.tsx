@@ -36,15 +36,17 @@ const NavBar: React.FC<NavBarProps> = ({ bgColor = 'transparent' }) => {
 
   return (
     <header
-      className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-gray-900' : bgColor} ${scrolled ? 'shadow-lg' : ''}`}
-      
+      className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-gray-900 shadow-lg' : bgColor}`}
     >
       <div className="container mx-auto flex justify-between items-center p-4">
-        <h1 className="text-3xl font-bold text-white cursor-pointer" onClick={() => navigate('/community/home')}>
+        <h1
+          className="text-3xl font-bold text-white cursor-pointer"
+          onClick={() => navigate('/community/home')}
+        >
           helpingHands
         </h1>
         <button
-          className="md:hidden rounded-lg focus:outline-none focus:shadow-outline"
+          className="md:hidden rounded-lg focus:outline-none"
           aria-label="menu button"
           type="button"
           onClick={() => setOpen(!open)}
@@ -53,22 +55,34 @@ const NavBar: React.FC<NavBarProps> = ({ bgColor = 'transparent' }) => {
             <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z" clipRule="evenodd"></path>
           </svg>
         </button>
-        <nav className={`md:flex items-center ${open ? 'block' : 'hidden'}`}>
-          <a className="px-4 py-2 text-sm font-semibold text-white hover:text-yellow-500 transition-colors duration-300 cursor-pointer" onClick={() => navigate('/community/home')}>
+        <nav className={`md:flex items-center space-x-4 md:space-x-8 ${open ? 'block' : 'hidden'} md:block`}>
+          <a
+            className="block px-4 py-2 text-sm font-semibold text-white hover:text-yellow-500 transition-colors duration-300 cursor-pointer"
+            onClick={() => navigate('/community/home')}
+          >
             Home
           </a>
-          <a className="px-4 py-2 text-sm font-semibold text-white hover:text-yellow-500 transition-colors duration-300 cursor-pointer" onClick={() => navigate('/community/manageVolunteers')}>
+          <a
+            className="block px-4 py-2 text-sm font-semibold text-white hover:text-yellow-500 transition-colors duration-300 cursor-pointer"
+            onClick={() => navigate('/community/manageVolunteers')}
+          >
             Volunteers
           </a>
-          <a className="px-4 py-2 text-sm font-semibold text-white hover:text-yellow-500 transition-colors duration-300 cursor-pointer" onClick={() => navigate('/community/eventList')}>
+          <a
+            className="block px-4 py-2 text-sm font-semibold text-white hover:text-yellow-500 transition-colors duration-300 cursor-pointer"
+            onClick={() => navigate('/community/eventList')}
+          >
             Events
           </a>
-          <a className="px-4 py-2 text-sm font-semibold text-white hover:text-yellow-500 transition-colors duration-300 cursor-pointer" onClick={handleLogout}>
+          <a
+            className="block px-4 py-2 text-sm font-semibold text-white hover:text-yellow-500 transition-colors duration-300 cursor-pointer"
+            onClick={handleLogout}
+          >
             Logout
           </a>
           {data && (
             <button
-              className="px-6 py-2 ml-4 text-sm font-semibold bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-colors duration-300"
+              className="block px-6 py-2 mt-4 text-sm font-semibold bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-colors duration-300"
               onClick={() => navigate('/community/profile')}
             >
               Profile

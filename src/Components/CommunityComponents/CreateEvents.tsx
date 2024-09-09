@@ -142,6 +142,7 @@ const CreateEvents: React.FC = () => {
 
         try {
             const response = await createEvents(formData);
+            console.log(response)
             if (response) {
                 toast.success('Event Created Successfully');
                 const socket = io('http://localhost:3000');
@@ -151,7 +152,7 @@ const CreateEvents: React.FC = () => {
                 }, 2000);
             }
         } catch (error) {
-            console.error(error);
+            console.log(error);
             toast.error('An error occurred. Please try again.');
         } finally {
             setIsLoading(false);
