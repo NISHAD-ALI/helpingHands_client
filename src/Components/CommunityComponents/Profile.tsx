@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { editProfile, getProfile } from "../../Api/communityApi";
+import { Toaster } from "react-hot-toast";
 
 const Profile: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -67,7 +68,7 @@ const Profile: React.FC = () => {
 
   return (
     <div>
-      <main className="container mx-auto mt-10 p-6 mb-20 bg-white rounded-lg shadow-md relative">
+      <main className="container mx-auto mt-36 p-6 mb-20 bg-white rounded-lg shadow-md relative">
         <div className="absolute top-0 right-0 m-4">
           <button onClick={handleEdit} className="bg-green-500 text-white py-2 px-4 rounded">
             {isEditing ? 'Save' : 'Edit'}
@@ -164,6 +165,8 @@ const Profile: React.FC = () => {
           </div>
         </div>
       </main>
+      <Toaster position="top-center" reverseOrder={false} toastOptions={{ style: { width: '350px' } }} />
+
     </div>
   );
 }
