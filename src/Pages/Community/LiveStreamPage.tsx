@@ -22,8 +22,8 @@ const LiveStreamPage: React.FC = () => {
   const zpRef = useRef<any>(null);
 
   useEffect(() => {
-    const appID = 1409135051;
-    const serverSecret = '54f2381d066850b7f4b15cdd964873d0';
+    const appID = 1913704725;
+    const serverSecret = '70536042525231e6d95fb7a8bcdf203a';
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appID,
       serverSecret,
